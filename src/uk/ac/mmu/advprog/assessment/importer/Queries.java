@@ -14,25 +14,58 @@ import java.util.ArrayList;
 
 public class Queries {
 
-	public static void insertPairingIntoDB(ArrayList<Pairing> pairings) {
-		System.out.println(Instant.now() + " - start insert pairings");
-		try (Connection c = DriverManager.getConnection("jdbc:sqlite:data/winetime.db")) {
-			for (Pairing pairing: pairings) {
-
-				c.createStatement()
-					.executeUpdate("INSERT INTO Pairing (food) VALUES ('"+pairing.getName()+"')");
-			
-			}
-			 
-		} catch (SQLException se) {
-			se.printStackTrace();
-		}
-		System.out.println(Instant.now() + " - finish insert pairings");
+	private String connectionString;
+	private boolean enhancedLogging;
+	
+	public Queries(String connectionString, boolean enhancedLogging) {
+		super();
+		this.connectionString = connectionString;
+		this.enhancedLogging = enhancedLogging;
 	}
 
-	public static void insertGrapeIntoDB(ArrayList<Grape> grapes) {
-		System.out.println(Instant.now() + " - start insert grapes");
-		try (Connection c = DriverManager.getConnection("jdbc:sqlite:data/winetime.db")) {
+	private void insertPairingIntoDB(ArrayList<Pairing> pairings) throws SQLException {
+		if(enhancedLogging) {
+			System.out.println(Instant.now() + " - start insert pairings");
+		}
+		Connection c = null;
+		try {
+			c = DriverManager.getConnection(this.connectionString);
+			c.setAutoCommit(false);
+			for (Pairing pairing: pairings) {
+				String sql = "INSERT INTO Pairing (food) VALUES (?)";
+				
+				try (PreparedStatement stmt = c.prepareStatement(sql)) {
+				    stmt.setString(1, pairing.getName());
+				    stmt.executeUpdate();
+				} catch(Exception e) {
+					e.printStackTrace();
+				}
+			
+			}
+			c.commit();
+		} catch (SQLException se) {
+			if(c != null) {
+				c.rollback();
+			}
+			se.printStackTrace();
+		} finally {
+			if(c != null) {
+				c.close();
+			}
+		}
+		if(enhancedLogging) {
+			System.out.println(Instant.now() + " - finish insert pairings");
+		}
+	}
+
+	private void insertGrapeIntoDB(ArrayList<Grape> grapes) throws SQLException {
+		if(enhancedLogging) {
+			System.out.println(Instant.now() + " - start insert grapes");
+		}
+		Connection c = null;
+		try {
+			c = DriverManager.getConnection(this.connectionString);
+			c.setAutoCommit(false);
 			for (Grape grape : grapes) {
 				String sql = "INSERT INTO Grape (name) VALUES (?)";
 				
@@ -43,15 +76,31 @@ public class Queries {
 					e.printStackTrace();
 				}
 			}
+			c.commit();
 		} catch (SQLException se) {
+			if(c != null) {
+				c.rollback();
+			}
 			se.printStackTrace();
+		} finally {
+			if(c != null) {
+				c.close();
+			}
 		}
-		System.out.println(Instant.now() + " - finished insert grapes");
+		if(enhancedLogging) {
+			System.out.println(Instant.now() + " - finished insert grapes");
+		}
 	}
 
-	public static void insertRegionIntoDB(ArrayList<Region> regions) {
-		System.out.println(Instant.now() + " - start insert regions");
-		try (Connection c = DriverManager.getConnection("jdbc:sqlite:data/winetime.db")) {
+	private void insertRegionIntoDB(ArrayList<Region> regions) throws SQLException {
+
+		if(enhancedLogging) {
+			System.out.println(Instant.now() + " - start insert regions");
+		}
+		Connection c = null;
+		try {
+			c = DriverManager.getConnection(this.connectionString);
+			c.setAutoCommit(false);
 			for (Region region : regions) {
 	
 				String sql = "INSERT INTO Region (id, name, country) VALUES (?, ?, ?)";
@@ -65,26 +114,41 @@ public class Queries {
 					e.printStackTrace();
 				}
 			}
-
+			c.commit();
 		} catch (SQLException se) {
+			if(c != null) {
+				c.rollback();
+			}
 			se.printStackTrace();
+		} finally {
+			if(c != null) {
+				c.close();
+			}
 		}
-		System.out.println(Instant.now() + " - finish insert regions");
+
+		if(enhancedLogging) {
+			System.out.println(Instant.now() + " - finish insert regions");
+		}
 	}
 	
-	public static void insertWineryintoDB(ArrayList<Winery> wineries) {
-		System.out.println(Instant.now() + " - start insert winery");
+	private void insertWineryintoDB(ArrayList<Winery> wineries) throws SQLException {
+
+		if(enhancedLogging) {
+			System.out.println(Instant.now() + " - start insert winery");
+		}
 		int counter = 0;
 		int alertCounter = 0;
 		
-		try (Connection c = DriverManager.getConnection("jdbc:sqlite:data/winetime.db")) {
+		Connection c = null;
+		try {
+			c = DriverManager.getConnection(this.connectionString);
 			c.setAutoCommit(false);
 			for (Winery winery : wineries) {
 	
 				counter += 1;
 				alertCounter += 1;
 				
-				if(alertCounter == 10000 ) {
+				if(alertCounter == 10000 && enhancedLogging) {
 					System.out.println(Instant.now() + " - " + counter + " records inserted");
 					alertCounter = 0;
 				}
@@ -103,29 +167,43 @@ public class Queries {
 			}
 			c.commit();
 		} catch (SQLException se) {
+			if(c != null) {
+				c.rollback();
+			}
 			se.printStackTrace();
+		} finally {
+			if(c != null) {
+				c.close();
+			}
 		}
-		
-		System.out.println(Instant.now() + " - finish insert winery");
+
+		if(enhancedLogging) {
+			System.out.println(Instant.now() + " - finish insert winery");
+		}
 	}
 
-	public static void insertWineIntoDB(ArrayList<Wine> wines) {
-		System.out.println(Instant.now() + " - start insert wines");
+	private void insertWineIntoDB(ArrayList<Wine> wines) throws SQLException {
+
+		if(enhancedLogging) {
+			System.out.println(Instant.now() + " - start insert wines");
+		}
 		int counter = 0;
 		int alertCounter = 0;
 		
-		try (Connection c = DriverManager.getConnection("jdbc:sqlite:data/winetime.db")) {
-		 c.setAutoCommit(false);
+		Connection c = null;
+		try {
+			c = DriverManager.getConnection(this.connectionString);
+			c.setAutoCommit(false);
 
-		for (Wine wine : wines) {
+			for (Wine wine : wines) {
 			
-			counter += 1;
-			alertCounter += 1;
+				counter += 1;
+				alertCounter += 1;
 			
-			if(alertCounter == 10000 ) {
-				System.out.println(Instant.now() + " - " + counter + " records out of " + wines.size() + " inserted");
-				alertCounter = 0;
-			}
+				if(alertCounter == 10000 ) {
+					System.out.println(Instant.now() + " - " + counter + " records out of " + wines.size() + " inserted");
+					alertCounter = 0;
+				}
 
 				String sql = "INSERT INTO Wine (id, name, type, blend_type, ABV, acidity, body, winery_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 				
@@ -185,26 +263,45 @@ public class Queries {
 			c.commit();
 
 		} catch (SQLException se) {
+			if(c != null) {
+				c.rollback();
+			}
 			se.printStackTrace();
+		} finally {
+			if(c != null) {
+				c.close();
+			}
 		}
-		
-		System.out.println(Instant.now() + " - finish insert wines");
+
+		if(enhancedLogging) {
+			System.out.println(Instant.now() + " - finish insert wines");
+		}
 	}
 	
-	public static void createDB() {
-		
-		System.out.println(Instant.now() + " - Clean up");
+	private void createDB() throws SQLException {
+		if(enhancedLogging) {
+			System.out.println(Instant.now() + " - CREATE DB");
+		}
 		Path fileToDelete = Paths.get("./data/winetime.db");
-		try {
+
+		if(enhancedLogging) {
 			System.out.println(Instant.now() + " - Delete db");
+		}
+		
+		try {
+			
 			Files.delete(fileToDelete);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			System.out.println(Instant.now() + " - File does not exists, continue");
+			if(enhancedLogging) {
+				System.out.println(Instant.now() + " - File does not exists, continue");
+			}
 		}
 		
-		try (Connection c = DriverManager.getConnection("jdbc:sqlite:data/winetime.db")) {
-		
+		Connection c = null;
+		try {
+			c = DriverManager.getConnection(connectionString);
+			c.setAutoCommit(false);
 			String createGrape = "CREATE TABLE 'Grape' ('id'	INTEGER, 'name'	TEXT, PRIMARY KEY('id' AUTOINCREMENT))";
 
 			try (PreparedStatement stmt = c.prepareStatement(createGrape)) {
@@ -212,8 +309,9 @@ public class Queries {
 			} catch(Exception e) {
 				e.printStackTrace();
 			}
-			
-			System.out.println(Instant.now() + " - Grape created");
+			if(enhancedLogging) {
+				System.out.println(Instant.now() + " - Grape created");
+			}
 			
 			String createPairing = "CREATE TABLE 'Pairing' ('id'	INTEGER, 'food'	INTEGER,PRIMARY KEY('id' AUTOINCREMENT))";
 
@@ -222,8 +320,9 @@ public class Queries {
 			} catch(Exception e) {
 				e.printStackTrace();
 			}
-			
-			System.out.println(Instant.now() + " - Pairing created");
+			if(enhancedLogging) {
+				System.out.println(Instant.now() + " - Pairing created");
+			}
 
 			String createRegion = "CREATE TABLE 'Region' ( 'id'	INTEGER, 'name'	TEXT, 'country'	TEXT, PRIMARY KEY('id' AUTOINCREMENT))";
 
@@ -232,8 +331,9 @@ public class Queries {
 			} catch(Exception e) {
 				e.printStackTrace();
 			}
-
-			System.out.println(Instant.now() + " - Region created");
+			if(enhancedLogging) {
+				System.out.println(Instant.now() + " - Region created");
+			}
 			
 			String createWine = "CREATE TABLE 'Wine' ('id'	INTEGER, 'name'	TEXT, 'type'	TEXT, 'blend_type'	TEXT, 'ABV'	REAL, 'acidity'	TEXT, 'body'	TEXT, 'winery_id'	INTEGER, PRIMARY KEY('id'), FOREIGN KEY('winery_id') REFERENCES '')";
 
@@ -242,8 +342,9 @@ public class Queries {
 			} catch(Exception e) {
 				e.printStackTrace();
 			}
-
-			System.out.println(Instant.now() + " - Wine created");
+			if(enhancedLogging) {
+				System.out.println(Instant.now() + " - Wine created");
+			}
 
 			String createWineGrape = "CREATE TABLE 'Wine_Grape' ( 'wine_id'	INTEGER, 'Grape_id' 	INTEGER, 'id'	INTEGER, PRIMARY KEY('id' AUTOINCREMENT), FOREIGN KEY('wine_id') REFERENCES 'Wine'('id'))";
 
@@ -252,8 +353,9 @@ public class Queries {
 			} catch(Exception e) {
 				e.printStackTrace();
 			}
-
-			System.out.println(Instant.now() + " - Wine_Grape created");
+			if(enhancedLogging) {
+				System.out.println(Instant.now() + " - Wine_Grape created");
+			}
 
 			String createWineVintage = "CREATE TABLE 'Wine_Vintage' ( 'wine_id'	INTEGER, 'year'	INTEGER, 'id'	INTEGER, PRIMARY KEY('id' AUTOINCREMENT), FOREIGN KEY('wine_id') REFERENCES 'Winery'('id'))";
 
@@ -262,8 +364,9 @@ public class Queries {
 			} catch(Exception e) {
 				e.printStackTrace();
 			}
-
-			System.out.println(Instant.now() + " - Wine_Vintage created");
+			if(enhancedLogging) {
+				System.out.println(Instant.now() + " - Wine_Vintage created");
+			}
 
 			String createWinery = "CREATE TABLE 'Winery' ( 'id'	INTEGER, 'name'	TEXT, 'region_id'	INTEGER, 'website'	TEXT, PRIMARY KEY('id'), FOREIGN KEY('region_id') REFERENCES '')";
 
@@ -272,14 +375,37 @@ public class Queries {
 			} catch(Exception e) {
 				e.printStackTrace();
 			}
-
-			System.out.println(Instant.now() + " - Winery created");
-			System.out.println(Instant.now() + " - Tables created");
+			c.commit();
+			if(enhancedLogging) {
+				System.out.println(Instant.now() + " - Winery created");
+				System.out.println(Instant.now() + " - Tables created");
+			}
 			
 		} catch (SQLException se) {
+			if(c != null) {
+				c.rollback();
+			}
 			se.printStackTrace();
+		} finally {
+			if(c != null) {
+				c.close();
+			}
 		}
 		
+	}
+
+	public void populateDB(ExtractIntoObjects objects) {
+		// TODO Auto-generated method stub
+		try {
+			createDB();
+			insertGrapeIntoDB(objects.getGrapes());
+			insertPairingIntoDB(objects.getPairing());
+			insertRegionIntoDB(objects.getRegions());
+			insertWineryintoDB(objects.getWinerys());
+			insertWineIntoDB(objects.getWines());
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 }

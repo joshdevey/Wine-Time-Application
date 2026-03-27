@@ -12,13 +12,15 @@ import java.util.ArrayList;
 
 public class ExtractIntoObjects {
 	
+	private String csvPath;
 	private ArrayList<Wine> wines;
 	private ArrayList<Grape> grapes;
 	private ArrayList<Pairing> pairing; 
 	private ArrayList<Region> regions;
 	private ArrayList<Winery> winerys;
+	private boolean enhancedLogging;
 
-	public ExtractIntoObjects() {		
+	public ExtractIntoObjects(String csvPath, boolean enhancedLogging) {		
 		super();
 		
 		this.wines = new ArrayList<>();
@@ -26,6 +28,8 @@ public class ExtractIntoObjects {
 		this.pairing = new ArrayList<>();
 		this.regions = new ArrayList<>();
 		this.winerys = new ArrayList<>();
+		this.csvPath = csvPath;
+		this.enhancedLogging = enhancedLogging;
 	}
 		
 	public void extractFromCSSV() {
@@ -41,9 +45,13 @@ public class ExtractIntoObjects {
 		ArrayList<Region> uniqueRegions = new ArrayList<>();
 		ArrayList<Winery> uniqueWinerys = new ArrayList<>();
 		ArrayList<Integer> uniqueWineryIds = new ArrayList<>();
-		System.out.println(Instant.now() + " - extract from CSV start");
+		
+		if(enhancedLogging) {
+			System.out.println(Instant.now() + " - extract from CSV start");
+		}
+		
 		try {
-			Path readFile = Paths.get("./data/XWines_Full_100K_wines.csv");
+			Path readFile = Paths.get(this.csvPath);
 	 
 			InputStream is = Files.newInputStream(readFile);
 			BufferedReader br = new BufferedReader(new InputStreamReader(is));
@@ -51,9 +59,7 @@ public class ExtractIntoObjects {
 			String currentLine = "";
 			
 			while((currentLine = br.readLine()) != null) {
-//				if(counter > 10) {
-//					break;
-//				}
+
 				if(counter != 0) {
 					String[] splitString = splitString(currentLine);
 					
@@ -152,7 +158,9 @@ public class ExtractIntoObjects {
 		this.wines = wines;
 		this.grapes = uniqueGrapes;
 		this.pairing = uniquePairing;
-		System.out.println(Instant.now() + " - extract from CSV end. Wines extracted: " + this.wines.size());
+		if(enhancedLogging) {
+			System.out.println(Instant.now() + " - extract from CSV end. Wines extracted: " + this.wines.size());
+		}
 	}
 
 	public ArrayList<Wine> getWines() {

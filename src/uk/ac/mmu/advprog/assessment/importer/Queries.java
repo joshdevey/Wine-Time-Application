@@ -34,9 +34,14 @@ public class Queries {
 		System.out.println(Instant.now() + " - start insert grapes");
 		try (Connection c = DriverManager.getConnection("jdbc:sqlite:data/winetime.db")) {
 			for (Grape grape : grapes) {
-				c.createStatement()
-					.executeUpdate("INSERT INTO Grape (name) VALUES ('"+grape.getName()+"')");
+				String sql = "INSERT INTO Grape (name) VALUES (?)";
 				
+				try (PreparedStatement stmt = c.prepareStatement(sql)) {
+				    stmt.setString(1, grape.getName());
+				    stmt.executeUpdate();
+				} catch(Exception e) {
+					e.printStackTrace();
+				}
 			}
 		} catch (SQLException se) {
 			se.printStackTrace();
@@ -73,12 +78,13 @@ public class Queries {
 		int alertCounter = 0;
 		
 		try (Connection c = DriverManager.getConnection("jdbc:sqlite:data/winetime.db")) {
+			c.setAutoCommit(false);
 			for (Winery winery : wineries) {
 	
 				counter += 1;
 				alertCounter += 1;
 				
-				if(alertCounter == 1000 ) {
+				if(alertCounter == 10000 ) {
 					System.out.println(Instant.now() + " - " + counter + " records inserted");
 					alertCounter = 0;
 				}
@@ -95,10 +101,11 @@ public class Queries {
 					e.printStackTrace();
 				}
 			}
-
+			c.commit();
 		} catch (SQLException se) {
 			se.printStackTrace();
 		}
+		
 		System.out.println(Instant.now() + " - finish insert winery");
 	}
 
@@ -108,16 +115,15 @@ public class Queries {
 		int alertCounter = 0;
 		
 		try (Connection c = DriverManager.getConnection("jdbc:sqlite:data/winetime.db")) {
-		
-		c.beginRequest();
-			
+		 c.setAutoCommit(false);
+
 		for (Wine wine : wines) {
 			
 			counter += 1;
 			alertCounter += 1;
 			
-			if(alertCounter == 1000 ) {
-				System.out.println(Instant.now() + " - " + counter + " records inserted");
+			if(alertCounter == 10000 ) {
+				System.out.println(Instant.now() + " - " + counter + " records out of " + wines.size() + " inserted");
 				alertCounter = 0;
 			}
 
@@ -162,7 +168,7 @@ public class Queries {
 					}
 					
 				}
-				
+
 				for(Integer vintage : wine.getVintages()) {
 					String sql4 = "INSERT INTO Wine_Vintage (Wine_id, Year) values (?, ?)";
 					
@@ -175,9 +181,9 @@ public class Queries {
 					}
 				}
 				
-				
 			}
-		c.endRequest();
+			c.commit();
+
 		} catch (SQLException se) {
 			se.printStackTrace();
 		}

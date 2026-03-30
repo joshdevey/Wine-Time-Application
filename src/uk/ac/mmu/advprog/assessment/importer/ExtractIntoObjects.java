@@ -39,7 +39,6 @@ public class ExtractIntoObjects {
 		ArrayList<Grape> uniqueGrapes = new ArrayList<>();
 		ArrayList<Pairing> uniquePairing = new ArrayList<>();
 		ArrayList<String> grapesAsString = new ArrayList<>();
-		ArrayList<Pairing> winePairings = new ArrayList<>();
 		ArrayList<String> pairingAsString = new ArrayList<>();
 		ArrayList<String> regionId = new ArrayList<>();
 		ArrayList<Region> uniqueRegions = new ArrayList<>();
@@ -87,7 +86,9 @@ public class ExtractIntoObjects {
 					//pairing
 					String paringString = cleanUpArrayString(splitString[5]);
 					String[] pairings = splitString(paringString);
-					
+
+					ArrayList<Pairing> winePairings = new ArrayList<>();
+
 					for(String pairing : pairings) {
 						
 						Pairing pairingToAdd = new Pairing(pairing.trim());
@@ -110,9 +111,6 @@ public class ExtractIntoObjects {
 						regionId.add(splitString[11]);
 					}
 					this.regions = uniqueRegions;
-					
-					wine.setRegion(region);
-
 
 					//vintages
 					String vintagesString = cleanUpArrayString(splitString[16]);

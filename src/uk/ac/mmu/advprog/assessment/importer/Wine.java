@@ -4,140 +4,102 @@ import java.util.ArrayList;
 
 public class Wine {
 
-	private String id;
-	private String name;
-	private String type;
-	private String elaborate; //blend_type
-	private String abv;
-	private String body;
-	private String acidity;
-	private ArrayList<Grape> grapes;
-	private ArrayList<Pairing> pairings;
-	private Region region;
-	private Winery winery;
-	private ArrayList<Integer> Vintages;
-	
-	public Wine(String id, String name, String type, String elaborate, String abv, String body, String acidity) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.type = type;
-		this.elaborate = elaborate;
-		this.abv = abv;
-		this.body = body;
-		this.acidity = acidity;
-	}
+    private String id;
+    private String name;
+    private String type;
+    private String elaborate; //blend_type
+    private String abv;
+    private String body;
+    private String acidity;
+    private ArrayList<Grape> grapes;
+    private ArrayList<Pairing> pairings;
+    private Winery winery;
+    private ArrayList<Integer> Vintages;
 
-	public String getId() {
-		return id;
-	}
+    public Wine(String id, String name, String type, String elaborate, String abv, String body, String acidity) {
+        super();
+        this.id = id;
+        this.name = name;
+        this.type = type;
+        this.elaborate = elaborate;
+        this.abv = abv;
+        this.body = body;
+        this.acidity = acidity;
+    }
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    public String getId() {
+        return id;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public String getType() {
+        return type;
+    }
 
-	public String getType() {
-		return type;
-	}
+    public String getElaborate() {
+        return elaborate;
+    }
 
-	public void setType(String type) {
-		this.type = type;
-	}
+    public String getAbv() {
+        return abv;
+    }
 
-	public String getElaborate() {
-		return elaborate;
-	}
+    public String getBody() {
+        return body;
+    }
 
-	public void setElaborate(String elaborate) {
-		this.elaborate = elaborate;
-	}
+    public String getAcidity() {
+        return acidity;
+    }
 
-	public String getAbv() {
-		return abv;
-	}
+    public ArrayList<Grape> getGrapes() {
+        return grapes;
+    }
 
-	public void setAbv(String abv) {
-		this.abv = abv;
-	}
+    public void setGrapes(ArrayList<Grape> grapes) {
+        this.grapes = grapes;
+    }
 
-	public String getBody() {
-		return body;
-	}
+    public ArrayList<Pairing> getPairings() {
+        return pairings;
+    }
 
-	public void setBody(String body) {
-		this.body = body;
-	}
+    public void setPairings(ArrayList<Pairing> pairings) {
+        this.pairings = pairings;
+    }
 
-	public String getAcidity() {
-		return acidity;
-	}
+    public Winery getWinery() {
+        return winery;
+    }
 
-	public void setAcidity(String acidity) {
-		this.acidity = acidity;
-	}
+    public void setWinery(Winery winery) {
+        this.winery = winery;
+    }
 
-	public ArrayList<Grape> getGrapes() {
-		return grapes;
-	}
+    public ArrayList<Integer> getVintages() {
+        return Vintages;
+    }
 
-	public void setGrapes(ArrayList<Grape> grapes) {
-		this.grapes = grapes;
-	}
+    public void setVintages(ArrayList<Integer> vintages) {
+        Vintages = vintages;
+    }
 
-	public ArrayList<Pairing> getPairings() {
-		return pairings;
-	}
+    @Override
+    public String toString() {
 
-	public void setPairings(ArrayList<Pairing> pairings) {
-		this.pairings = pairings;
-	}
+        return "Wine {" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", type='" + type + '\'' +
+                ", blend='" + elaborate + '\'' +
+                ", abv='" + abv + '\'' +
+                ", body='" + body + '\'' +
+                ", acidity='" + acidity + '\'' +
+                '}';
 
-	public Region getRegion() {
-		return region;
-	}
-
-	public void setRegion(Region region) {
-		this.region = region;
-	}
-
-	public Winery getWinery() {
-		return winery;
-	}
-
-	public void setWinery(Winery winery) {
-		this.winery = winery;
-	}
-
-
-	public ArrayList<Integer> getVintages() {
-		return Vintages;
-	}
-
-	public void setVintages(ArrayList<Integer> vintages) {
-		Vintages = vintages;
-	}
-
-	@Override
-	public String toString() {
-
-	    return "Wine {" +
-	            "id='" + id + '\'' +
-	            ", name='" + name + '\'' +
-	            ", type='" + type + '\'' +
-	            ", blend='" + elaborate + '\'' +
-	            ", abv='" + abv + '\'' +
-	            ", body='" + body + '\'' +
-	            ", acidity='" + acidity + '\'' +
-	            '}';
-
-	}
+    }
 
 }

@@ -432,7 +432,7 @@ public class Queries {
     }
 
     public void populateDB(ExtractIntoObjects objects) {
-        // TODO Auto-generated method stub
+
         try {
             createDB();
             insertGrapeIntoDB(objects.getGrapes());

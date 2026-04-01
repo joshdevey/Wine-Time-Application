@@ -9,17 +9,16 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class ExtractIntoObjects {
 	
-	private String csvPath;
+	private final String csvPath;
 	private ArrayList<Wine> wines;
 	private ArrayList<String> grapes;
 	private ArrayList<Pairing> pairing; 
 	private ArrayList<Region> regions;
-	private ArrayList<Winery> winerys;
-	private boolean enhancedLogging;
+	private ArrayList<Winery> wineries;
+	private final boolean enhancedLogging;
 
 	public ExtractIntoObjects(String csvPath, boolean enhancedLogging) {		
 		super();
@@ -28,7 +27,7 @@ public class ExtractIntoObjects {
 		this.grapes = new ArrayList<>();
 		this.pairing = new ArrayList<>();
 		this.regions = new ArrayList<>();
-		this.winerys = new ArrayList<>();
+		this.wineries = new ArrayList<>();
 		this.csvPath = csvPath;
 		this.enhancedLogging = enhancedLogging;
 	}
@@ -134,7 +133,7 @@ public class ExtractIntoObjects {
 						uniqueWineryIds.add(winery.getId());
 						uniqueWinerys.add(winery);
 					}
-					this.winerys = uniqueWinerys;
+					this.wineries = uniqueWinerys;
 					
 					wine.setWinery(winery);
 					
@@ -174,8 +173,8 @@ public class ExtractIntoObjects {
 		return regions;
 	}
 	
-	public ArrayList<Winery> getWinerys() {
-		return winerys;
+	public ArrayList<Winery> getWineries() {
+		return wineries;
 	}
 
 	/**

@@ -436,7 +436,7 @@ public class Queries {
             insertGrapeIntoDB(objects.getGrapes());
             insertPairingIntoDB(objects.getPairing());
             insertRegionIntoDB(objects.getRegions());
-            insertWineryIntoDB(objects.getWinerys());
+            insertWineryIntoDB(objects.getWineries());
             insertWineIntoDB(objects.getWines());
         } catch (SQLException e) {
             e.printStackTrace();

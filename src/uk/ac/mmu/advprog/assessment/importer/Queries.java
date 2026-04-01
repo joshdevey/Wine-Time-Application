@@ -58,7 +58,7 @@ public class Queries {
         }
     }
 
-    private void insertGrapeIntoDB(ArrayList<Grape> grapes) throws SQLException {
+    private void insertGrapeIntoDB(ArrayList<String> grapes) throws SQLException {
         if (enhancedLogging) {
             System.out.println(Instant.now() + " - start insert grapes");
         }
@@ -66,11 +66,11 @@ public class Queries {
         try {
             c = DriverManager.getConnection(this.connectionString);
             c.setAutoCommit(false);
-            for (Grape grape : grapes) {
+            for (String grape : grapes) {
                 String sql = "INSERT INTO Grape (name) VALUES (?)";
 
                 try (PreparedStatement stmt = c.prepareStatement(sql)) {
-                    stmt.setString(1, grape.getName());
+                    stmt.setString(1, grape);
                     stmt.executeUpdate();
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -221,8 +221,8 @@ public class Queries {
                     e.printStackTrace();
                 }
 
-                for (Grape grape : wine.getGrapes()) {
-                    String sql2 = "SELECT id FROM Grape where Name = '" + grape.getName() + "'";
+                for (String grape : wine.getGrapes()) {
+                    String sql2 = "SELECT id FROM Grape where Name = '" + grape + "'";
 
                     ResultSet rs = c.createStatement().executeQuery(sql2);
 
@@ -317,7 +317,6 @@ public class Queries {
 
             Files.delete(fileToDelete);
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             if (enhancedLogging) {
                 System.out.println(Instant.now() + " - File does not exists, continue");
             }
@@ -432,7 +431,6 @@ public class Queries {
     }
 
     public void populateDB(ExtractIntoObjects objects) {
-
         try {
             createDB();
             insertGrapeIntoDB(objects.getGrapes());

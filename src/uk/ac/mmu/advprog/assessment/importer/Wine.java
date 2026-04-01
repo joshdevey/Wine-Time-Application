@@ -11,7 +11,7 @@ public class Wine {
     private String abv;
     private String body;
     private String acidity;
-    private ArrayList<Grape> grapes;
+    private ArrayList<String> grapes;
     private ArrayList<Pairing> pairings;
     private Winery winery;
     private ArrayList<Integer> Vintages;
@@ -55,11 +55,11 @@ public class Wine {
         return acidity;
     }
 
-    public ArrayList<Grape> getGrapes() {
+    public ArrayList<String> getGrapes() {
         return grapes;
     }
 
-    public void setGrapes(ArrayList<Grape> grapes) {
+    public void setGrapes(ArrayList<String> grapes) {
         this.grapes = grapes;
     }
 

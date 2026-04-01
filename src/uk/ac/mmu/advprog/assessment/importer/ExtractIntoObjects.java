@@ -9,12 +9,13 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class ExtractIntoObjects {
 	
 	private String csvPath;
 	private ArrayList<Wine> wines;
-	private ArrayList<Grape> grapes;
+	private ArrayList<String> grapes;
 	private ArrayList<Pairing> pairing; 
 	private ArrayList<Region> regions;
 	private ArrayList<Winery> winerys;
@@ -36,9 +37,8 @@ public class ExtractIntoObjects {
 		int counter = 0; 
 		
 		ArrayList<Wine> wines = new ArrayList<>();
-		ArrayList<Grape> uniqueGrapes = new ArrayList<>();
+		ArrayList<String> uniqueGrapes = new ArrayList<>();
 		ArrayList<Pairing> uniquePairing = new ArrayList<>();
-		ArrayList<String> grapesAsString = new ArrayList<>();
 		ArrayList<String> pairingAsString = new ArrayList<>();
 		ArrayList<String> regionId = new ArrayList<>();
 		ArrayList<Region> uniqueRegions = new ArrayList<>();
@@ -63,22 +63,19 @@ public class ExtractIntoObjects {
 					String[] splitString = splitString(currentLine);
 					
 					Wine wine = new Wine(splitString[0], splitString[1], splitString[2], splitString[3], splitString[6], splitString[7], splitString[8]);
-					
-					ArrayList<Grape> wineGrapes = new ArrayList<>();
+
+					ArrayList<String> wineGrapes = new ArrayList<>();
 					//grapes
 					String grapesString = cleanUpArrayString(splitString[4]);
 					String[] grapes = splitString(grapesString);
 					
 					for(String grape : grapes) {
-						
-						Grape grapeToAdd = new Grape(grape.trim());
-						
-						if(!grapesAsString.contains(grape.trim())) {
-							grapesAsString.add(grape.trim());
-							uniqueGrapes.add(grapeToAdd);
+						if(!wineGrapes.contains(grape.trim())) {
+							wineGrapes.add(grape.trim());
 						}
-						
-						wineGrapes.add(grapeToAdd);
+						if(!uniqueGrapes.contains(grape.trim())) {
+							uniqueGrapes.add(grape.trim());
+						}
 					}
 					
 					wine.setGrapes(wineGrapes);
@@ -165,7 +162,7 @@ public class ExtractIntoObjects {
 		return wines;
 	}
 
-	public ArrayList<Grape> getGrapes() {
+	public ArrayList<String> getGrapes() {
 		return grapes;
 	}
 

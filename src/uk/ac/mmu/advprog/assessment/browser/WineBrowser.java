@@ -16,7 +16,7 @@ public class WineBrowser extends JFrame {
 
         this.searchPanel = new SearchPanel();
         this.detailPanel = new WineDetail();
-        this.searchResultsData = new ArrayList();
+        this.searchResultsData = getTestData();
     }
 
     public void displaySearch() {
@@ -39,7 +39,7 @@ public class WineBrowser extends JFrame {
                 };
             };
 
-            for(Wine wine: getTestData()) {
+            for(Wine wine: this.searchResultsData) {
                 Object[] obj = {wine.name, wine.type, wine.Winery, wine.Country, wine.ABV};
 
                 tableModel.addRow(obj);
@@ -56,10 +56,6 @@ public class WineBrowser extends JFrame {
         setLocationRelativeTo(null);
         setVisible(true);
 
-    }
-
-    public void search() {
-        System.out.println("Test");
     }
 
     public ArrayList<Wine> getTestData() {

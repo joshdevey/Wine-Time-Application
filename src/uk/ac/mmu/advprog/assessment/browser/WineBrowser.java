@@ -1,6 +1,7 @@
 package uk.ac.mmu.advprog.assessment.browser;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
 public class WineBrowser extends JFrame {
@@ -40,9 +41,21 @@ public class WineBrowser extends JFrame {
         if(this.searchResultsData.length > 0) {
             String[] columnNames = { "Name", "Type", "Winery", "Country", "ABV" };
             resultsTable = new JTable(searchResultsData, columnNames);
+
+            //make table read only
+            DefaultTableModel tableModel = new DefaultTableModel(searchResultsData, columnNames) {
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                  return false;
+                };
+            };
+
+            resultsTable.setModel(tableModel);
+
             JScrollPane sp = new JScrollPane(resultsTable);
             sp.setMaximumSize(new Dimension(100, 100));
             sp.setAutoscrolls(true);
+
             add(sp, "Center");
         }
 

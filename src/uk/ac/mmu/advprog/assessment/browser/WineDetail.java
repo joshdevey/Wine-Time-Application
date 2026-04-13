@@ -1,6 +1,7 @@
 package uk.ac.mmu.advprog.assessment.browser;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class WineDetail extends JPanel {
 
@@ -15,6 +16,7 @@ public class WineDetail extends JPanel {
     private JLabel body = new JLabel("Body: ");
 
     public WineDetail() {
+        setPreferredSize(new Dimension(300, 600));
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         add(name);
         add(winery);

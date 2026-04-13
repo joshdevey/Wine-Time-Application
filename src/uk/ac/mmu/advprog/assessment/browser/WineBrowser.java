@@ -23,35 +23,36 @@ public class WineBrowser extends JFrame {
         setTitle("Wine Browser");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(500, 820);
-
+        setMinimumSize(new Dimension(800, 820));
         add(searchPanel, "West");
 
+        String[] columnNames = { "Name", "Type", "Winery", "Country", "ABV" };
 
-            String[] columnNames = { "Name", "Type", "Winery", "Country", "ABV" };
+        resultsTable = new JTable();
 
-            resultsTable = new JTable();
-
-            //make table read only
-            DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0) {
-                @Override
-                public boolean isCellEditable(int row, int column) {
-                  return false;
-                };
+        //make table read only
+        DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+              return false;
             };
+        };
 
-            for(Wine wine: this.searchResultsData) {
-                Object[] obj = {wine.name, wine.type, wine.Winery, wine.Country, wine.ABV};
+        for(Wine wine: this.searchResultsData) {
+            Object[] obj = {wine.name, wine.type, wine.Winery, wine.Country, wine.ABV};
 
-                tableModel.addRow(obj);
-            }
+            tableModel.addRow(obj);
+        }
 
-            resultsTable.setModel(tableModel);
+        resultsTable.setModel(tableModel);
 
-            JScrollPane sp = new JScrollPane(resultsTable);
-            sp.setMaximumSize(new Dimension(100, 100));
-            sp.setAutoscrolls(true);
+        JScrollPane sp = new JScrollPane(resultsTable);
+        sp.setMaximumSize(new Dimension(100, 100));
+        sp.setAutoscrolls(true);
 
-            add(sp, "Center");
+        add(sp, "Center");
+
+        add(detailPanel, "East");
 
         setLocationRelativeTo(null);
         setVisible(true);

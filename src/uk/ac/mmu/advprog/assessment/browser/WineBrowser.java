@@ -94,8 +94,7 @@ public class WineBrowser extends JFrame {
             ResultSet rs = c.createStatement().executeQuery("select w.name, w.type, w.abv, wy.name as winery_name, r.country from Wine as w inner join Winery as wy on w.winery_id = wy.id inner join Region as r on r.id = wy.region_id limit 100");
 
             while(rs.next()) {
-
-                Wine wine = new Wine(rs.getString("name"), rs.getString("type"), rs.getString("abv"), rs.getString("winery_name"), rs.getString("country"));
+                Wine wine = new Wine(rs.getString("name"), rs.getString("type"), rs.getString("winery_name"), rs.getString("country"), rs.getString("abv"));
 
                 wines.add(wine);
 
@@ -105,19 +104,6 @@ public class WineBrowser extends JFrame {
         catch (SQLException se) {
             se.printStackTrace();
         }
-
-
-
-//        wines.add(new Wine("Espumante Moscatel", "Sparkling", "Casa Perini", "Brazil", "7.5"));
-//        wines.add(new Wine("Ancellotta", "Red", "Casa Perini", "Brazil", "12.0"));
-//        wines.add(new Wine("Cabernet Sauvignon", "Red", "Castellamare", "Brazil", "12.0"));
-//        wines.add(new Wine("Virtus Moscato", "White", "Monte Paschoal", "Brazil", "12.0"));
-//        wines.add(new Wine("Maison de Ville Cabernet-Merlot", "Red", "Aurora", "Brazil", "11.0"));
-//        wines.add(new Wine("Reserva Cabernet Sauvignon", "Red", "Aurora", "Brazil", "12.5"));
-//        wines.add(new Wine("Do Lugar Moscatel Espumantes", "Sparkling", "Dal Pizzol", "Brazil", "7.5"));
-//        wines.add(new Wine("Paradoxo Cabernet Sauvignon", "Red", "Salton", "Brazil", "13.5"));
-//        wines.add(new Wine("Seleção Cabernet Sauvignon-Merlot", "Red", "Miolo", "Brazil", "12.5"));
-//        wines.add(new Wine("Defesa Tinto", "Red", "Esporão", "Portugal", "14.0"));
 
         return wines;
     }

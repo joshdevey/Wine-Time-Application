@@ -91,10 +91,10 @@ public class WineBrowser extends JFrame {
 
         try (Connection c = DriverManager.getConnection("jdbc:sqlite:data/winetime.db")) {
 
-            ResultSet rs = c.createStatement().executeQuery("select w.name, w.type, w.abv, wy.name as winery_name, r.country from Wine as w inner join Winery as wy on w.winery_id = wy.id inner join Region as r on r.id = wy.region_id limit 100");
+            ResultSet rs = c.createStatement().executeQuery("select w.id, w.name, w.type, w.abv, wy.name as winery_name, r.country from Wine as w inner join Winery as wy on w.winery_id = wy.id inner join Region as r on r.id = wy.region_id limit 100");
 
             while(rs.next()) {
-                Wine wine = new Wine(rs.getString("name"), rs.getString("type"), rs.getString("winery_name"), rs.getString("country"), rs.getString("abv"));
+                Wine wine = new Wine(rs.getInt("id"), rs.getString("name"), rs.getString("type"), rs.getString("winery_name"), rs.getString("country"), rs.getString("abv"));
 
                 wines.add(wine);
 

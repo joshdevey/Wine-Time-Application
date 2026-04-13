@@ -9,7 +9,7 @@ public class WineBrowser extends JFrame {
 
     private final SearchPanel searchPanel;
     private JTable resultsTable;
-    private final WineDetail detailPanel;
+    private WineDetail detailPanel;
     private ArrayList<Wine> searchResultsData;
 
     public WineBrowser() {
@@ -39,12 +39,23 @@ public class WineBrowser extends JFrame {
         };
 
         for(Wine wine: this.searchResultsData) {
-            Object[] obj = {wine.name, wine.type, wine.Winery, wine.Country, wine.ABV};
+            Object[] obj = {wine.name, wine.type, wine.winery, wine.country, wine.aBV};
 
             tableModel.addRow(obj);
         }
 
         resultsTable.setModel(tableModel);
+
+        resultsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        resultsTable.setSelectionBackground(new Color(250, 108, 14));
+
+        resultsTable.getSelectionModel().addListSelectionListener(e -> {
+            if(!e.getValueIsAdjusting()) {
+                updateFromSelection();
+            }
+        });
+
+        resultsTable.getSelectedRow();
 
         JScrollPane sp = new JScrollPane(resultsTable);
         sp.setMaximumSize(new Dimension(100, 100));
@@ -52,11 +63,22 @@ public class WineBrowser extends JFrame {
 
         add(sp, "Center");
 
-        add(detailPanel, "East");
-
         setLocationRelativeTo(null);
         setVisible(true);
 
+    }
+
+    public void updateFromSelection() {
+        if(resultsTable.getSelectedRow() == -1) {
+            this.detailPanel.clearData();
+            remove(detailPanel);
+            revalidate();
+            return;
+        }
+
+        detailPanel.setData(this.searchResultsData.get(resultsTable.getSelectedRow()));
+        add(detailPanel, "East");
+        revalidate();
     }
 
     public ArrayList<Wine> getTestData() {

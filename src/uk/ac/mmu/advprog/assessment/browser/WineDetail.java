@@ -37,15 +37,17 @@ public class WineDetail extends JPanel {
         CustomJPanel blendPanel = new CustomJPanel(new JLabel("Blend: "), blend);
         add(blendPanel.panel);
 
-        CustomJPanel grapePanel = new CustomJPanel(new JLabel("Grape(s): "), grape);
-        add(grapePanel.panel);
-
         CustomJPanel acidityPanel = new CustomJPanel(new JLabel("Acidity: "), acidity);
         add(acidityPanel.panel);
 
         CustomJPanel bodyPanel = new CustomJPanel(new JLabel("Body: "), body);
         add(bodyPanel.panel);
 
+        CustomJPanel grapePanel = new CustomJPanel(new JLabel("Grape(s): "), grape);
+        add(grapePanel.panel);
+
+        CustomJPanel pairingPanel = new CustomJPanel(new JLabel("Pairing(s): "), grape);
+        add(pairingPanel.panel);
 
     }
 
@@ -55,6 +57,9 @@ public class WineDetail extends JPanel {
         type.setText(selectedWine.type);
         country.setText(selectedWine.country);
         abv.setText(selectedWine.abv);
+        blend.setText(selectedWine.blend);
+        acidity.setText(selectedWine.acidity);
+        body.setText(selectedWine.body);
     }
 
     public void clearData() {
@@ -63,6 +68,9 @@ public class WineDetail extends JPanel {
         type.setText("");
         country.setText("");
         abv.setText("");
+        blend.setText("");
+        acidity.setText("");
+        body.setText("");
     }
 
 }

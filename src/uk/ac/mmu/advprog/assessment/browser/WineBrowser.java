@@ -81,9 +81,36 @@ public class WineBrowser extends JFrame {
             return;
         }
 
-        detailPanel.setData(this.searchResultsData.get(resultsTable.getSelectedRow()));
-        add(detailPanel, "East");
-        revalidate();
+        Wine wineToAdd = null;
+
+        try (Connection c = DriverManager.getConnection("jdbc:sqlite:data/winetime.db")) {
+
+            String sql = "select w.id, w.name, w.type, w.abv, w.blend_type, w.acidity, w.body, wy.name as winery_name, r.country from Wine as w inner join Winery as wy on w.winery_id = wy.id inner join Region as r on r.id = wy.region_id where w.id = ?";
+
+            try (PreparedStatement stmt = c.prepareStatement(sql)) {
+                stmt.setInt(1, this.searchResultsData.get(resultsTable.getSelectedRow()).id);
+
+                ResultSet rs = stmt.executeQuery();
+
+                while(rs.next()) {
+                    Wine wine = new Wine(rs.getInt("id"), rs.getString("name"), rs.getString("type"), rs.getString("winery_name"), rs.getString("country"), rs.getString("abv"), rs.getString("blend_type"), rs.getString("body"), rs.getString("acidity"));
+
+                    wineToAdd = wine;
+
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        }
+        catch (SQLException se) {
+            se.printStackTrace();
+        }
+        if(wineToAdd != null) {
+            detailPanel.setData(wineToAdd);
+            add(detailPanel, "East");
+            revalidate();
+        }
     }
 
     public ArrayList<Wine> getTestData() {

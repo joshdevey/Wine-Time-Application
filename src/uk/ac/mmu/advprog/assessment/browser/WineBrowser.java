@@ -3,17 +3,17 @@ package uk.ac.mmu.advprog.assessment.browser;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class WineBrowser extends JFrame {
 
     private final SearchPanel searchPanel;
     private JTable resultsTable;
-    private WineDetail detailPanel;
+    private final WineDetail detailPanel;
     private ArrayList<Wine> searchResultsData;
 
     public WineBrowser() {
-
         this.searchPanel = new SearchPanel();
         this.detailPanel = new WineDetail();
         this.searchResultsData = getTestData();
@@ -26,6 +26,15 @@ public class WineBrowser extends JFrame {
         setMinimumSize(new Dimension(800, 820));
         add(searchPanel, "West");
 
+        handleResultsTable();
+
+        setLocationRelativeTo(null);
+        setVisible(true);
+
+    }
+
+    public void handleResultsTable() {
+
         String[] columnNames = { "Name", "Type", "Winery", "Country", "ABV" };
 
         resultsTable = new JTable();
@@ -34,12 +43,12 @@ public class WineBrowser extends JFrame {
         DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
-              return false;
+                return false;
             };
         };
 
         for(Wine wine: this.searchResultsData) {
-            Object[] obj = {wine.name, wine.type, wine.winery, wine.country, wine.aBV};
+            Object[] obj = {wine.name, wine.type, wine.winery, wine.country, wine.abv};
 
             tableModel.addRow(obj);
         }
@@ -62,10 +71,6 @@ public class WineBrowser extends JFrame {
         sp.setAutoscrolls(true);
 
         add(sp, "Center");
-
-        setLocationRelativeTo(null);
-        setVisible(true);
-
     }
 
     public void updateFromSelection() {
@@ -84,16 +89,35 @@ public class WineBrowser extends JFrame {
     public ArrayList<Wine> getTestData() {
         ArrayList<Wine> wines = new ArrayList<>();
 
-        wines.add(new Wine("Espumante Moscatel", "Sparkling", "Casa Perini", "Brazil", "7.5"));
-        wines.add(new Wine("Ancellotta", "Red", "Casa Perini", "Brazil", "12.0"));
-        wines.add(new Wine("Cabernet Sauvignon", "Red", "Castellamare", "Brazil", "12.0"));
-        wines.add(new Wine("Virtus Moscato", "White", "Monte Paschoal", "Brazil", "12.0"));
-        wines.add(new Wine("Maison de Ville Cabernet-Merlot", "Red", "Aurora", "Brazil", "11.0"));
-        wines.add(new Wine("Reserva Cabernet Sauvignon", "Red", "Aurora", "Brazil", "12.5"));
-        wines.add(new Wine("Do Lugar Moscatel Espumantes", "Sparkling", "Dal Pizzol", "Brazil", "7.5"));
-        wines.add(new Wine("Paradoxo Cabernet Sauvignon", "Red", "Salton", "Brazil", "13.5"));
-        wines.add(new Wine("Seleção Cabernet Sauvignon-Merlot", "Red", "Miolo", "Brazil", "12.5"));
-        wines.add(new Wine("Defesa Tinto", "Red", "Esporão", "Portugal", "14.0"));
+        try (Connection c = DriverManager.getConnection("jdbc:sqlite:data/winetime.db")) {
+
+            ResultSet rs = c.createStatement().executeQuery("select w.name, w.type, w.abv, wy.name as winery_name, r.country from Wine as w inner join Winery as wy on w.winery_id = wy.id inner join Region as r on r.id = wy.region_id limit 100");
+
+            while(rs.next()) {
+
+                Wine wine = new Wine(rs.getString("name"), rs.getString("type"), rs.getString("abv"), rs.getString("winery_name"), rs.getString("country"));
+
+                wines.add(wine);
+
+            }
+
+        }
+        catch (SQLException se) {
+            se.printStackTrace();
+        }
+
+
+
+//        wines.add(new Wine("Espumante Moscatel", "Sparkling", "Casa Perini", "Brazil", "7.5"));
+//        wines.add(new Wine("Ancellotta", "Red", "Casa Perini", "Brazil", "12.0"));
+//        wines.add(new Wine("Cabernet Sauvignon", "Red", "Castellamare", "Brazil", "12.0"));
+//        wines.add(new Wine("Virtus Moscato", "White", "Monte Paschoal", "Brazil", "12.0"));
+//        wines.add(new Wine("Maison de Ville Cabernet-Merlot", "Red", "Aurora", "Brazil", "11.0"));
+//        wines.add(new Wine("Reserva Cabernet Sauvignon", "Red", "Aurora", "Brazil", "12.5"));
+//        wines.add(new Wine("Do Lugar Moscatel Espumantes", "Sparkling", "Dal Pizzol", "Brazil", "7.5"));
+//        wines.add(new Wine("Paradoxo Cabernet Sauvignon", "Red", "Salton", "Brazil", "13.5"));
+//        wines.add(new Wine("Seleção Cabernet Sauvignon-Merlot", "Red", "Miolo", "Brazil", "12.5"));
+//        wines.add(new Wine("Defesa Tinto", "Red", "Esporão", "Portugal", "14.0"));
 
         return wines;
     }

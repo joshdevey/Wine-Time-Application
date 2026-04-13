@@ -14,7 +14,23 @@ public class Wine {
     private ArrayList<String> grapes;
     private ArrayList<Pairing> pairings;
     private Winery winery;
-    private ArrayList<Integer> Vintages;
+    private ArrayList<Integer> vintages;
+    private Region region;
+
+    public Wine(String id, String name, String type, String elaborate, String abv, String body, String acidity, ArrayList<String> grapes, ArrayList<Pairing> pairings, Winery winery, ArrayList<Integer> vintages, Region region) {
+        this.id = id;
+        this.name = name;
+        this.type = type;
+        this.elaborate = elaborate;
+        this.abv = abv;
+        this.body = body;
+        this.acidity = acidity;
+        this.grapes = grapes;
+        this.pairings = pairings;
+        this.winery = winery;
+        this.vintages = vintages;
+        this.region = region;
+    }
 
     public Wine(String id, String name, String type, String elaborate, String abv, String body, String acidity) {
         super();
@@ -80,11 +96,15 @@ public class Wine {
     }
 
     public ArrayList<Integer> getVintages() {
-        return Vintages;
+        return vintages;
     }
 
     public void setVintages(ArrayList<Integer> vintages) {
-        Vintages = vintages;
+        this.vintages = vintages;
+    }
+
+    public Region getRegion() {
+        return this.region;
     }
 
     @Override

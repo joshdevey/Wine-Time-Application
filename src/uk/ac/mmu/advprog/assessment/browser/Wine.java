@@ -5,14 +5,14 @@ public class Wine {
     public String type;
     public String winery;
     public String country;
-    public String aBV;
+    public String abv;
 
     public Wine(String name, String type, String winery, String country, String ABV) {
         this.name = name;
         this.type = type;
         this.winery = winery;
         this.country = country;
-        this.aBV = ABV;
+        this.abv = ABV;
     }
 }
 

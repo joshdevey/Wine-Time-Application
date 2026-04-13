@@ -18,15 +18,35 @@ public class WineDetail extends JPanel {
     public WineDetail() {
         setPreferredSize(new Dimension(300, 600));
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        add(name);
-        add(winery);
-        add(type);
-        add(country);
-        add(blend);
-        add(grape);
-        add(abv);
-        add(acidity);
-        add(body);
+
+        CustomJPanel namePanel = new CustomJPanel(new JLabel("Name: "), name);
+        add(namePanel.panel);
+
+        CustomJPanel wineryPanel = new CustomJPanel(new JLabel("Winery: "), winery);
+        add(wineryPanel.panel);
+
+        CustomJPanel typePanel = new CustomJPanel(new JLabel("Type: "), type);
+        add(typePanel.panel);
+
+        CustomJPanel countryPanel = new CustomJPanel(new JLabel("Country: "), country);
+        add(countryPanel.panel);
+
+        CustomJPanel abvPanel = new CustomJPanel(new JLabel("ABV: "), abv);
+        add(abvPanel.panel);
+
+        CustomJPanel blendPanel = new CustomJPanel(new JLabel("Blend: "), blend);
+        add(blendPanel.panel);
+
+        CustomJPanel grapePanel = new CustomJPanel(new JLabel("Grape(s): "), grape);
+        add(grapePanel.panel);
+
+        CustomJPanel acidityPanel = new CustomJPanel(new JLabel("Acidity: "), acidity);
+        add(acidityPanel.panel);
+
+        CustomJPanel bodyPanel = new CustomJPanel(new JLabel("Body: "), body);
+        add(bodyPanel.panel);
+
+
     }
 
     public void setData(Wine selectedWine) {
@@ -34,7 +54,7 @@ public class WineDetail extends JPanel {
         winery.setText(selectedWine.winery);
         type.setText(selectedWine.type);
         country.setText(selectedWine.country);
-        abv.setText(selectedWine.aBV);
+        abv.setText(selectedWine.abv);
     }
 
     public void clearData() {
@@ -44,4 +64,5 @@ public class WineDetail extends JPanel {
         country.setText("");
         abv.setText("");
     }
+
 }

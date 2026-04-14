@@ -1,6 +1,8 @@
 package uk.ac.mmu.advprog.assessment.browser;
 
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public class WineDetail extends JPanel {
@@ -61,18 +63,29 @@ public class WineDetail extends JPanel {
         blend.setText(selectedWine.blend);
         acidity.setText(selectedWine.acidity);
         body.setText(selectedWine.body);
+        grapes.removeAll();
         JPanel grapePanel = new JPanel();
         for(String grape: selectedWine.grapes) {
-            JLabel pairingLabel = new JLabel(grape);
-            grapePanel.add(pairingLabel);
+            JPanel labelContainer = new JPanel();
+            JLabel grapeLabel = new JLabel(grape);
+            Border blackline = BorderFactory.createLineBorder(new Color(250, 108, 14));
+            labelContainer.setBorder(new EmptyBorder(10, 10, 10, 10));
+            labelContainer.setBorder(blackline);
+            labelContainer.add(grapeLabel);
+            grapePanel.add(labelContainer);
         }
         grapes.add(grapePanel);
 
         pairings.removeAll();
         JPanel pairingPanel = new JPanel();
         for(String pairing: selectedWine.pairings) {
+            JPanel labelContainer = new JPanel();
             JLabel pairingLabel = new JLabel(pairing);
-            pairingPanel.add(pairingLabel);
+            Border blackline = BorderFactory.createLineBorder(new Color(250, 108, 14));
+            labelContainer.setBorder(new EmptyBorder(10, 10, 10, 10));
+            labelContainer.setBorder(blackline);
+            labelContainer.add(pairingLabel);
+            pairingPanel.add(labelContainer);
         }
         pairings.add(pairingPanel);
     }

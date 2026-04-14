@@ -1,8 +1,5 @@
 package uk.ac.mmu.advprog.assessment.browser;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-
 public class Wine {
     public int id;
     public String name;

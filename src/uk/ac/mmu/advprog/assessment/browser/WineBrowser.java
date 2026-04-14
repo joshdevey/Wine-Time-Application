@@ -1,9 +1,11 @@
 package uk.ac.mmu.advprog.assessment.browser;
 
+
+import uk.ac.mmu.advprog.assessment.shared.Queries;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.sql.*;
 import java.util.ArrayList;
 
 public class WineBrowser extends JFrame {
@@ -12,11 +14,12 @@ public class WineBrowser extends JFrame {
     private JTable resultsTable;
     private final WineDetail detailPanel;
     private ArrayList<Wine> searchResultsData;
+    private Queries queries = new Queries("jdbc:sqlite:data/winetime.db", false);
 
     public WineBrowser() {
         this.searchPanel = new SearchPanel();
         this.detailPanel = new WineDetail();
-        this.searchResultsData = getTestData();
+        this.searchResultsData = queries.getInitialWines();
     }
 
     public void displaySearch() {
@@ -35,7 +38,7 @@ public class WineBrowser extends JFrame {
 
     public void handleResultsTable() {
 
-        String[] columnNames = { "Name", "Type", "Winery", "Country", "ABV" };
+        String[] columnNames = {"Name", "Type", "Winery", "Country", "ABV"};
 
         resultsTable = new JTable();
 
@@ -44,10 +47,12 @@ public class WineBrowser extends JFrame {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
-            };
+            }
+
+            ;
         };
 
-        for(Wine wine: this.searchResultsData) {
+        for (Wine wine : this.searchResultsData) {
             Object[] obj = {wine.name, wine.type, wine.winery, wine.country, wine.abv};
 
             tableModel.addRow(obj);
@@ -59,7 +64,7 @@ public class WineBrowser extends JFrame {
         resultsTable.setSelectionBackground(new Color(250, 108, 14));
 
         resultsTable.getSelectionModel().addListSelectionListener(e -> {
-            if(!e.getValueIsAdjusting()) {
+            if (!e.getValueIsAdjusting()) {
                 updateFromSelection();
             }
         });
@@ -74,86 +79,20 @@ public class WineBrowser extends JFrame {
     }
 
     public void updateFromSelection() {
-        if(resultsTable.getSelectedRow() == -1) {
+        if (resultsTable.getSelectedRow() == -1) {
             this.detailPanel.clearData();
             remove(detailPanel);
             revalidate();
             return;
         }
 
-        Wine wineToAdd = null;
+        Wine wineToAdd = queries.getWine(this.searchResultsData.get(resultsTable.getSelectedRow()).id);
 
-        try (Connection c = DriverManager.getConnection("jdbc:sqlite:data/winetime.db")) {
-
-            String sql = "select w.id, " +
-                    "w.name, " +
-                    "w.type, " +
-                    "w.abv, " +
-                    "w.blend_type, " +
-                    "w.acidity, " +
-                    "w.body, " +
-                    "wy.name as winery_name, " +
-                    "r.country, " +
-                    "(" +
-                    "select group_concat(g.name) " +
-                    "from Wine_Grape as wg " +
-                    "inner join Grape g on g.id = wg.Grape_id " +
-                    "where wg.wine_id = w.id " +
-                    ") as grapes, " +
-                    "(" +
-                    "select group_concat(p.food) " +
-                    "from Wine_Pairing as wp " +
-                    "inner join Pairing p on p.id = wp.pairing_id " +
-                    "where wp.wine_id = w.id " +
-                    ") as pairings " +
-                    "from Wine as w " +
-                    "inner join Winery as wy on w.winery_id = wy.id " +
-                    "inner join Region as r on r.id = wy.region_id " +
-                    "where w.id = ?";
-
-            try (PreparedStatement stmt = c.prepareStatement(sql)) {
-                stmt.setInt(1, this.searchResultsData.get(resultsTable.getSelectedRow()).id);
-
-                ResultSet rs = stmt.executeQuery();
-
-                while(rs.next()) {
-                    Wine wine = new Wine(rs.getInt("id"), rs.getString("name"), rs.getString("type"), rs.getString("winery_name"), rs.getString("country"), rs.getString("abv"), rs.getString("blend_type"), rs.getString("body"), rs.getString("acidity"), rs.getString("grapes").split(","), rs.getString("pairings").split(","));
-
-                    wineToAdd = wine;
-
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-
-        }
-        catch (SQLException se) {
-            se.printStackTrace();
-        }
-        if(wineToAdd != null) {
+        if (wineToAdd != null) {
             detailPanel.setData(wineToAdd);
             add(detailPanel, "East");
             revalidate();
         }
-    }
-
-    public ArrayList<Wine> getTestData() {
-        ArrayList<Wine> wines = new ArrayList<>();
-
-        try (Connection c = DriverManager.getConnection("jdbc:sqlite:data/winetime.db")) {
-
-            ResultSet rs = c.createStatement().executeQuery("select w.id, w.name, w.type, w.abv, wy.name as winery_name, r.country from Wine as w inner join Winery as wy on w.winery_id = wy.id inner join Region as r on r.id = wy.region_id limit 100");
-
-            while(rs.next()) {
-                Wine wine = new Wine(rs.getInt("id"), rs.getString("name"), rs.getString("type"), rs.getString("winery_name"), rs.getString("country"), rs.getString("abv"));
-                wines.add(wine);
-            }
-        }
-        catch (SQLException se) {
-            se.printStackTrace();
-        }
-
-        return wines;
     }
 
 }

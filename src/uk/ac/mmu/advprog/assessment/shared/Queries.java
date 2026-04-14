@@ -1,4 +1,6 @@
-package uk.ac.mmu.advprog.assessment.importer;
+package uk.ac.mmu.advprog.assessment.shared;
+
+import uk.ac.mmu.advprog.assessment.importer.*;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -441,6 +443,78 @@ public class Queries {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public uk.ac.mmu.advprog.assessment.browser.Wine getWine(int id) {
+        uk.ac.mmu.advprog.assessment.browser.Wine wineToAdd = null;
+
+        try (Connection c = DriverManager.getConnection(this.connectionString)) {
+
+            String sql = "select w.id, " +
+                    "w.name, " +
+                    "w.type, " +
+                    "w.abv, " +
+                    "w.blend_type, " +
+                    "w.acidity, " +
+                    "w.body, " +
+                    "wy.name as winery_name, " +
+                    "r.country, " +
+                    "(" +
+                    "select group_concat(g.name) " +
+                    "from Wine_Grape as wg " +
+                    "inner join Grape g on g.id = wg.Grape_id " +
+                    "where wg.wine_id = w.id " +
+                    ") as grapes, " +
+                    "(" +
+                    "select group_concat(p.food) " +
+                    "from Wine_Pairing as wp " +
+                    "inner join Pairing p on p.id = wp.pairing_id " +
+                    "where wp.wine_id = w.id " +
+                    ") as pairings " +
+                    "from Wine as w " +
+                    "inner join Winery as wy on w.winery_id = wy.id " +
+                    "inner join Region as r on r.id = wy.region_id " +
+                    "where w.id = ?";
+
+            try (PreparedStatement stmt = c.prepareStatement(sql)) {
+                stmt.setInt(1, id);
+
+                ResultSet rs = stmt.executeQuery();
+
+                while (rs.next()) {
+                    uk.ac.mmu.advprog.assessment.browser.Wine wine = new uk.ac.mmu.advprog.assessment.browser.Wine(rs.getInt("id"), rs.getString("name"), rs.getString("type"), rs.getString("winery_name"), rs.getString("country"), rs.getString("abv"), rs.getString("blend_type"), rs.getString("body"), rs.getString("acidity"), rs.getString("grapes").split(","), rs.getString("pairings").split(","));
+
+                    wineToAdd = wine;
+
+                }
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+
+        return wineToAdd;
+    }
+
+    public ArrayList<uk.ac.mmu.advprog.assessment.browser.Wine> getInitialWines() {
+        ArrayList<uk.ac.mmu.advprog.assessment.browser.Wine> wines = new ArrayList<>();
+
+        try (Connection c = DriverManager.getConnection(this.connectionString)) {
+
+            ResultSet rs = c.createStatement().executeQuery("select w.id, w.name, w.type, w.abv, wy.name as winery_name, r.country from Wine as w inner join Winery as wy on w.winery_id = wy.id inner join Region as r on r.id = wy.region_id");
+
+            while (rs.next()) {
+                uk.ac.mmu.advprog.assessment.browser.Wine wine = new uk.ac.mmu.advprog.assessment.browser.Wine(rs.getInt("id"), rs.getString("name"), rs.getString("type"), rs.getString("winery_name"), rs.getString("country"), rs.getString("abv"));
+                wines.add(wine);
+            }
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+
+        return wines;
     }
 
 }

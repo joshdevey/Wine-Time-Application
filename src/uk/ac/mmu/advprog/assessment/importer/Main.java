@@ -1,5 +1,7 @@
 package uk.ac.mmu.advprog.assessment.importer;
 
+import uk.ac.mmu.advprog.assessment.shared.Queries;
+
 import java.time.Instant;
 
 public class Main {

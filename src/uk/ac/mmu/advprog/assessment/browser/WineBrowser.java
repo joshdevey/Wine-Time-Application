@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class WineBrowser extends JFrame {
 
-    private final SearchPanel searchPanel;
+    private SearchPanel searchPanel;
     private JTable resultsTable;
     private final WineDetail detailPanel;
     private ArrayList<Wine> searchResultsData;
@@ -25,7 +25,7 @@ public class WineBrowser extends JFrame {
         this.searchResultsData = new ArrayList<>();
     }
 
-    public void displaySearch() {
+    public void displayWineBrowser() {
         setTitle("Wine Browser");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(500, 820);
@@ -114,7 +114,9 @@ public class WineBrowser extends JFrame {
     }
 
     public void fetchData() {
-        handleResultsTable(queries.getInitialWines());
+        QueryBuilder queryBuilder = searchPanel.getQuery();
+
+        System.out.println(queryBuilder.toString());
     }
 
 }

@@ -11,7 +11,7 @@ public class SearchPanel extends JPanel {
 
     JTextField name = new JTextField(12);
     public JTextField winery = new JTextField(12);
-    public JComboBox<String> type = new JComboBox<>(new String[]{"Any", "Red", "White", "Sparkling", "Dessert/Port", "Dessert", "Rosé" });
+    public JComboBox<String> type = new JComboBox<>(new String[]{"Any", "Red", "White", "Sparkling", "Dessert/Port", "Dessert", "Rosé"});
     String[] countries = {"Any",
             "Albania",
             "Argentina",
@@ -208,6 +208,7 @@ public class SearchPanel extends JPanel {
         panel.setBorder(new EmptyBorder(10, 10, 10, 10));
         return panel;
     }
+
     private JPanel getWineryPanel() {
         JPanel panel = new JPanel();
         JLabel label = new JLabel("Winery Name");
@@ -221,6 +222,7 @@ public class SearchPanel extends JPanel {
         panel.setBorder(new EmptyBorder(10, 10, 10, 10));
         return panel;
     }
+
     private JPanel getTypePanel() {
         JPanel panel = new JPanel();
         JLabel label = new JLabel("Type");
@@ -234,6 +236,7 @@ public class SearchPanel extends JPanel {
 
         return panel;
     }
+
     private JPanel getCountryPanel() {
         JPanel panel = new JPanel();
         JLabel label = new JLabel("Country of Origin");
@@ -326,12 +329,24 @@ public class SearchPanel extends JPanel {
         country.setSelectedIndex(0);
         blend.setSelectedIndex(0);
         grape.setText("");
-        abv.setValue(25);
+        abv.setValue(50);
         acidity.setSelectedIndex(0);
         body.setSelectedIndex(0);
     }
-    
-    public void getSearchQuery() {
-    	System.out.println("Search");
-    }
+
+    public QueryBuilder getQuery() {
+        QueryBuilder queryBuilder = new QueryBuilder();
+        queryBuilder.setName(name.getText());
+        queryBuilder.setWineryName(winery.getText());
+        queryBuilder.setGrape(grape.getText());
+        queryBuilder.setAbv(abv.getValue());
+        queryBuilder.setType(type.getSelectedItem().toString());
+        queryBuilder.setCountry(country.getSelectedItem().toString());
+        queryBuilder.setBlend(blend.getSelectedItem().toString());
+        queryBuilder.setAcidity(acidity.getSelectedItem().toString());
+        queryBuilder.setBlend(body.getSelectedItem().toString());
+
+        return queryBuilder;
+    };
+
 }

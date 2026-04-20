@@ -4,6 +4,6 @@ public class Main {
 
 	public static void main(String[] args) {
 		WineBrowser browser = new WineBrowser();
-		browser.displaySearch();
+		browser.displayWineBrowser();
 	}
 }

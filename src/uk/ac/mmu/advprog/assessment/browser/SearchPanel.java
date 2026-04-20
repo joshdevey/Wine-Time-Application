@@ -282,6 +282,7 @@ public class SearchPanel extends JPanel {
         label.setForeground(ColorUIResource.WHITE);
         panel.setLayout(new GridLayout(2, 1));
         panel.add(label);
+        abv.setValue(0);
         abv.setForeground(Color.WHITE);
         abv.setMajorTickSpacing(10);
         abv.setMinorTickSpacing(1);
@@ -326,7 +327,7 @@ public class SearchPanel extends JPanel {
         country.setSelectedIndex(0);
         blend.setSelectedIndex(0);
         grape.setText("");
-        abv.setValue(50);
+        abv.setValue(0);
         acidity.setSelectedIndex(0);
         body.setSelectedIndex(0);
     }

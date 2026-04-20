@@ -31,7 +31,7 @@ public class WineBrowser extends JFrame {
         setSize(500, 820);
         setMinimumSize(new Dimension(800, 820));
         add(searchPanel, "West");
-        renderButtons();
+        renderSearchButtons();
         setLocationRelativeTo(null);
         setVisible(true);
     }
@@ -94,7 +94,7 @@ public class WineBrowser extends JFrame {
         }
     }
 
-    public void renderButtons() {
+    public void renderSearchButtons() {
 
         searchButton.setBackground(new Color(250, 108, 14));
         searchButton.setForeground(Color.WHITE);

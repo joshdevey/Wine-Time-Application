@@ -568,8 +568,6 @@ public class Queries {
 //            }
 
 
-
-            System.out.println(queryString);
             ResultSet rs = c.createStatement().executeQuery(queryString);
 
             while (rs.next()) {

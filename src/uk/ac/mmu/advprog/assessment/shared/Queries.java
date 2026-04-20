@@ -538,6 +538,37 @@ public class Queries {
                 queryString += " and " + queryBuilder.getNameQueryString();
             }
 
+            if(queryBuilder.getWineryNameQueryString() != null) {
+                queryString += " and " + queryBuilder.getWineryNameQueryString();
+            }
+
+            if(queryBuilder.getTypeQueryString() != null) {
+                queryString += " and " + queryBuilder.getTypeQueryString();
+            }
+
+            if(queryBuilder.getCountryQueryString() != null) {
+                queryString += " and " + queryBuilder.getCountryQueryString();
+            }
+
+            if(queryBuilder.getBlendQueryString() != null) {
+                queryString += " and " + queryBuilder.getBlendQueryString();
+            }
+
+            if(queryBuilder.getAcidityQueryString() != null) {
+                queryString += " and " + queryBuilder.getAcidityQueryString();
+            }
+
+            if(queryBuilder.getBodyQueryString() != null) {
+                queryString += " and " + queryBuilder.getBodyQueryString();
+            }
+
+            //if grape do a fresh query as two tables would be added
+//            if(queryBuilder.getGrapeQueryString() != null) {
+//                queryString += " and " + queryBuilder.getGrapeQueryString();
+//            }
+
+
+
             System.out.println(queryString);
             ResultSet rs = c.createStatement().executeQuery(queryString);
 

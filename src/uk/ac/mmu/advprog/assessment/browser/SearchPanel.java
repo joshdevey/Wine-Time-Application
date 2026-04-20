@@ -80,8 +80,7 @@ public class SearchPanel extends JPanel {
 
     public JComboBox<String> country = new JComboBox<>(countries);
 
-    String[] blends = {
-            "Any",
+    String[] blends = {"Any",
             "Assemblage/Blend",
             "Assemblage/Bordeaux Red Blend",
             "Assemblage/Bourgogne Red Blend",
@@ -112,8 +111,7 @@ public class SearchPanel extends JPanel {
 
     public JSlider abv = new JSlider(0, 50);
 
-    String[] aciditys = {
-            "Any",
+    String[] aciditys = {"Any",
             "High",
             "Medium",
             "Low"
@@ -121,8 +119,7 @@ public class SearchPanel extends JPanel {
 
     public JComboBox<String> acidity = new JComboBox<>(aciditys);
 
-    String[] bodys = {
-            "Any",
+    String[] bodys = {"Any",
             "Full-bodied",
             "Light-bodied",
             "Medium-bodied",
@@ -344,7 +341,7 @@ public class SearchPanel extends JPanel {
         queryBuilder.setCountry(country.getSelectedItem().toString());
         queryBuilder.setBlend(blend.getSelectedItem().toString());
         queryBuilder.setAcidity(acidity.getSelectedItem().toString());
-        queryBuilder.setBlend(body.getSelectedItem().toString());
+        queryBuilder.setBody(body.getSelectedItem().toString());
 
         return queryBuilder;
     };

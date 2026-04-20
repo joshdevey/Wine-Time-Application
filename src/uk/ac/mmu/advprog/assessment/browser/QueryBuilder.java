@@ -91,6 +91,64 @@ public class QueryBuilder {
         }
     }
 
+    public String getWineryNameQueryString() {
+        if (this.wineryName.isEmpty()) {
+            return null;
+        } else {
+            return "wy.name = \"" + this.wineryName + "\"";
+        }
+    }
+
+    public String getTypeQueryString() {
+        if (this.type.equals("Any")) {
+            return null;
+        } else {
+            return "w.type = \"" + this.type + "\"";
+        }
+    }
+
+    public String getCountryQueryString() {
+        if (this.country.equals("Any")) {
+            return null;
+        } else {
+            return "r.country = \"" + this.country + "\"";
+        }
+    }
+
+    public String getBlendQueryString() {
+        if (this.blend.equals("Any")) {
+            return null;
+        } else {
+            return "w.blend_type = \"" + this.blend + "\"";
+        }
+    }
+
+    public String getGrapeQueryString() {
+        if (this.grape.isEmpty()) {
+            return null;
+        } else {
+            return "w.grape = \"" + this.grape + "\"";
+        }
+    }
+
+    public String getAcidityQueryString() {
+        if (this.acidity.equals("Any")) {
+            return null;
+        } else {
+            return "w.acidity = \"" + this.acidity + "\"";
+        }
+    }
+
+    public String getBodyQueryString() {
+        if (this.body.equals("Any")) {
+            return null;
+        } else {
+            return "w.body = \"" + this.body + "\"";
+        }
+    }
+
+
+
     @Override
     public String toString() {
         return "QueryBuilder{" +

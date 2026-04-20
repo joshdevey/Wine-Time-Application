@@ -562,11 +562,65 @@ public class Queries {
                 queryString += " and " + queryBuilder.getBodyQueryString();
             }
 
-            //if grape do a fresh query as two tables would be added
-//            if(queryBuilder.getGrapeQueryString() != null) {
-//                queryString += " and " + queryBuilder.getGrapeQueryString();
-//            }
+            ResultSet rs = c.createStatement().executeQuery(queryString);
 
+            while (rs.next()) {
+                uk.ac.mmu.advprog.assessment.browser.Wine wine = new uk.ac.mmu.advprog.assessment.browser.Wine(rs.getInt("id"), rs.getString("name"), rs.getString("type"), rs.getString("winery_name"), rs.getString("country"), rs.getString("abv"));
+                wines.add(wine);
+            }
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+
+        return wines;
+    }
+
+    public ArrayList<uk.ac.mmu.advprog.assessment.browser.Wine> getWinesFromSearchWithGrape(QueryBuilder queryBuilder) {
+        ArrayList<uk.ac.mmu.advprog.assessment.browser.Wine> wines = new ArrayList<>();
+
+        try (Connection c = DriverManager.getConnection(this.connectionString)) {
+
+            String queryString = "select w.id," +
+                    " w.name, " +
+                    "w.type, " +
+                    "w.abv, " +
+                    "wy.name as winery_name, " +
+                    "r.country " +
+                    "from Wine as w " +
+                    "inner join Winery as wy on w.winery_id = wy.id " +
+                    "inner join Region as r on r.id = wy.region_id " +
+                    "inner join Wine_Grape as wg on wg.wine_id = w.id " +
+                    "inner join Grape as g on g.id = wg.Grape_id " +
+                    "where w.abv >= " + queryBuilder.getAbv() +
+                    " and  " + queryBuilder.getGrapeQueryString();
+
+            if(queryBuilder.getNameQueryString() != null) {
+                queryString += " and " + queryBuilder.getNameQueryString();
+            }
+
+            if(queryBuilder.getWineryNameQueryString() != null) {
+                queryString += " and " + queryBuilder.getWineryNameQueryString();
+            }
+
+            if(queryBuilder.getTypeQueryString() != null) {
+                queryString += " and " + queryBuilder.getTypeQueryString();
+            }
+
+            if(queryBuilder.getCountryQueryString() != null) {
+                queryString += " and " + queryBuilder.getCountryQueryString();
+            }
+
+            if(queryBuilder.getBlendQueryString() != null) {
+                queryString += " and " + queryBuilder.getBlendQueryString();
+            }
+
+            if(queryBuilder.getAcidityQueryString() != null) {
+                queryString += " and " + queryBuilder.getAcidityQueryString();
+            }
+
+            if(queryBuilder.getBodyQueryString() != null) {
+                queryString += " and " + queryBuilder.getBodyQueryString();
+            }
 
             ResultSet rs = c.createStatement().executeQuery(queryString);
 

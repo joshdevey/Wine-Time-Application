@@ -19,7 +19,7 @@ public class WineBrowser extends JFrame {
     private final WineDetail detailPanel;
     private ArrayList<Wine> searchResultsData;
     private JScrollPane searchResultPanel;
-    private Queries queries = new Queries("jdbc:sqlite:data/winetime.db", false);
+    private final Queries queries = new Queries("jdbc:sqlite:data/winetime.db", false);
     private QueryBuilder queryBuilder;
     public JButton searchButton = new JButton("Search");
 
@@ -45,7 +45,12 @@ public class WineBrowser extends JFrame {
     public void handleResultsTable() {
 
         String[] columnNames = {"Name", "Type", "Winery", "Country", "ABV"};
-        this.searchResultsData = queries.getWinesFromSearch(queryBuilder);
+        if(queryBuilder.getGrape().isEmpty()) {
+            this.searchResultsData = queries.getWinesFromSearch(queryBuilder);
+        } else {
+            this.searchResultsData = queries.getWinesFromSearchWithGrape(queryBuilder);
+        }
+
         resultsTable = new JTable();
 
         //make table read only

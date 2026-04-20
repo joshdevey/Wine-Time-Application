@@ -127,7 +127,7 @@ public class QueryBuilder {
         if (this.grape.isEmpty()) {
             return null;
         } else {
-            return "w.grape = \"" + this.grape + "\"";
+            return "g.name = \"" + this.grape + "\"";
         }
     }
 

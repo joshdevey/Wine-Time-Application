@@ -6,6 +6,8 @@ import uk.ac.mmu.advprog.assessment.shared.Queries;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class WineBrowser extends JFrame {
@@ -15,11 +17,12 @@ public class WineBrowser extends JFrame {
     private final WineDetail detailPanel;
     private ArrayList<Wine> searchResultsData;
     private Queries queries = new Queries("jdbc:sqlite:data/winetime.db", false);
+    public JButton searchButton = new JButton("Search");
 
     public WineBrowser() {
         this.searchPanel = new SearchPanel();
         this.detailPanel = new WineDetail();
-        this.searchResultsData = queries.getInitialWines();
+        this.searchResultsData = new ArrayList<>();
     }
 
     public void displaySearch() {
@@ -28,18 +31,15 @@ public class WineBrowser extends JFrame {
         setSize(500, 820);
         setMinimumSize(new Dimension(800, 820));
         add(searchPanel, "West");
-
-        handleResultsTable();
-
+        renderButtons();
         setLocationRelativeTo(null);
         setVisible(true);
-
     }
 
-    public void handleResultsTable() {
+    public void handleResultsTable(ArrayList<Wine> results) {
 
         String[] columnNames = {"Name", "Type", "Winery", "Country", "ABV"};
-
+        this.searchResultsData = results;
         resultsTable = new JTable();
 
         //make table read only
@@ -48,11 +48,9 @@ public class WineBrowser extends JFrame {
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
-
-            ;
         };
 
-        for (Wine wine : this.searchResultsData) {
+        for (Wine wine : results) {
             Object[] obj = {wine.name, wine.type, wine.winery, wine.country, wine.abv};
 
             tableModel.addRow(obj);
@@ -76,6 +74,7 @@ public class WineBrowser extends JFrame {
         sp.setAutoscrolls(true);
 
         add(sp, "Center");
+        revalidate();
     }
 
     public void updateFromSelection() {
@@ -93,6 +92,29 @@ public class WineBrowser extends JFrame {
             add(detailPanel, "East");
             revalidate();
         }
+    }
+
+    public void renderButtons() {
+
+        searchButton.setBackground(new Color(250, 108, 14));
+        searchButton.setForeground(Color.WHITE);
+        searchButton.setBorderPainted(false);
+        searchButton.setFocusPainted(false);
+        searchButton.setOpaque(true);
+
+        searchButton.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                fetchData();
+            }
+        });
+
+        add(searchButton, "South");
+    }
+
+    public void fetchData() {
+        handleResultsTable(queries.getInitialWines());
     }
 
 }

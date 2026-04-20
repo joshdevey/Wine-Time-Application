@@ -132,7 +132,6 @@ public class SearchPanel extends JPanel {
 
     public JComboBox<String> body = new JComboBox<>(bodys);
 
-    public JButton searchButton = new JButton("Search");
     public JButton clearButton = new JButton("Clear");
 
     public SearchPanel() {
@@ -176,20 +175,6 @@ public class SearchPanel extends JPanel {
 
         JPanel buttonContainer = new JPanel(new FlowLayout());
 
-        searchButton.setBackground(new Color(250, 108, 14));
-        searchButton.setForeground(Color.WHITE);
-        searchButton.setBorderPainted(false);
-        searchButton.setFocusPainted(false);
-        searchButton.setOpaque(true);
-
-        searchButton.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("SEARCH");
-            }
-        });
-
         clearButton.setBackground(new Color(250, 108, 14));
         clearButton.setForeground(Color.WHITE);
         clearButton.setBorderPainted(false);
@@ -205,7 +190,6 @@ public class SearchPanel extends JPanel {
         });
 
         buttonContainer.setOpaque(false);
-        buttonContainer.add(searchButton);
         buttonContainer.add(clearButton);
 
         add(buttonContainer);
@@ -345,5 +329,9 @@ public class SearchPanel extends JPanel {
         abv.setValue(25);
         acidity.setSelectedIndex(0);
         body.setSelectedIndex(0);
+    }
+    
+    public void getSearchQuery() {
+    	System.out.println("Search");
     }
 }

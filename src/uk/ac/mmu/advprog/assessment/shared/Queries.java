@@ -531,10 +531,11 @@ public class Queries {
                     "r.country " +
                     "from Wine as w " +
                     "inner join Winery as wy on w.winery_id = wy.id " +
-                    "inner join Region as r on r.id = wy.region_id ";
+                    "inner join Region as r on r.id = wy.region_id " +
+                    "where w.abv < " + queryBuilder.getAbv();
 
             if(queryBuilder.getNameQueryString() != null) {
-                queryString += " where " + queryBuilder.getNameQueryString();
+                queryString += " and " + queryBuilder.getNameQueryString();
             }
 
             System.out.println(queryString);

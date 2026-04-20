@@ -84,7 +84,7 @@ public class QueryBuilder {
     }
 
     public String getNameQueryString() {
-        if(this.name.isEmpty()) {
+        if (this.name.isEmpty()) {
             return null;
         } else {
             return "w.name = \"" + this.name + "\"";

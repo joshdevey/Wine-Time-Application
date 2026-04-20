@@ -532,35 +532,7 @@ public class Queries {
                     "from Wine as w " +
                     "inner join Winery as wy on w.winery_id = wy.id " +
                     "inner join Region as r on r.id = wy.region_id " +
-                    "where w.abv >= " + queryBuilder.getAbv();
-
-            if(queryBuilder.getNameQueryString() != null) {
-                queryString += " and " + queryBuilder.getNameQueryString();
-            }
-
-            if(queryBuilder.getWineryNameQueryString() != null) {
-                queryString += " and " + queryBuilder.getWineryNameQueryString();
-            }
-
-            if(queryBuilder.getTypeQueryString() != null) {
-                queryString += " and " + queryBuilder.getTypeQueryString();
-            }
-
-            if(queryBuilder.getCountryQueryString() != null) {
-                queryString += " and " + queryBuilder.getCountryQueryString();
-            }
-
-            if(queryBuilder.getBlendQueryString() != null) {
-                queryString += " and " + queryBuilder.getBlendQueryString();
-            }
-
-            if(queryBuilder.getAcidityQueryString() != null) {
-                queryString += " and " + queryBuilder.getAcidityQueryString();
-            }
-
-            if(queryBuilder.getBodyQueryString() != null) {
-                queryString += " and " + queryBuilder.getBodyQueryString();
-            }
+                    "where w.abv >= " + queryBuilder.getAbv()  + buildAdditionQueryString(queryBuilder);
 
             ResultSet rs = c.createStatement().executeQuery(queryString);
 
@@ -592,35 +564,9 @@ public class Queries {
                     "inner join Wine_Grape as wg on wg.wine_id = w.id " +
                     "inner join Grape as g on g.id = wg.Grape_id " +
                     "where w.abv >= " + queryBuilder.getAbv() +
-                    " and  " + queryBuilder.getGrapeQueryString();
+                    " and  " + queryBuilder.getGrapeQueryString() + buildAdditionQueryString(queryBuilder);
 
-            if(queryBuilder.getNameQueryString() != null) {
-                queryString += " and " + queryBuilder.getNameQueryString();
-            }
 
-            if(queryBuilder.getWineryNameQueryString() != null) {
-                queryString += " and " + queryBuilder.getWineryNameQueryString();
-            }
-
-            if(queryBuilder.getTypeQueryString() != null) {
-                queryString += " and " + queryBuilder.getTypeQueryString();
-            }
-
-            if(queryBuilder.getCountryQueryString() != null) {
-                queryString += " and " + queryBuilder.getCountryQueryString();
-            }
-
-            if(queryBuilder.getBlendQueryString() != null) {
-                queryString += " and " + queryBuilder.getBlendQueryString();
-            }
-
-            if(queryBuilder.getAcidityQueryString() != null) {
-                queryString += " and " + queryBuilder.getAcidityQueryString();
-            }
-
-            if(queryBuilder.getBodyQueryString() != null) {
-                queryString += " and " + queryBuilder.getBodyQueryString();
-            }
 
             ResultSet rs = c.createStatement().executeQuery(queryString);
 
@@ -633,6 +579,40 @@ public class Queries {
         }
 
         return wines;
+    }
+
+    private String buildAdditionQueryString(QueryBuilder queryBuilder) {
+        String additionalQueries = "";
+
+        if(queryBuilder.getNameQueryString() != null) {
+            additionalQueries += " and " + queryBuilder.getNameQueryString();
+        }
+
+        if(queryBuilder.getWineryNameQueryString() != null) {
+            additionalQueries += " and " + queryBuilder.getWineryNameQueryString();
+        }
+
+        if(queryBuilder.getTypeQueryString() != null) {
+            additionalQueries += " and " + queryBuilder.getTypeQueryString();
+        }
+
+        if(queryBuilder.getCountryQueryString() != null) {
+            additionalQueries += " and " + queryBuilder.getCountryQueryString();
+        }
+
+        if(queryBuilder.getBlendQueryString() != null) {
+            additionalQueries += " and " + queryBuilder.getBlendQueryString();
+        }
+
+        if(queryBuilder.getAcidityQueryString() != null) {
+            additionalQueries += " and " + queryBuilder.getAcidityQueryString();
+        }
+
+        if(queryBuilder.getBodyQueryString() != null) {
+            additionalQueries += " and " + queryBuilder.getBodyQueryString();
+        }
+
+        return additionalQueries;
     }
 
 }

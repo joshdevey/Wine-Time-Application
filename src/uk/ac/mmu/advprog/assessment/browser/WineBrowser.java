@@ -116,7 +116,7 @@ public class WineBrowser extends JFrame {
     public void fetchData() {
         QueryBuilder queryBuilder = searchPanel.getQuery();
         System.out.println(queryBuilder.toString());
-        handleResultsTable(queries.getInitialWines());
+        handleResultsTable(queries.getWinesFromSearch(queryBuilder));
     }
 
 }

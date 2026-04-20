@@ -1,5 +1,6 @@
 package uk.ac.mmu.advprog.assessment.shared;
 
+import uk.ac.mmu.advprog.assessment.browser.QueryBuilder;
 import uk.ac.mmu.advprog.assessment.importer.*;
 
 import java.io.IOException;
@@ -505,6 +506,39 @@ public class Queries {
         try (Connection c = DriverManager.getConnection(this.connectionString)) {
 
             ResultSet rs = c.createStatement().executeQuery("select w.id, w.name, w.type, w.abv, wy.name as winery_name, r.country from Wine as w inner join Winery as wy on w.winery_id = wy.id inner join Region as r on r.id = wy.region_id");
+
+            while (rs.next()) {
+                uk.ac.mmu.advprog.assessment.browser.Wine wine = new uk.ac.mmu.advprog.assessment.browser.Wine(rs.getInt("id"), rs.getString("name"), rs.getString("type"), rs.getString("winery_name"), rs.getString("country"), rs.getString("abv"));
+                wines.add(wine);
+            }
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+
+        return wines;
+    }
+
+    public ArrayList<uk.ac.mmu.advprog.assessment.browser.Wine> getWinesFromSearch(QueryBuilder queryBuilder) {
+        ArrayList<uk.ac.mmu.advprog.assessment.browser.Wine> wines = new ArrayList<>();
+
+        try (Connection c = DriverManager.getConnection(this.connectionString)) {
+
+            String queryString = "select w.id," +
+                    " w.name, " +
+                    "w.type, " +
+                    "w.abv, " +
+                    "wy.name as winery_name, " +
+                    "r.country " +
+                    "from Wine as w " +
+                    "inner join Winery as wy on w.winery_id = wy.id " +
+                    "inner join Region as r on r.id = wy.region_id ";
+
+            if(queryBuilder.getNameQueryString() != null) {
+                queryString += " where " + queryBuilder.getNameQueryString();
+            }
+
+            System.out.println(queryString);
+            ResultSet rs = c.createStatement().executeQuery(queryString);
 
             while (rs.next()) {
                 uk.ac.mmu.advprog.assessment.browser.Wine wine = new uk.ac.mmu.advprog.assessment.browser.Wine(rs.getInt("id"), rs.getString("name"), rs.getString("type"), rs.getString("winery_name"), rs.getString("country"), rs.getString("abv"));

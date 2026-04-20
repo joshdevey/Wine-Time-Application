@@ -83,6 +83,14 @@ public class QueryBuilder {
         this.body = body;
     }
 
+    public String getNameQueryString() {
+        if(this.name.isEmpty()) {
+            return null;
+        } else {
+            return "w.name = \"" + this.name + "\"";
+        }
+    }
+
     @Override
     public String toString() {
         return "QueryBuilder{" +

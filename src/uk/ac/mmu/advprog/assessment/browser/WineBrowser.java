@@ -8,6 +8,8 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 public class WineBrowser extends JFrame {
@@ -18,6 +20,7 @@ public class WineBrowser extends JFrame {
     private ArrayList<Wine> searchResultsData;
     private JScrollPane searchResultPanel;
     private Queries queries = new Queries("jdbc:sqlite:data/winetime.db", false);
+    private QueryBuilder queryBuilder;
     public JButton searchButton = new JButton("Search");
 
     public WineBrowser() {
@@ -39,10 +42,10 @@ public class WineBrowser extends JFrame {
         setVisible(true);
     }
 
-    public void handleResultsTable(ArrayList<Wine> results) {
+    public void handleResultsTable() {
 
         String[] columnNames = {"Name", "Type", "Winery", "Country", "ABV"};
-        this.searchResultsData = results;
+        this.searchResultsData = queries.getWinesFromSearch(queryBuilder);
         resultsTable = new JTable();
 
         //make table read only
@@ -53,7 +56,15 @@ public class WineBrowser extends JFrame {
             }
         };
 
-        for (Wine wine : results) {
+        resultsTable.getTableHeader().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                System.out.println(resultsTable.columnAtPoint(e.getPoint()));
+            }
+        });
+
+        for (Wine wine : this.searchResultsData) {
             Object[] obj = {wine.name, wine.type, wine.winery, wine.country, wine.abv};
 
             tableModel.addRow(obj);
@@ -117,8 +128,8 @@ public class WineBrowser extends JFrame {
     }
 
     public void fetchData() {
-        QueryBuilder queryBuilder = searchPanel.getQuery();
-        handleResultsTable(queries.getWinesFromSearch(queryBuilder));
+        this.queryBuilder = searchPanel.getQuery();
+        handleResultsTable();
     }
 
 }

@@ -16,6 +16,7 @@ public class WineBrowser extends JFrame {
     private JTable resultsTable;
     private final WineDetail detailPanel;
     private ArrayList<Wine> searchResultsData;
+    private JScrollPane searchResultPanel;
     private Queries queries = new Queries("jdbc:sqlite:data/winetime.db", false);
     public JButton searchButton = new JButton("Search");
 
@@ -23,6 +24,7 @@ public class WineBrowser extends JFrame {
         this.searchPanel = new SearchPanel();
         this.detailPanel = new WineDetail();
         this.searchResultsData = new ArrayList<>();
+        this.searchResultPanel = new JScrollPane();
     }
 
     public void displayWineBrowser() {
@@ -31,6 +33,7 @@ public class WineBrowser extends JFrame {
         setSize(500, 820);
         setMinimumSize(new Dimension(800, 820));
         add(searchPanel, "West");
+        add(searchResultPanel, "Center");
         renderSearchButtons();
         setLocationRelativeTo(null);
         setVisible(true);
@@ -68,12 +71,12 @@ public class WineBrowser extends JFrame {
         });
 
         resultsTable.getSelectedRow();
+        remove(this.searchResultPanel);
+        this.searchResultPanel = new JScrollPane(resultsTable);
+        searchResultPanel.setMaximumSize(new Dimension(100, 100));
+        searchResultPanel.setAutoscrolls(true);
 
-        JScrollPane sp = new JScrollPane(resultsTable);
-        sp.setMaximumSize(new Dimension(100, 100));
-        sp.setAutoscrolls(true);
-
-        add(sp, "Center");
+        add(searchResultPanel, "Center");
         revalidate();
     }
 
@@ -115,7 +118,6 @@ public class WineBrowser extends JFrame {
 
     public void fetchData() {
         QueryBuilder queryBuilder = searchPanel.getQuery();
-        System.out.println(queryBuilder.toString());
         handleResultsTable(queries.getWinesFromSearch(queryBuilder));
     }
 

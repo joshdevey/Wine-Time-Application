@@ -8,7 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class SearchPanel extends JPanel {
-//todo add a limit drop down
+//todo add a limit drop down?
     JTextField name = new JTextField(12);
     public JTextField winery = new JTextField(12);
     public JComboBox<String> type = new JComboBox<>(new String[]{"Any", "Red", "White", "Sparkling", "Dessert/Port", "Dessert", "Rosé"});

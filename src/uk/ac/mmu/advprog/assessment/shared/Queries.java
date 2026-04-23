@@ -638,6 +638,25 @@ public class Queries {
         return types;
     }
 
+    public ArrayList<String> getBodys() {
+        ArrayList<String> bodys = new ArrayList<>();
+        bodys.add("Any");
+
+        try (Connection c = DriverManager.getConnection(this.connectionString)) {
+            String queryString = "select body from wine group by body;";
+
+            ResultSet rs = c.createStatement().executeQuery(queryString);
+
+            while (rs.next()) {
+                bodys.add(rs.getString("body"));
+            }
+
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+        return bodys;
+    }
+
     private String buildAdditionQueryString(QueryBuilder queryBuilder) {
         String additionalQueries = "";
 

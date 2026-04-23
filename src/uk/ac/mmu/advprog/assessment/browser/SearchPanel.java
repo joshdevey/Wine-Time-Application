@@ -25,6 +25,9 @@ public class SearchPanel extends JPanel {
     ArrayList<String> availableBlends = queries.getBlends();
     String[] blends = availableBlends.toArray(new String[availableBlends.size()]);
 
+    ArrayList<String> availableBodys = queries.getBodys();
+    String[] bodys = availableBodys.toArray(new String[availableBodys.size()]);
+
     public JComboBox<String> type = new JComboBox<>(types);
 
     public JComboBox<String> country = new JComboBox<>(countries);
@@ -43,13 +46,6 @@ public class SearchPanel extends JPanel {
 
     public JComboBox<String> acidity = new JComboBox<>(aciditys);
 
-    String[] bodys = {"Any",
-            "Full-bodied",
-            "Light-bodied",
-            "Medium-bodied",
-            "Very full-bodied",
-            "Very light-bodied",
-    };
 
     public JComboBox<String> body = new JComboBox<>(bodys);
 

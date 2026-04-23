@@ -605,7 +605,7 @@ public class Queries {
         blends.add("Any");
 
         try (Connection c = DriverManager.getConnection(this.connectionString)) {
-            String queryString = "select blend_type from wine group by blend_type;;";
+            String queryString = "select blend_type from wine group by blend_type;";
 
             ResultSet rs = c.createStatement().executeQuery(queryString);
 
@@ -617,6 +617,25 @@ public class Queries {
             se.printStackTrace();
         }
         return blends;
+    }
+
+    public ArrayList<String> getTypes() {
+        ArrayList<String> types = new ArrayList<>();
+        types.add("Any");
+
+        try (Connection c = DriverManager.getConnection(this.connectionString)) {
+            String queryString = "select type from wine group by type;";
+
+            ResultSet rs = c.createStatement().executeQuery(queryString);
+
+            while (rs.next()) {
+                types.add(rs.getString("type"));
+            }
+
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+        return types;
     }
 
     private String buildAdditionQueryString(QueryBuilder queryBuilder) {

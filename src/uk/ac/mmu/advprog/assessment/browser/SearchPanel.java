@@ -15,12 +15,17 @@ public class SearchPanel extends JPanel {
     Queries queries = new Queries("jdbc:sqlite:data/winetime.db", false);
     JTextField name = new JTextField(12);
     public JTextField winery = new JTextField(12);
-    public JComboBox<String> type = new JComboBox<>(new String[]{"Any", "Red", "White", "Sparkling", "Dessert/Port", "Dessert", "Rosé"});
+
+    ArrayList<String> availableTypes = queries.getTypes();
+    String[] types = availableTypes.toArray(new String[availableTypes.size()]);
+
     ArrayList<String> availableCountries = queries.getCountries();
     String[] countries = availableCountries.toArray(new String[availableCountries.size()]);
 
     ArrayList<String> availableBlends = queries.getBlends();
     String[] blends = availableBlends.toArray(new String[availableBlends.size()]);
+
+    public JComboBox<String> type = new JComboBox<>(types);
 
     public JComboBox<String> country = new JComboBox<>(countries);
 

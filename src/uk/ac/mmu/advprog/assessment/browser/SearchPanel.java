@@ -1,109 +1,28 @@
 package uk.ac.mmu.advprog.assessment.browser;
 
+import uk.ac.mmu.advprog.assessment.shared.Queries;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.ColorUIResource;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class SearchPanel extends JPanel {
 //todo add a limit drop down?
+    Queries queries = new Queries("jdbc:sqlite:data/winetime.db", false);
     JTextField name = new JTextField(12);
     public JTextField winery = new JTextField(12);
     public JComboBox<String> type = new JComboBox<>(new String[]{"Any", "Red", "White", "Sparkling", "Dessert/Port", "Dessert", "Rosé"});
-    String[] countries = {"Any",
-            "Albania",
-            "Argentina",
-            "Armenia",
-            "Australia",
-            "Austria",
-            "Azerbaijan",
-            "Belarus",
-            "Belgium",
-            "Bolivia",
-            "Brazil",
-            "Bulgaria",
-            "Canada",
-            "Chile",
-            "China",
-            "Colombia",
-            "Croatia",
-            "Cyprus",
-            "Czech Republic",
-            "Denmark",
-            "France",
-            "Georgia",
-            "Germany",
-            "Greece",
-            "Hungary",
-            "India",
-            "Israel",
-            "Italy",
-            "Japan",
-            "Jordan",
-            "Lebanon",
-            "Liechtenstein",
-            "Luxembourg",
-            "Malta",
-            "Mexico",
-            "Moldova",
-            "Montenegro",
-            "Morocco",
-            "Myanmar",
-            "Netherlands",
-            "New Zealand",
-            "North Macedonia",
-            "Peru",
-            "Poland",
-            "Portugal",
-            "Romania",
-            "Russia",
-            "San Marino",
-            "Serbia",
-            "Slovakia",
-            "Slovenia",
-            "South Africa",
-            "Spain",
-            "Sweden",
-            "Switzerland",
-            "Syria",
-            "Thailand",
-            "Tunisia",
-            "Turkey",
-            "Ukraine",
-            "United Kingdom",
-            "United States",
-            "Uruguay"
-    };
+    ArrayList<String> availableCountries = queries.getCountries();
+    String[] countries = availableCountries.toArray(new String[availableCountries.size()]);
 
+    ArrayList<String> availableBlends = queries.getBlends();
+    String[] blends = availableBlends.toArray(new String[availableBlends.size()]);
 
     public JComboBox<String> country = new JComboBox<>(countries);
-
-    String[] blends = {"Any",
-            "Assemblage/Blend",
-            "Assemblage/Bordeaux Red Blend",
-            "Assemblage/Bourgogne Red Blend",
-            "Assemblage/Bourgogne White Blend",
-            "Assemblage/Cava Blend",
-            "Assemblage/Champagne Blend",
-            "Assemblage/Chianti Red Blend",
-            "Assemblage/Meritage Red Blend",
-            "Assemblage/Meritage White Blend",
-            "Assemblage/Port Blend",
-            "Assemblage/Portuguese Red Blend",
-            "Assemblage/Portuguese White Blend",
-            "Assemblage/Priorat Red Blend",
-            "Assemblage/Provence Rosé Blend",
-            "Assemblage/Rhône Red Blend",
-            "Assemblage/Rioja Red Blend",
-            "Assemblage/Rioja White Blend",
-            "Assemblage/Soave White Blend",
-            "Assemblage/Tuscan Red Blend",
-            "Assemblage/Valpolicella Red Blend",
-            "Varietal/100%",
-            "Varietal/>75%"
-    };
 
     public JComboBox<String> blend = new JComboBox<>(blends);
 

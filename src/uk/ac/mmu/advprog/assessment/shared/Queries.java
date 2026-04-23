@@ -581,6 +581,44 @@ public class Queries {
         return wines;
     }
 
+    public ArrayList<String> getCountries() {
+        ArrayList<String> countries = new ArrayList<>();
+        countries.add("Any");
+
+        try (Connection c = DriverManager.getConnection(this.connectionString)) {
+            String queryString = "select country from Region group by country;";
+
+            ResultSet rs = c.createStatement().executeQuery(queryString);
+
+            while (rs.next()) {
+                countries.add(rs.getString("country"));
+            }
+
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+        return countries;
+    }
+
+    public ArrayList<String> getBlends() {
+        ArrayList<String> blends = new ArrayList<>();
+        blends.add("Any");
+
+        try (Connection c = DriverManager.getConnection(this.connectionString)) {
+            String queryString = "select blend_type from wine group by blend_type;;";
+
+            ResultSet rs = c.createStatement().executeQuery(queryString);
+
+            while (rs.next()) {
+                blends.add(rs.getString("blend_type"));
+            }
+
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+        return blends;
+    }
+
     private String buildAdditionQueryString(QueryBuilder queryBuilder) {
         String additionalQueries = "";
 

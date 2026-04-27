@@ -10,6 +10,8 @@ public class QueryBuilder {
     private int abv;
     private String acidity;
     private String body;
+    private String sortColumn;
+    private Boolean ascending;
 
     public String getName() {
         return name;
@@ -81,6 +83,27 @@ public class QueryBuilder {
 
     public void setBody(String body) {
         this.body = body;
+    }
+
+    public String getSortColumn() {
+        return sortColumn;
+    }
+
+    public void setSortColumn(String sortColumn) {
+        if(this.sortColumn != null && this.sortColumn.equals(sortColumn)) {
+            this.ascending = !this.ascending;
+        } else {
+            this.ascending = true;
+        }
+        this.sortColumn = sortColumn;
+    }
+
+    public Boolean getAscending() {
+        return ascending;
+    }
+
+    public void setAscending(Boolean ascending) {
+        this.ascending = ascending;
     }
 
     public String getNameQueryString() {
@@ -161,6 +184,8 @@ public class QueryBuilder {
                 ", abv=" + abv +
                 ", acidity='" + acidity + '\'' +
                 ", body='" + body + '\'' +
+                ", sort column='" + sortColumn + '\'' +
+                ", ascending='" + ascending + '\'' +
                 '}';
     }
 }

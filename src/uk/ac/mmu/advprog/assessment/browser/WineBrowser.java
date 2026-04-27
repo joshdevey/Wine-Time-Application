@@ -42,13 +42,13 @@ public class WineBrowser extends JFrame {
         setVisible(true);
     }
 
-    public void handleResultsTable(String orderColumn, boolean ascending) {
+    public void handleResultsTable() {
 
         String[] columnNames = {"Name", "Type", "Winery", "Country", "ABV"};
         if(queryBuilder.getGrape().isEmpty()) {
-            this.searchResultsData = queries.getWinesFromSearch(queryBuilder, orderColumn, ascending);
+            this.searchResultsData = queries.getWinesFromSearch(queryBuilder);
         } else {
-            this.searchResultsData = queries.getWinesFromSearchWithGrape(queryBuilder, orderColumn, ascending);
+            this.searchResultsData = queries.getWinesFromSearchWithGrape(queryBuilder);
         }
 
         resultsTable = new JTable();
@@ -65,7 +65,9 @@ public class WineBrowser extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                System.out.println(resultsTable.columnAtPoint(e.getPoint()));
+                String sortString = getClickedColumn(resultsTable.columnAtPoint(e.getPoint()));
+                queryBuilder.setSortColumn(sortString);
+                handleResultsTable();
             }
         });
 
@@ -134,7 +136,29 @@ public class WineBrowser extends JFrame {
 
     public void fetchData() {
         this.queryBuilder = searchPanel.getQuery();
-        handleResultsTable(null, true);
+        handleResultsTable();
+    }
+    private String getClickedColumn(int id) {
+        String columnString = "";
+        switch(id) {
+            case 1:
+                columnString = "w.type";
+                break;
+            case 2:
+                columnString = "wy.name";
+                break;
+            case 3:
+                columnString = "r.country";
+                break;
+            case 4:
+                columnString = "w.abv";
+                break;
+            default:
+                columnString = "w.name";
+                break;
+        }
+
+        return columnString;
     }
 
 }

@@ -518,7 +518,7 @@ public class Queries {
         return wines;
     }
 
-    public ArrayList<uk.ac.mmu.advprog.assessment.browser.Wine> getWinesFromSearch(QueryBuilder queryBuilder) {
+    public ArrayList<uk.ac.mmu.advprog.assessment.browser.Wine> getWinesFromSearch(QueryBuilder queryBuilder, String orderColumn, boolean ascending) {
         ArrayList<uk.ac.mmu.advprog.assessment.browser.Wine> wines = new ArrayList<>();
 
         try (Connection c = DriverManager.getConnection(this.connectionString)) {
@@ -532,7 +532,7 @@ public class Queries {
                     "from Wine as w " +
                     "inner join Winery as wy on w.winery_id = wy.id " +
                     "inner join Region as r on r.id = wy.region_id " +
-                    "where w.abv >= " + queryBuilder.getAbv()  + buildAdditionQueryString(queryBuilder);
+                    "where w.abv >= " + queryBuilder.getAbv()  + buildAdditionQueryString(queryBuilder) + getOrderByString(orderColumn, ascending);
 
             ResultSet rs = c.createStatement().executeQuery(queryString);
 
@@ -547,7 +547,7 @@ public class Queries {
         return wines;
     }
 
-    public ArrayList<uk.ac.mmu.advprog.assessment.browser.Wine> getWinesFromSearchWithGrape(QueryBuilder queryBuilder) {
+    public ArrayList<uk.ac.mmu.advprog.assessment.browser.Wine> getWinesFromSearchWithGrape(QueryBuilder queryBuilder, String sortColumn, boolean ascending) {
         ArrayList<uk.ac.mmu.advprog.assessment.browser.Wine> wines = new ArrayList<>();
 
         try (Connection c = DriverManager.getConnection(this.connectionString)) {
@@ -564,7 +564,7 @@ public class Queries {
                     "inner join Wine_Grape as wg on wg.wine_id = w.id " +
                     "inner join Grape as g on g.id = wg.Grape_id " +
                     "where w.abv >= " + queryBuilder.getAbv() +
-                    " and  " + queryBuilder.getGrapeQueryString() + buildAdditionQueryString(queryBuilder);
+                    " and  " + queryBuilder.getGrapeQueryString() + buildAdditionQueryString(queryBuilder) + getOrderByString(sortColumn, ascending);
 
 
 
@@ -689,6 +689,15 @@ public class Queries {
         }
 
         return additionalQueries;
+    }
+
+    private String getOrderByString(String orderField, boolean ascending) {
+        if(orderField == null || orderField.equals("")) {
+            return "";
+        }
+
+        return " order by " + orderField + " " + (ascending ? "asc" : "desc");
+
     }
 
 }

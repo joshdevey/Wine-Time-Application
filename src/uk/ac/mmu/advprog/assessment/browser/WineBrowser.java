@@ -42,13 +42,13 @@ public class WineBrowser extends JFrame {
         setVisible(true);
     }
 
-    public void handleResultsTable() {
+    public void handleResultsTable(String orderColumn, boolean ascending) {
 
         String[] columnNames = {"Name", "Type", "Winery", "Country", "ABV"};
         if(queryBuilder.getGrape().isEmpty()) {
-            this.searchResultsData = queries.getWinesFromSearch(queryBuilder);
+            this.searchResultsData = queries.getWinesFromSearch(queryBuilder, orderColumn, ascending);
         } else {
-            this.searchResultsData = queries.getWinesFromSearchWithGrape(queryBuilder);
+            this.searchResultsData = queries.getWinesFromSearchWithGrape(queryBuilder, orderColumn, ascending);
         }
 
         resultsTable = new JTable();
@@ -134,7 +134,7 @@ public class WineBrowser extends JFrame {
 
     public void fetchData() {
         this.queryBuilder = searchPanel.getQuery();
-        handleResultsTable();
+        handleResultsTable(null, true);
     }
 
 }

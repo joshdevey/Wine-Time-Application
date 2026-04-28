@@ -14,6 +14,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Queries {
 
@@ -414,9 +415,24 @@ public class Queries {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            c.commit();
+
             if (enhancedLogging) {
                 System.out.println(Instant.now() + " - Winery created");
+            }
+
+            String createRatings = "CREATE TABLE 'Rating' ('id'	INTEGER, 'wine_id'	INTEGER, 'vintage' INTEGER, 'rating' REAL, PRIMARY KEY('id' AUTOINCREMENT))";
+
+            try (PreparedStatement stmt = c.prepareStatement(createRatings)) {
+                stmt.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            if (enhancedLogging) {
+                System.out.println(Instant.now() + " - Grape created");
+            }
+
+            c.commit();
+            if (enhancedLogging) {
                 System.out.println(Instant.now() + " - Tables created");
             }
 
@@ -500,6 +516,58 @@ public class Queries {
         return wineToAdd;
     }
 
+    public void insertRatings(List<Rating> ratings) throws SQLException {
+
+        Connection c = null;
+        int counter = 0;
+        int alertCounter = 0;
+
+        if(enhancedLogging) {
+            System.out.println(Instant.now() + " Inserting ratings");
+        }
+
+
+        try {
+            c = DriverManager.getConnection(this.connectionString);
+            c.setAutoCommit(false);
+            for (Rating rating : ratings) {
+
+                counter += 1;
+                alertCounter += 1;
+
+                if (alertCounter == 10000) {
+                    System.out.println(Instant.now() + " - " + counter + " records out of " + ratings.size() + " inserted");
+                    alertCounter = 0;
+                }
+
+
+                String sql = "INSERT INTO Rating (wine_id, vintage, rating) VALUES (?, ?, ?)";
+
+                try (PreparedStatement stmt = c.prepareStatement(sql)) {
+                    stmt.setInt(1, rating.getWine_id());
+                    stmt.setInt(2, rating.getVintage());
+                    stmt.setDouble(3, rating.getRating());
+                    stmt.executeUpdate();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+
+            }
+            c.commit();
+        } catch (SQLException se) {
+            if (c != null) {
+                c.rollback();
+            }
+            se.printStackTrace();
+        } finally {
+            if (c != null) {
+                c.close();
+            }
+        }
+
+
+    }
+
     public ArrayList<uk.ac.mmu.advprog.assessment.browser.Wine> getInitialWines() {
         ArrayList<uk.ac.mmu.advprog.assessment.browser.Wine> wines = new ArrayList<>();
 
@@ -532,7 +600,7 @@ public class Queries {
                     "from Wine as w " +
                     "inner join Winery as wy on w.winery_id = wy.id " +
                     "inner join Region as r on r.id = wy.region_id " +
-                    "where w.abv >= " + queryBuilder.getAbv()  + buildAdditionQueryString(queryBuilder) + getOrderByString(queryBuilder);
+                    "where w.abv >= " + queryBuilder.getAbv() + buildAdditionQueryString(queryBuilder) + getOrderByString(queryBuilder);
 
             ResultSet rs = c.createStatement().executeQuery(queryString);
 
@@ -565,7 +633,6 @@ public class Queries {
                     "inner join Grape as g on g.id = wg.Grape_id " +
                     "where w.abv >= " + queryBuilder.getAbv() +
                     " and  " + queryBuilder.getGrapeQueryString() + buildAdditionQueryString(queryBuilder) + getOrderByString(queryBuilder);
-
 
 
             ResultSet rs = c.createStatement().executeQuery(queryString);
@@ -660,31 +727,31 @@ public class Queries {
     private String buildAdditionQueryString(QueryBuilder queryBuilder) {
         String additionalQueries = "";
 
-        if(queryBuilder.getNameQueryString() != null) {
+        if (queryBuilder.getNameQueryString() != null) {
             additionalQueries += " and " + queryBuilder.getNameQueryString();
         }
 
-        if(queryBuilder.getWineryNameQueryString() != null) {
+        if (queryBuilder.getWineryNameQueryString() != null) {
             additionalQueries += " and " + queryBuilder.getWineryNameQueryString();
         }
 
-        if(queryBuilder.getTypeQueryString() != null) {
+        if (queryBuilder.getTypeQueryString() != null) {
             additionalQueries += " and " + queryBuilder.getTypeQueryString();
         }
 
-        if(queryBuilder.getCountryQueryString() != null) {
+        if (queryBuilder.getCountryQueryString() != null) {
             additionalQueries += " and " + queryBuilder.getCountryQueryString();
         }
 
-        if(queryBuilder.getBlendQueryString() != null) {
+        if (queryBuilder.getBlendQueryString() != null) {
             additionalQueries += " and " + queryBuilder.getBlendQueryString();
         }
 
-        if(queryBuilder.getAcidityQueryString() != null) {
+        if (queryBuilder.getAcidityQueryString() != null) {
             additionalQueries += " and " + queryBuilder.getAcidityQueryString();
         }
 
-        if(queryBuilder.getBodyQueryString() != null) {
+        if (queryBuilder.getBodyQueryString() != null) {
             additionalQueries += " and " + queryBuilder.getBodyQueryString();
         }
 
@@ -692,7 +759,7 @@ public class Queries {
     }
 
     private String getOrderByString(QueryBuilder queryBuilder) {
-        if(queryBuilder.getSortColumn() == null || queryBuilder.getSortColumn().equals("")) {
+        if (queryBuilder.getSortColumn() == null || queryBuilder.getSortColumn().equals("")) {
             return "";
         }
 

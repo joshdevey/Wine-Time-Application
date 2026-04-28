@@ -9,18 +9,21 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ExtractIntoObjects {
 	
 	private final String csvPath;
+	private final String ratingsCsvPath;
 	private ArrayList<Wine> wines;
 	private ArrayList<String> grapes;
 	private ArrayList<Pairing> pairing; 
 	private ArrayList<Region> regions;
 	private ArrayList<Winery> wineries;
 	private final boolean enhancedLogging;
+	private List<Rating> ratings;
 
-	public ExtractIntoObjects(String csvPath, boolean enhancedLogging) {		
+	public ExtractIntoObjects(String csvPath, String ratingsCsvPath, boolean enhancedLogging) {
 		super();
 		
 		this.wines = new ArrayList<>();
@@ -29,6 +32,7 @@ public class ExtractIntoObjects {
 		this.regions = new ArrayList<>();
 		this.wineries = new ArrayList<>();
 		this.csvPath = csvPath;
+		this.ratingsCsvPath = ratingsCsvPath;
 		this.enhancedLogging = enhancedLogging;
 	}
 		
@@ -60,7 +64,7 @@ public class ExtractIntoObjects {
 
 				if(counter != 0) {
 					String[] splitString = splitString(currentLine);
-					
+
 					Wine wine = new Wine(splitString[0], splitString[1], splitString[2], splitString[3], splitString[6], splitString[7], splitString[8]);
 
 					ArrayList<String> wineGrapes = new ArrayList<>();
@@ -157,6 +161,57 @@ public class ExtractIntoObjects {
 		}
 	}
 
+	public void extractRatings() {
+		int counter = 0;
+		System.out.println(Instant.now() + " Import ratings - Start");
+		if(ratingsCsvPath == null || ratingsCsvPath.equals("")) {
+			System.out.println("Invalid import path");
+			return;
+		}
+
+		ArrayList<Rating> ratings = new ArrayList<>();
+
+		try {
+			Path readFile = Paths.get(ratingsCsvPath);
+
+			InputStream is = Files.newInputStream(readFile);
+			BufferedReader br = new BufferedReader(new InputStreamReader(is));
+
+			String currentLine = "";
+
+			while ((currentLine = br.readLine()) != null) {
+				if(counter != 0) {
+					String[] splitString = splitString(currentLine);
+					Double rating_double;
+					int rating_vintage;
+
+					try {
+						rating_double = Double.parseDouble(splitString[4]);
+					} catch (NumberFormatException e) {
+						rating_double = 0.0;
+					}
+
+					try {
+						rating_vintage = Integer.parseInt(splitString[3]);
+					} catch (NumberFormatException e) {
+						rating_vintage = -1;
+					}
+
+					Rating rating = new Rating(Integer.parseInt(splitString[2]), rating_vintage, rating_double);
+
+					ratings.add(rating);
+
+				}
+				counter++;
+			}
+
+			this.ratings = ratings;
+			br.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public ArrayList<Wine> getWines() {
 		return wines;
 	}
@@ -175,6 +230,10 @@ public class ExtractIntoObjects {
 	
 	public ArrayList<Winery> getWineries() {
 		return wineries;
+	}
+
+	public List<Rating> getRatings() {
+		return ratings;
 	}
 
 	/**

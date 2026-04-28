@@ -535,7 +535,7 @@ public class Queries {
                 counter += 1;
                 alertCounter += 1;
 
-                if (alertCounter == 10000) {
+                if (alertCounter == 100000) {
                     System.out.println(Instant.now() + " - " + counter + " records out of " + ratings.size() + " inserted");
                     alertCounter = 0;
                 }

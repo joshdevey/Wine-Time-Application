@@ -14,7 +14,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.List;
 
 public class Queries {
 
@@ -467,31 +466,7 @@ public class Queries {
 
         try (Connection c = DriverManager.getConnection(this.connectionString)) {
 
-            String sql = "select w.id, " +
-                    "w.name, " +
-                    "w.type, " +
-                    "w.abv, " +
-                    "w.blend_type, " +
-                    "w.acidity, " +
-                    "w.body, " +
-                    "wy.name as winery_name, " +
-                    "r.country, " +
-                    "(" +
-                    "select group_concat(g.name) " +
-                    "from Wine_Grape as wg " +
-                    "inner join Grape g on g.id = wg.Grape_id " +
-                    "where wg.wine_id = w.id " +
-                    ") as grapes, " +
-                    "(" +
-                    "select group_concat(p.food) " +
-                    "from Wine_Pairing as wp " +
-                    "inner join Pairing p on p.id = wp.pairing_id " +
-                    "where wp.wine_id = w.id " +
-                    ") as pairings " +
-                    "from Wine as w " +
-                    "inner join Winery as wy on w.winery_id = wy.id " +
-                    "inner join Region as r on r.id = wy.region_id " +
-                    "where w.id = ?";
+            String sql = "select w.id, " + "w.name, " + "w.type, " + "w.abv, " + "w.blend_type, " + "w.acidity, " + "w.body, " + "wy.name as winery_name, " + "r.country, " + "(" + "select group_concat(g.name) " + "from Wine_Grape as wg " + "inner join Grape g on g.id = wg.Grape_id " + "where wg.wine_id = w.id " + ") as grapes, " + "(" + "select group_concat(p.food) " + "from Wine_Pairing as wp " + "inner join Pairing p on p.id = wp.pairing_id " + "where wp.wine_id = w.id " + ") as pairings " + "from Wine as w " + "inner join Winery as wy on w.winery_id = wy.id " + "inner join Region as r on r.id = wy.region_id " + "where w.id = ?";
 
             try (PreparedStatement stmt = c.prepareStatement(sql)) {
                 stmt.setInt(1, id);
@@ -516,91 +491,12 @@ public class Queries {
         return wineToAdd;
     }
 
-    public void insertRatings(List<Rating> ratings) throws SQLException {
-
-        Connection c = null;
-        int counter = 0;
-        int alertCounter = 0;
-
-        if(enhancedLogging) {
-            System.out.println(Instant.now() + " Inserting ratings");
-        }
-
-
-        try {
-            c = DriverManager.getConnection(this.connectionString);
-            c.setAutoCommit(false);
-            for (Rating rating : ratings) {
-
-                counter += 1;
-                alertCounter += 1;
-
-                if (alertCounter == 100000) {
-                    System.out.println(Instant.now() + " - " + counter + " records out of " + ratings.size() + " inserted");
-                    alertCounter = 0;
-                }
-
-
-                String sql = "INSERT INTO Rating (wine_id, vintage, rating) VALUES (?, ?, ?)";
-
-                try (PreparedStatement stmt = c.prepareStatement(sql)) {
-                    stmt.setInt(1, rating.getWine_id());
-                    stmt.setInt(2, rating.getVintage());
-                    stmt.setDouble(3, rating.getRating());
-                    stmt.executeUpdate();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-
-            }
-            c.commit();
-        } catch (SQLException se) {
-            if (c != null) {
-                c.rollback();
-            }
-            se.printStackTrace();
-        } finally {
-            if (c != null) {
-                c.close();
-            }
-        }
-
-
-    }
-
-    public ArrayList<uk.ac.mmu.advprog.assessment.browser.Wine> getInitialWines() {
-        ArrayList<uk.ac.mmu.advprog.assessment.browser.Wine> wines = new ArrayList<>();
-
-        try (Connection c = DriverManager.getConnection(this.connectionString)) {
-
-            ResultSet rs = c.createStatement().executeQuery("select w.id, w.name, w.type, w.abv, wy.name as winery_name, r.country from Wine as w inner join Winery as wy on w.winery_id = wy.id inner join Region as r on r.id = wy.region_id");
-
-            while (rs.next()) {
-                uk.ac.mmu.advprog.assessment.browser.Wine wine = new uk.ac.mmu.advprog.assessment.browser.Wine(rs.getInt("id"), rs.getString("name"), rs.getString("type"), rs.getString("winery_name"), rs.getString("country"), rs.getString("abv"));
-                wines.add(wine);
-            }
-        } catch (SQLException se) {
-            se.printStackTrace();
-        }
-
-        return wines;
-    }
-
     public ArrayList<uk.ac.mmu.advprog.assessment.browser.Wine> getWinesFromSearch(QueryBuilder queryBuilder) {
         ArrayList<uk.ac.mmu.advprog.assessment.browser.Wine> wines = new ArrayList<>();
 
         try (Connection c = DriverManager.getConnection(this.connectionString)) {
 
-            String queryString = "select w.id," +
-                    " w.name, " +
-                    "w.type, " +
-                    "w.abv, " +
-                    "wy.name as winery_name, " +
-                    "r.country " +
-                    "from Wine as w " +
-                    "inner join Winery as wy on w.winery_id = wy.id " +
-                    "inner join Region as r on r.id = wy.region_id " +
-                    "where w.abv >= " + queryBuilder.getAbv() + buildAdditionQueryString(queryBuilder) + getOrderByString(queryBuilder);
+            String queryString = "select w.id," + " w.name, " + "w.type, " + "w.abv, " + "wy.name as winery_name, " + "r.country " + "from Wine as w " + "inner join Winery as wy on w.winery_id = wy.id " + "inner join Region as r on r.id = wy.region_id " + "where w.abv >= " + queryBuilder.getAbv() + buildAdditionQueryString(queryBuilder) + getOrderByString(queryBuilder);
 
             ResultSet rs = c.createStatement().executeQuery(queryString);
 
@@ -620,19 +516,7 @@ public class Queries {
 
         try (Connection c = DriverManager.getConnection(this.connectionString)) {
 
-            String queryString = "select w.id," +
-                    " w.name, " +
-                    "w.type, " +
-                    "w.abv, " +
-                    "wy.name as winery_name, " +
-                    "r.country " +
-                    "from Wine as w " +
-                    "inner join Winery as wy on w.winery_id = wy.id " +
-                    "inner join Region as r on r.id = wy.region_id " +
-                    "inner join Wine_Grape as wg on wg.wine_id = w.id " +
-                    "inner join Grape as g on g.id = wg.Grape_id " +
-                    "where w.abv >= " + queryBuilder.getAbv() +
-                    " and  " + queryBuilder.getGrapeQueryString() + buildAdditionQueryString(queryBuilder) + getOrderByString(queryBuilder);
+            String queryString = "select w.id," + " w.name, " + "w.type, " + "w.abv, " + "wy.name as winery_name, " + "r.country " + "from Wine as w " + "inner join Winery as wy on w.winery_id = wy.id " + "inner join Region as r on r.id = wy.region_id " + "inner join Wine_Grape as wg on wg.wine_id = w.id " + "inner join Grape as g on g.id = wg.Grape_id " + "where w.abv >= " + queryBuilder.getAbv() + " and  " + queryBuilder.getGrapeQueryString() + buildAdditionQueryString(queryBuilder) + getOrderByString(queryBuilder);
 
 
             ResultSet rs = c.createStatement().executeQuery(queryString);

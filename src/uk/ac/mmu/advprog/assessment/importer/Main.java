@@ -17,13 +17,14 @@ import static uk.ac.mmu.advprog.assessment.importer.ExtractIntoObjects.splitStri
 public class Main {
 
     public static void main(String[] args) {
-
+        String databaseConnectionString = "jdbc:sqlite:data/winetime.db";
         boolean enhancedLogging = true;
+        boolean includeRatings = true;
 
         System.out.println(Instant.now() + " Import Start");
-        Queries queries = new Queries("jdbc:sqlite:data/winetime.db", enhancedLogging);
+        Queries queries = new Queries(databaseConnectionString, enhancedLogging);
 
-        ExtractIntoObjects objects = new ExtractIntoObjects("./data/XWines_Full_100K_wines.csv", "./data/XWines_Full_21M_ratings.csv", enhancedLogging);
+        ExtractIntoObjects objects = new ExtractIntoObjects("./data/XWines_Full_100K_wines.csv", enhancedLogging);
 
         objects.extractFromCSSV();
 
@@ -33,14 +34,14 @@ public class Main {
 
         queries.populateDB(objects);
 
-        objects.extractRatings();
+        if (includeRatings) {
+            if (enhancedLogging) {
+                System.out.println(Instant.now() + " Ratings");
+            }
 
-        System.out.println(Instant.now() + " Ratings into Objects");
+            RatingsExtraction ratingsExtraction = new RatingsExtraction("./data/XWines_Full_21M_ratings.csv", databaseConnectionString);
 
-        try {
-            queries.insertRatings(objects.getRatings());
-        } catch (SQLException e) {
-            e.printStackTrace();
+            ratingsExtraction.extractRatings(enhancedLogging);
         }
 
         System.out.println(Instant.now() + " Import Finish");

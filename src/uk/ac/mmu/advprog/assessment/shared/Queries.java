@@ -466,7 +466,7 @@ public class Queries {
 
         try (Connection c = DriverManager.getConnection(this.connectionString)) {
 
-            String sql = "select w.id, " + "w.name, " + "w.type, " + "w.abv, " + "w.blend_type, " + "w.acidity, " + "w.body, " + "wy.name as winery_name, " + "r.country, " + "(" + "select group_concat(g.name) " + "from Wine_Grape as wg " + "inner join Grape g on g.id = wg.Grape_id " + "where wg.wine_id = w.id " + ") as grapes, " + "(" + "select group_concat(p.food) " + "from Wine_Pairing as wp " + "inner join Pairing p on p.id = wp.pairing_id " + "where wp.wine_id = w.id " + ") as pairings " + "from Wine as w " + "inner join Winery as wy on w.winery_id = wy.id " + "inner join Region as r on r.id = wy.region_id " + "where w.id = ?";
+            String sql = "select w.id, w.name, w.type, w.abv, w.blend_type, w.acidity, w.body, wy.name as winery_name, r.country, (select group_concat(g.name) from Wine_Grape as wg inner join Grape g on g.id = wg.Grape_id where wg.wine_id = w.id ) as grapes, (select group_concat(p.food) from Wine_Pairing as wp inner join Pairing p on p.id = wp.pairing_id where wp.wine_id = w.id ) as pairings from Wine as w inner join Winery as wy on w.winery_id = wy.id inner join Region as r on r.id = wy.region_id where w.id = ?";
 
             try (PreparedStatement stmt = c.prepareStatement(sql)) {
                 stmt.setInt(1, id);
@@ -496,7 +496,7 @@ public class Queries {
 
         try (Connection c = DriverManager.getConnection(this.connectionString)) {
 
-            String queryString = "select w.id," + " w.name, " + "w.type, " + "w.abv, " + "wy.name as winery_name, " + "r.country " + "from Wine as w " + "inner join Winery as wy on w.winery_id = wy.id " + "inner join Region as r on r.id = wy.region_id " + "where w.abv >= " + queryBuilder.getAbv() + buildAdditionQueryString(queryBuilder) + getOrderByString(queryBuilder);
+            String queryString = "select w.id, w.name, w.type, w.abv, wy.name as winery_name, r.country from Wine as w inner join Winery as wy on w.winery_id = wy.id inner join Region as r on r.id = wy.region_id where w.abv >= " + queryBuilder.getAbv() + buildAdditionQueryString(queryBuilder) + getOrderByString(queryBuilder);
 
             ResultSet rs = c.createStatement().executeQuery(queryString);
 
@@ -516,7 +516,7 @@ public class Queries {
 
         try (Connection c = DriverManager.getConnection(this.connectionString)) {
 
-            String queryString = "select w.id," + " w.name, " + "w.type, " + "w.abv, " + "wy.name as winery_name, " + "r.country " + "from Wine as w " + "inner join Winery as wy on w.winery_id = wy.id " + "inner join Region as r on r.id = wy.region_id " + "inner join Wine_Grape as wg on wg.wine_id = w.id " + "inner join Grape as g on g.id = wg.Grape_id " + "where w.abv >= " + queryBuilder.getAbv() + " and  " + queryBuilder.getGrapeQueryString() + buildAdditionQueryString(queryBuilder) + getOrderByString(queryBuilder);
+            String queryString = "select w.id, w.name, w.type, w.abv, wy.name as winery_name, r.country from Wine as w inner join Winery as wy on w.winery_id = wy.id inner join Region as r on r.id = wy.region_id inner join Wine_Grape as wg on wg.wine_id = w.id inner join Grape as g on g.id = wg.Grape_id where w.abv >= " + queryBuilder.getAbv() + " and  " + queryBuilder.getGrapeQueryString() + buildAdditionQueryString(queryBuilder) + getOrderByString(queryBuilder);
 
 
             ResultSet rs = c.createStatement().executeQuery(queryString);

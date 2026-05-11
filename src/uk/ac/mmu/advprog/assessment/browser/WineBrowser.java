@@ -12,6 +12,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
+
 public class WineBrowser extends JFrame {
 
     private final SearchPanel searchPanel;
@@ -135,8 +136,12 @@ public class WineBrowser extends JFrame {
     }
 
     public void fetchData() {
-        this.queryBuilder = searchPanel.getQuery();
-        handleResultsTable();
+        if(searchPanel.validateSearch()) {
+            this.queryBuilder = searchPanel.getQuery();
+            handleResultsTable();
+        } else {
+            JOptionPane.showMessageDialog(null, "At least one of the fields (Name, Winery, Type, Country of Origin, Blend, Grape, Acidity or Body) must be populated.", "WARNING", JOptionPane.WARNING_MESSAGE);
+        }
     }
     private String getClickedColumn(int id) {
 

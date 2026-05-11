@@ -11,7 +11,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class SearchPanel extends JPanel {
-//todo add a limit drop down?
+    //todo add a limit drop down?
     Queries queries = new Queries("jdbc:sqlite:data/winetime.db", false);
     JTextField name = new JTextField(12);
     public JTextField winery = new JTextField(12);
@@ -265,6 +265,14 @@ public class SearchPanel extends JPanel {
         queryBuilder.setBody(body.getSelectedItem().toString());
 
         return queryBuilder;
-    };
+    }
+
+    public boolean validateSearch() {
+        if (name.getText().isEmpty() && winery.getText().isEmpty() && grape.getText().isEmpty() && type.getSelectedItem().toString().equals("Any") && country.getSelectedItem().toString().equals("Any") && blend.getSelectedItem().toString().equals("Any") && acidity.getSelectedItem().toString().equals("Any") && body.getSelectedItem().toString().equals("Any")) {
+            return false;
+        }
+
+        return true;
+    }
 
 }

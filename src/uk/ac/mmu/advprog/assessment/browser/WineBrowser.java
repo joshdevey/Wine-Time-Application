@@ -85,9 +85,9 @@ public class WineBrowser extends JFrame {
         resultsTable.setSelectionBackground(new Color(250, 108, 14));
 
         resultsTable.getSelectionModel().addListSelectionListener(e -> {
-            if (!e.getValueIsAdjusting()) {
+//            if (!e.getValueIsAdjusting()) {
                 updateFromSelection();
-            }
+//            }
         });
 
         resultsTable.getSelectedRow();

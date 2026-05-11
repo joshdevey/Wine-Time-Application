@@ -17,6 +17,9 @@ public class WineDetail extends JPanel {
     private JTextArea acidity = new JTextArea("");
     private JTextArea body = new JTextArea("");
     private JPanel pairings = new JPanel();
+    private JTextArea ratings = new JTextArea("");
+    private JTextArea averageRating = new JTextArea("");
+
 
     public WineDetail() {
         setPreferredSize(new Dimension(300, 600));
@@ -52,6 +55,12 @@ public class WineDetail extends JPanel {
         CustomJPanel pairingPanel = new CustomJPanel(new JLabel("Pairing(s)"), pairings);
         add(pairingPanel.panel);
 
+        CustomJPanel ratingsPanel = new CustomJPanel(new JLabel("Number of ratings"), ratings);
+        add(ratingsPanel.panel);
+
+        CustomJPanel ratingsAveragePanel = new CustomJPanel(new JLabel("Rating Average"), averageRating);
+        add(ratingsAveragePanel.panel);
+
     }
 
     public void setData(Wine selectedWine) {
@@ -63,6 +72,8 @@ public class WineDetail extends JPanel {
         blend.setText(selectedWine.blend);
         acidity.setText(selectedWine.acidity);
         body.setText(selectedWine.body);
+        ratings.setText(String.valueOf(selectedWine.ratings));
+        averageRating.setText(String.valueOf(selectedWine.ratingAverage));
         grapes.removeAll();
         JPanel grapePanel = new JPanel();
         for(String grape: selectedWine.grapes) {
@@ -101,6 +112,8 @@ public class WineDetail extends JPanel {
         body.setText("");
         grapes.removeAll();
         pairings.removeAll();
+        ratings.setText("");
+        averageRating.setText("");
     }
 
 }

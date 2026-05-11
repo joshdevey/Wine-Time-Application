@@ -13,12 +13,12 @@ public class CustomJPanel extends JPanel {
         this.panel = new JPanel();
         JPanel valuePanel = new JPanel();
         value.setLineWrap(true);
-        value.setSize(new Dimension(250, 100));
+        value.setSize(new Dimension(250, 80));
         value.setOpaque(false);
         valuePanel.add(value);
         panel.add(label);
         panel.add(valuePanel);
-        panel.setBorder(new EmptyBorder(10, 10, 10, 10));
+        panel.setBorder(new EmptyBorder(5, 10, 5, 10));
         panel.setLayout(new GridLayout(2, 1));
     }
 
@@ -28,7 +28,7 @@ public class CustomJPanel extends JPanel {
         valuePanel.add(values);
         panel.add(label);
         panel.add(valuePanel);
-        panel.setBorder(new EmptyBorder(10, 10, 10, 10));
+        panel.setBorder(new EmptyBorder(5, 10, 5, 10));
         panel.setLayout(new GridLayout(2, 1));
     }
 }

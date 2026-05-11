@@ -26,7 +26,7 @@ public class Wine {
         this.ratingAverage = ratingAverage;
     }
 
-    public Wine(int id, String name, String type, String winery, String country, String abv, String blend, String body, String acidity, String[] grapes, String[] pairings) {
+    public Wine(int id, String name, String type, String winery, String country, String abv, String blend, String body, String acidity, String[] grapes, String[] pairings, int ratings, float ratingAverage) {
         this.id = id;
         this.name = name;
         this.type = type;
@@ -38,6 +38,8 @@ public class Wine {
         this.acidity = acidity;
         this.grapes = grapes;
         this.pairings = pairings;
+        this.ratings = ratings;
+        this.ratingAverage = ratingAverage;
     }
 }
 

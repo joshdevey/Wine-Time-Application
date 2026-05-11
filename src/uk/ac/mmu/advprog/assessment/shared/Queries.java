@@ -362,7 +362,7 @@ public class Queries {
                 System.out.println(Instant.now() + " - Region created");
             }
 
-            String createWine = "CREATE TABLE 'Wine' ('id'	INTEGER, 'name'	TEXT, 'type'	TEXT, 'blend_type'	TEXT, 'ABV'	REAL, 'acidity'	TEXT, 'body'	TEXT, 'winery_id'	INTEGER, PRIMARY KEY('id'), FOREIGN KEY('winery_id') REFERENCES '')";
+            String createWine = "CREATE TABLE 'Wine' ('id'	INTEGER, 'name'	TEXT, 'type'	TEXT, 'blend_type'	TEXT, 'ABV'	REAL, 'acidity'	TEXT, 'body'	TEXT, 'winery_id'	INTEGER, PRIMARY KEY('id'), FOREIGN KEY('winery_id') REFERENCES 'Winery'('id'))";
 
             try (PreparedStatement stmt = c.prepareStatement(createWine)) {
                 stmt.executeUpdate();
@@ -384,7 +384,7 @@ public class Queries {
                 System.out.println(Instant.now() + " - Wine_Grape created");
             }
 
-            String createWineVintage = "CREATE TABLE 'Wine_Vintage' ( 'wine_id'	INTEGER, 'year'	INTEGER, 'id'	INTEGER, PRIMARY KEY('id' AUTOINCREMENT), FOREIGN KEY('wine_id') REFERENCES 'Winery'('id'))";
+            String createWineVintage = "CREATE TABLE 'Wine_Vintage' ( 'wine_id'	INTEGER, 'year'	INTEGER, 'id'	INTEGER, PRIMARY KEY('id' AUTOINCREMENT), FOREIGN KEY('wine_id') REFERENCES 'Wine'('id'))";
 
             try (PreparedStatement stmt = c.prepareStatement(createWineVintage)) {
                 stmt.executeUpdate();
@@ -396,7 +396,7 @@ public class Queries {
             }
 
 
-            String createWinePairing = "CREATE TABLE 'Wine_Pairing' ('id'\tINTEGER, 'wine_id'\tINTEGER, 'pairing_id'\tINTEGER, PRIMARY KEY('id' AUTOINCREMENT), FOREIGN KEY('pairing_id') REFERENCES 'Pairing'('id'), FOREIGN KEY('wine_id') REFERENCES 'Region'('id'));";
+            String createWinePairing = "CREATE TABLE 'Wine_Pairing' ('id' INTEGER, 'wine_id' INTEGER, 'pairing_id' INTEGER, PRIMARY KEY('id' AUTOINCREMENT), FOREIGN KEY('pairing_id') REFERENCES 'Pairing'('id'), FOREIGN KEY('wine_id') REFERENCES 'Wine'('id'));";
 
             try (PreparedStatement stmt = c.prepareStatement(createWinePairing)) {
                 stmt.executeUpdate();
@@ -407,7 +407,7 @@ public class Queries {
                 System.out.println(Instant.now() + " - Wine_Pairing created");
             }
 
-            String createWinery = "CREATE TABLE 'Winery' ( 'id'	INTEGER, 'name'	TEXT, 'region_id'	INTEGER, 'website'	TEXT, PRIMARY KEY('id'), FOREIGN KEY('region_id') REFERENCES '')";
+            String createWinery = "CREATE TABLE 'Winery' ( 'id'	INTEGER, 'name'	TEXT, 'region_id'	INTEGER, 'website'	TEXT, PRIMARY KEY('id'), FOREIGN KEY('region_id') REFERENCES 'Region'('id'))";
 
             try (PreparedStatement stmt = c.prepareStatement(createWinery)) {
                 stmt.executeUpdate();
@@ -419,7 +419,7 @@ public class Queries {
                 System.out.println(Instant.now() + " - Winery created");
             }
 
-            String createRatings = "CREATE TABLE 'Rating' ('id'	INTEGER, 'wine_id'	INTEGER, 'vintage' INTEGER, 'rating' REAL, PRIMARY KEY('id' AUTOINCREMENT))";
+            String createRatings = "CREATE TABLE 'Rating' ('id'	INTEGER, 'wine_id'	INTEGER, 'vintage' INTEGER, 'rating' REAL, PRIMARY KEY('id' AUTOINCREMENT), FOREIGN KEY('wine_id') REFERENCES 'Wine'('id'))";
 
             try (PreparedStatement stmt = c.prepareStatement(createRatings)) {
                 stmt.executeUpdate();

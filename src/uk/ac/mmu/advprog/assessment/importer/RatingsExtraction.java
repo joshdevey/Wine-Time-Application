@@ -88,6 +88,15 @@ public class RatingsExtraction {
                     alertCounter++;
                     counter++;
                 }
+
+                String sql = "CREATE INDEX idx_wine_rating ON Rating(wine_id);";
+
+                try (PreparedStatement stmt = c.prepareStatement(sql)) {
+                    stmt.executeUpdate();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+
                 c.commit();
             } catch (SQLException se) {
                 if (c != null) {

@@ -456,8 +456,35 @@ public class Queries {
             insertRegionIntoDB(objects.getRegions());
             insertWineryIntoDB(objects.getWineries());
             insertWineIntoDB(objects.getWines());
+            addIndices();
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void addIndices() {
+        try (Connection c = DriverManager.getConnection(this.connectionString)) {
+            String sql = """
+                    CREATE INDEX idx_winery_region_id ON Winery(region_id);
+                    CREATE INDEX idx_wine_winery_id ON Wine(winery_id);
+                    CREATE INDEX idx_wine_grape_wine_id ON Wine_Grape(wine_id);
+                    CREATE INDEX idx_wine_grape_grape_id ON Wine_Grape(grape_id);
+                    CREATE INDEX idx_wine_pairing_wine_id ON Wine_Pairing(wine_id);
+                    CREATE INDEX idx_wine_pairing_pairing_id ON Wine_Pairing(pairing_id);
+                    CREATE INDEX idx_wine_vintage_wine_id ON Wine_Vintage(wine_id);
+                    """;
+
+            try (PreparedStatement stmt = c.prepareStatement(sql)) {
+                stmt.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            if (enhancedLogging) {
+                System.out.println(Instant.now() + " - Indexed created");
+            }
+
+        } catch (SQLException se) {
+            se.printStackTrace();
         }
     }
 
@@ -517,7 +544,6 @@ public class Queries {
         try (Connection c = DriverManager.getConnection(this.connectionString)) {
 
             String queryString = "select w.id, w.name, w.type, w.abv, wy.name as winery_name, r.country from Wine as w inner join Winery as wy on w.winery_id = wy.id inner join Region as r on r.id = wy.region_id inner join Wine_Grape as wg on wg.wine_id = w.id inner join Grape as g on g.id = wg.Grape_id where w.abv >= " + queryBuilder.getAbv() + " and  " + queryBuilder.getGrapeQueryString() + buildAdditionQueryString(queryBuilder) + getOrderByString(queryBuilder);
-
 
             ResultSet rs = c.createStatement().executeQuery(queryString);
 

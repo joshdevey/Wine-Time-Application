@@ -44,7 +44,7 @@ public class WineBrowser extends JFrame {
 
     public void handleResultsTable() {
 
-        String[] columnNames = {"Name", "Type", "Winery", "Country", "ABV"};
+        String[] columnNames = {"Name", "Type", "Winery", "Country", "ABV", "Ratings", "Rating AVG"};
         if(queryBuilder.getGrape().isEmpty()) {
             this.searchResultsData = queries.getWinesFromSearch(queryBuilder);
         } else {
@@ -72,7 +72,7 @@ public class WineBrowser extends JFrame {
         });
 
         for (Wine wine : this.searchResultsData) {
-            Object[] obj = {wine.name, wine.type, wine.winery, wine.country, wine.abv};
+            Object[] obj = {wine.name, wine.type, wine.winery, wine.country, wine.abv, wine.ratings, wine.ratingAverage};
 
             tableModel.addRow(obj);
         }

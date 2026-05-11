@@ -2,6 +2,7 @@ package uk.ac.mmu.advprog.assessment.shared;
 
 import uk.ac.mmu.advprog.assessment.browser.BrowserWine;
 import uk.ac.mmu.advprog.assessment.browser.QueryBuilder;
+import uk.ac.mmu.advprog.assessment.browser.Rating;
 import uk.ac.mmu.advprog.assessment.browser.SelectedWine;
 import uk.ac.mmu.advprog.assessment.importer.*;
 
@@ -16,6 +17,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Queries {
 
@@ -558,7 +560,26 @@ public class Queries {
 
                 }
 
+                List<Rating> ratings = new ArrayList<>();
 
+                String getVintageRatingSql = "select count(*) as ratings, avg(rating) as  avg_ratings, vintage from rating  where wine_id = ? group by vintage";
+
+                try (PreparedStatement vintageStmt = c.prepareStatement(getVintageRatingSql)) {
+                    stmt.setInt(1, id);
+
+                    ResultSet vintages = vintageStmt.executeQuery();
+
+                    while (vintages.next()) {
+
+                        ratings.add(new Rating(rs.getInt("vintage"), rs.getInt("ratings"), rs.getFloat("avg_ratings")));
+
+                    }
+
+                    wineToAdd.setRatings(ratings);
+
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
 
             } catch (SQLException e) {
                 e.printStackTrace();

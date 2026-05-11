@@ -18,7 +18,7 @@ public class WineBrowser extends JFrame {
     private final SearchPanel searchPanel;
     private JTable resultsTable;
     private final WineDetail detailPanel;
-    private ArrayList<Wine> searchResultsData;
+    private ArrayList<BrowserWine> searchResultsData;
     private JScrollPane searchResultPanel;
     private final Queries queries = new Queries("jdbc:sqlite:data/winetime.db", false);
     private QueryBuilder queryBuilder;
@@ -72,7 +72,7 @@ public class WineBrowser extends JFrame {
             }
         });
 
-        for (Wine wine : this.searchResultsData) {
+        for (BrowserWine wine : this.searchResultsData) {
             Object[] obj = {wine.name, wine.type, wine.winery, wine.country, wine.abv, wine.ratings, wine.ratingAverage};
 
             tableModel.addRow(obj);
@@ -107,7 +107,7 @@ public class WineBrowser extends JFrame {
             return;
         }
 
-        Wine wineToAdd = queries.getWine(this.searchResultsData.get(resultsTable.getSelectedRow()).id);
+        SelectedWine wineToAdd = queries.getWine(this.searchResultsData.get(resultsTable.getSelectedRow()).id);
 
         if (wineToAdd != null) {
             detailPanel.setData(wineToAdd);

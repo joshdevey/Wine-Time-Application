@@ -63,7 +63,7 @@ public class WineDetail extends JPanel {
 
     }
 
-    public void setData(Wine selectedWine) {
+    public void setData(SelectedWine selectedWine) {
         name.setText(selectedWine.name);
         winery.setText(selectedWine.winery);
         type.setText(selectedWine.type);
@@ -72,8 +72,8 @@ public class WineDetail extends JPanel {
         blend.setText(selectedWine.blend);
         acidity.setText(selectedWine.acidity);
         body.setText(selectedWine.body);
-        ratings.setText(String.valueOf(selectedWine.ratings));
-        averageRating.setText(String.valueOf(selectedWine.ratingAverage));
+        ratings.setText("2");
+        averageRating.setText("2");
         grapes.removeAll();
         JPanel grapePanel = new JPanel();
         for(String grape: selectedWine.grapes) {

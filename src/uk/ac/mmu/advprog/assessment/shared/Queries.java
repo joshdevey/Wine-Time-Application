@@ -1,6 +1,8 @@
 package uk.ac.mmu.advprog.assessment.shared;
 
+import uk.ac.mmu.advprog.assessment.browser.BrowserWine;
 import uk.ac.mmu.advprog.assessment.browser.QueryBuilder;
+import uk.ac.mmu.advprog.assessment.browser.SelectedWine;
 import uk.ac.mmu.advprog.assessment.importer.*;
 
 import java.io.IOException;
@@ -515,42 +517,32 @@ public class Queries {
         }
     }
 
-    public uk.ac.mmu.advprog.assessment.browser.Wine getWine(int id) {
-        uk.ac.mmu.advprog.assessment.browser.Wine wineToAdd = null;
+    public SelectedWine getWine(int id) {
+        SelectedWine wineToAdd = null;
 
         try (Connection c = DriverManager.getConnection(this.connectionString)) {
             String sql = """
-            
-                    select w.id,
+                select
+                   w.id,
                    w.name,
                    w.type,
                    w.abv,
                    w.blend_type,
                    w.acidity,
                    w.body,
-                   wy.name                   as winery_name,
-                   r.country,
-            	   rt.ratings,
-            	   rt.avg_ratings,
-                   (select group_concat(g.name)
-                    from Wine_Grape as wg
-                             inner join Grape g on g.id = wg.Grape_id
-                    where wg.wine_id = w.id) as grapes,
-                   (select group_concat(p.food)
-                    from Wine_Pairing as wp
-                             inner join Pairing p on p.id = wp.pairing_id
-                    where wp.wine_id = w.id) as pairings
-            from Wine as w
-                     inner join Winery as wy on w.winery_id = wy.id
-                     inner join Region as r on r.id = wy.region_id
-            		LEFT JOIN (
-            				SELECT\s
-            					wine_id,
-            					COUNT(*) AS ratings,
-            					AVG(rating) AS avg_ratings
-            				FROM rating
-            				GROUP BY wine_id
-            			) rt ON rt.wine_id = w.id
+            	   wy.name as winery_name,
+            	   r.country,
+            	 (select group_concat(g.name)
+            		from Wine_Grape as wg
+            		inner join Grape g on g.id = wg.Grape_id
+            		where wg.wine_id = w.id) as grapes,
+               (select group_concat(p.food)
+            	from Wine_Pairing as wp
+            			 inner join Pairing p on p.id = wp.pairing_id
+            	where wp.wine_id = w.id) as pairings
+            from Wine as w 
+            inner join Winery as wy on w.winery_id = wy.id
+            inner join Region as r on r.id = wy.region_id
             where w.id = ?
             """;
 
@@ -560,11 +552,13 @@ public class Queries {
                 ResultSet rs = stmt.executeQuery();
 
                 while (rs.next()) {
-                    uk.ac.mmu.advprog.assessment.browser.Wine wine = new uk.ac.mmu.advprog.assessment.browser.Wine(rs.getInt("id"), rs.getString("name"), rs.getString("type"), rs.getString("winery_name"), rs.getString("country"), rs.getString("abv"), rs.getString("blend_type"), rs.getString("body"), rs.getString("acidity"), rs.getString("grapes").split(","), rs.getString("pairings").split(","), rs.getInt("ratings"), rs.getFloat("avg_ratings"));
+                    SelectedWine wine = new SelectedWine(rs.getInt("id"), rs.getString("name"), rs.getString("type"), rs.getString("winery_name"), rs.getString("country"), rs.getString("abv"), rs.getString("blend_type"), rs.getString("body"), rs.getString("acidity"), rs.getString("grapes").split(","), rs.getString("pairings").split(","));
 
                     wineToAdd = wine;
 
                 }
+
+
 
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -577,8 +571,8 @@ public class Queries {
         return wineToAdd;
     }
 
-    public ArrayList<uk.ac.mmu.advprog.assessment.browser.Wine> getWinesFromSearch(QueryBuilder queryBuilder) {
-        ArrayList<uk.ac.mmu.advprog.assessment.browser.Wine> wines = new ArrayList<>();
+    public ArrayList<BrowserWine> getWinesFromSearch(QueryBuilder queryBuilder) {
+        ArrayList<BrowserWine> wines = new ArrayList<>();
 
         try (Connection c = DriverManager.getConnection(this.connectionString)) {
 
@@ -610,7 +604,7 @@ public class Queries {
             ResultSet rs = c.createStatement().executeQuery(queryString);
 
             while (rs.next()) {
-                uk.ac.mmu.advprog.assessment.browser.Wine wine = new uk.ac.mmu.advprog.assessment.browser.Wine(rs.getInt("id"), rs.getString("name"), rs.getString("type"), rs.getString("winery_name"), rs.getString("country"), rs.getString("abv"), rs.getInt("ratings"), rs.getFloat("avg_ratings"));
+                BrowserWine wine = new BrowserWine(rs.getInt("id"), rs.getString("name"), rs.getString("type"), rs.getString("winery_name"), rs.getString("country"), rs.getString("abv"), rs.getInt("ratings"), rs.getFloat("avg_ratings"));
                 wines.add(wine);
             }
         } catch (SQLException se) {
@@ -620,8 +614,8 @@ public class Queries {
         return wines;
     }
 
-    public ArrayList<uk.ac.mmu.advprog.assessment.browser.Wine> getWinesFromSearchWithGrape(QueryBuilder queryBuilder) {
-        ArrayList<uk.ac.mmu.advprog.assessment.browser.Wine> wines = new ArrayList<>();
+    public ArrayList<BrowserWine> getWinesFromSearchWithGrape(QueryBuilder queryBuilder) {
+        ArrayList<BrowserWine> wines = new ArrayList<>();
 
         try (Connection c = DriverManager.getConnection(this.connectionString)) {
 
@@ -656,7 +650,7 @@ public class Queries {
             ResultSet rs = c.createStatement().executeQuery(queryString);
 
             while (rs.next()) {
-                uk.ac.mmu.advprog.assessment.browser.Wine wine = new uk.ac.mmu.advprog.assessment.browser.Wine(rs.getInt("id"), rs.getString("name"), rs.getString("type"), rs.getString("winery_name"), rs.getString("country"), rs.getString("abv"), rs.getInt("ratings"), rs.getFloat("avg_ratings"));
+                BrowserWine wine = new BrowserWine(rs.getInt("id"), rs.getString("name"), rs.getString("type"), rs.getString("winery_name"), rs.getString("country"), rs.getString("abv"), rs.getInt("ratings"), rs.getFloat("avg_ratings"));
                 wines.add(wine);
             }
         } catch (SQLException se) {

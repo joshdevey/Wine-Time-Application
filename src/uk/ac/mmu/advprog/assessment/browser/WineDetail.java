@@ -17,49 +17,70 @@ public class WineDetail extends JPanel {
     private JTextArea acidity = new JTextArea("");
     private JTextArea body = new JTextArea("");
     private JPanel pairings = new JPanel();
-    private JTextArea ratings = new JTextArea("");
-    private JTextArea averageRating = new JTextArea("");
+    private JPanel ratings = new JPanel();
 
 
     public WineDetail() {
-        setPreferredSize(new Dimension(300, 600));
+        setPreferredSize(new Dimension(400, 600));
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        CustomJPanel namePanel = new CustomJPanel(new JLabel("Name"), name);
-        add(namePanel.panel);
+        JPanel nameType = new JPanel();
+        nameType.setLayout(new GridLayout(1, 2));
+        Border blackline = BorderFactory.createLineBorder(new Color(250, 108, 14));
+        nameType.setBorder(blackline);
 
-        CustomJPanel wineryPanel = new CustomJPanel(new JLabel("Winery"), winery);
-        add(wineryPanel.panel);
+        CustomJPanel namePanel = new CustomJPanel(new JLabel("Name"), name);
+        nameType.add(namePanel.panel);
 
         CustomJPanel typePanel = new CustomJPanel(new JLabel("Type"), type);
-        add(typePanel.panel);
+        nameType.add(typePanel.panel);
+
+        add(nameType);
+
+        JPanel wineryCountry = new JPanel();
+        wineryCountry.setLayout(new GridLayout(1, 2));
+
+        CustomJPanel wineryPanel = new CustomJPanel(new JLabel("Winery"), winery);
+        wineryCountry.add(wineryPanel.panel);
 
         CustomJPanel countryPanel = new CustomJPanel(new JLabel("Country"), country);
-        add(countryPanel.panel);
+        wineryCountry.add(countryPanel.panel);
+
+        add(wineryCountry);
+
+        JPanel abvBlend = new JPanel();
+        abvBlend.setLayout(new GridLayout(1, 2));
 
         CustomJPanel abvPanel = new CustomJPanel(new JLabel("ABV"), abv);
-        add(abvPanel.panel);
+        abvBlend.add(abvPanel.panel);
 
         CustomJPanel blendPanel = new CustomJPanel(new JLabel("Blend"), blend);
-        add(blendPanel.panel);
+        abvBlend.add(blendPanel.panel);
+
+        add(abvBlend);
+
+        JPanel acidityBody = new JPanel();
+        acidityBody.setLayout(new GridLayout(1, 2));
 
         CustomJPanel acidityPanel = new CustomJPanel(new JLabel("Acidity"), acidity);
-        add(acidityPanel.panel);
+        acidityBody.add(acidityPanel.panel);
+
+        add(acidityBody);
 
         CustomJPanel bodyPanel = new CustomJPanel(new JLabel("Body"), body);
-        add(bodyPanel.panel);
+        acidityBody.add(bodyPanel.panel);
 
         CustomJPanel grapePanel = new CustomJPanel(new JLabel("Grape(s)"), grapes);
+        grapePanel.setPreferredSize(new Dimension(400, 200));
         add(grapePanel.panel);
 
         CustomJPanel pairingPanel = new CustomJPanel(new JLabel("Pairing(s)"), pairings);
+        pairingPanel.setPreferredSize(new Dimension(400, 200));
         add(pairingPanel.panel);
 
-        CustomJPanel ratingsPanel = new CustomJPanel(new JLabel("Number of ratings"), ratings);
+        CustomJPanel ratingsPanel = new CustomJPanel(new JLabel("Ratings"), ratings);
+        ratingsPanel.setPreferredSize(new Dimension(400, 200));
         add(ratingsPanel.panel);
-
-        CustomJPanel ratingsAveragePanel = new CustomJPanel(new JLabel("Rating Average"), averageRating);
-        add(ratingsAveragePanel.panel);
 
     }
 
@@ -72,16 +93,15 @@ public class WineDetail extends JPanel {
         blend.setText(selectedWine.blend);
         acidity.setText(selectedWine.acidity);
         body.setText(selectedWine.body);
-        ratings.setText("2");
-        averageRating.setText("2");
+
         grapes.removeAll();
         JPanel grapePanel = new JPanel();
+
+        grapePanel.setLayout(new FlowLayout(FlowLayout.LEFT));
         for(String grape: selectedWine.grapes) {
             JPanel labelContainer = new JPanel();
             JLabel grapeLabel = new JLabel(grape);
-            Border blackline = BorderFactory.createLineBorder(new Color(250, 108, 14));
-            labelContainer.setBorder(new EmptyBorder(10, 10, 10, 10));
-            labelContainer.setBorder(blackline);
+            labelContainer.setBorder(new EmptyBorder(5, 5, 5, 5));
             labelContainer.add(grapeLabel);
             grapePanel.add(labelContainer);
         }
@@ -89,16 +109,30 @@ public class WineDetail extends JPanel {
 
         pairings.removeAll();
         JPanel pairingPanel = new JPanel();
+
+        pairingPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
         for(String pairing: selectedWine.pairings) {
             JPanel labelContainer = new JPanel();
             JLabel pairingLabel = new JLabel(pairing);
-            Border blackline = BorderFactory.createLineBorder(new Color(250, 108, 14));
-            labelContainer.setBorder(new EmptyBorder(10, 10, 10, 10));
-            labelContainer.setBorder(blackline);
+            labelContainer.setBorder(new EmptyBorder(5, 5, 5, 5));
             labelContainer.add(pairingLabel);
             pairingPanel.add(labelContainer);
         }
         pairings.add(pairingPanel);
+
+        ratings.removeAll();
+        JPanel ratingsPanel = new JPanel();
+        ratingsPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        ratingsPanel.setPreferredSize(new Dimension(400, 200));
+        for(Rating rating: selectedWine.ratings) {
+            JPanel labelContainer = new JPanel();
+            JLabel ratingLabel = new JLabel(String.valueOf(rating.getVintage()));
+            labelContainer.setBorder(new EmptyBorder(10, 10, 10, 10));
+            labelContainer.add(ratingLabel);
+            ratingsPanel.add(labelContainer);
+        }
+
+        ratings.add(ratingsPanel);
     }
 
     public void clearData() {
@@ -112,8 +146,7 @@ public class WineDetail extends JPanel {
         body.setText("");
         grapes.removeAll();
         pairings.removeAll();
-        ratings.setText("");
-        averageRating.setText("");
+        ratings.removeAll();
     }
 
 }

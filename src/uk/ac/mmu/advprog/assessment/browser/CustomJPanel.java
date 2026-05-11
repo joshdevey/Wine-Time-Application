@@ -13,12 +13,16 @@ public class CustomJPanel extends JPanel {
         this.panel = new JPanel();
         JPanel valuePanel = new JPanel();
         value.setLineWrap(true);
-        value.setSize(new Dimension(250, 80));
+        value.setSize(new Dimension(150, 40));
         value.setOpaque(false);
+        value.setWrapStyleWord(true);
+        value.setBorder(null);
+        value.setMargin(new Insets(0, 0, 0, 0));
+        value.setEditable(false);
         valuePanel.add(value);
         panel.add(label);
         panel.add(valuePanel);
-        panel.setBorder(new EmptyBorder(5, 10, 5, 10));
+        panel.setBorder(new EmptyBorder(0, 5, 0, 5));
         panel.setLayout(new GridLayout(2, 1));
     }
 

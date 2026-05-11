@@ -23,6 +23,7 @@ public class WineBrowser extends JFrame {
     private final Queries queries = new Queries("jdbc:sqlite:data/winetime.db", false);
     private QueryBuilder queryBuilder;
     public JButton searchButton = new JButton("Search");
+    public JButton returnButton = new JButton("Return to Search");
 
     public WineBrowser() {
         this.searchPanel = new SearchPanel();
@@ -111,8 +112,13 @@ public class WineBrowser extends JFrame {
 
         if (wineToAdd != null) {
             detailPanel.setData(wineToAdd);
-            add(detailPanel, "East");
+            add(detailPanel, "Center");
+            remove(searchButton);
+            remove(this.searchResultPanel);
+            remove(this.searchPanel);
+            renderReturnToSearch();
             revalidate();
+            repaint();
         }
     }
 
@@ -135,7 +141,41 @@ public class WineBrowser extends JFrame {
         add(searchButton, "South");
     }
 
+    public void returnToSearch() {
+        detailPanel.clearData();
+        remove(detailPanel);
+        remove(returnButton);
+        add(searchButton, "South");
+        add(this.searchResultPanel, "Center");
+        add(this.searchPanel, "West");
+
+        revalidate();
+        repaint();
+    }
+
+    public void renderReturnToSearch() {
+        returnButton.setBackground(new Color(250, 108, 14));
+        returnButton.setForeground(Color.WHITE);
+        returnButton.setBorderPainted(false);
+        returnButton.setFocusPainted(false);
+        returnButton.setOpaque(true);
+
+        returnButton.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                returnToSearch();
+            }
+        });
+
+        add(returnButton, "South");
+    }
+
     public void fetchData() {
+        this.detailPanel.clearData();
+        remove(detailPanel);
+        revalidate();
+        repaint();
         if(searchPanel.validateSearch()) {
             this.queryBuilder = searchPanel.getQuery();
             handleResultsTable();

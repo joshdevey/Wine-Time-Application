@@ -10,4 +10,16 @@ public class Rating {
         this.ratingCount = ratingCount;
         this.rating = rating;
     }
+
+    public int getVintage() {
+        return vintage;
+    }
+
+    public int getRatingCount() {
+        return ratingCount;
+    }
+
+    public float getRating() {
+        return rating;
+    }
 }

@@ -562,16 +562,16 @@ public class Queries {
 
                 List<Rating> ratings = new ArrayList<>();
 
-                String getVintageRatingSql = "select count(*) as ratings, avg(rating) as  avg_ratings, vintage from rating  where wine_id = ? group by vintage";
+                String getVintageRatingSql = "select count(*) as ratings, avg(rating) as  avg_ratings, vintage from rating  where wine_id = ? and vintage != -1 group by vintage";
 
                 try (PreparedStatement vintageStmt = c.prepareStatement(getVintageRatingSql)) {
-                    stmt.setInt(1, id);
+                    vintageStmt.setInt(1, id);
 
                     ResultSet vintages = vintageStmt.executeQuery();
 
                     while (vintages.next()) {
 
-                        ratings.add(new Rating(rs.getInt("vintage"), rs.getInt("ratings"), rs.getFloat("avg_ratings")));
+                        ratings.add(new Rating(vintages.getInt("vintage"), vintages.getInt("ratings"), vintages.getFloat("avg_ratings")));
 
                     }
 

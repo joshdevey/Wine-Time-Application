@@ -582,8 +582,6 @@ public class Queries {
 
         try (Connection c = DriverManager.getConnection(this.connectionString)) {
 
-//            String queryString = "select w.id, w.name, w.type, w.abv, wy.name as winery_name, r.country from Wine as w inner join Winery as wy on w.winery_id = wy.id inner join Region as r on r.id = wy.region_id where w.abv >= " + queryBuilder.getAbv() + buildAdditionQueryString(queryBuilder) + getOrderByString(queryBuilder);
-
             String queryString = """
                     select 
                      	w.id, 

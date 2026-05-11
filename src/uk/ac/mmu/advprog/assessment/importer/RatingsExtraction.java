@@ -89,7 +89,7 @@ public class RatingsExtraction {
                     counter++;
                 }
 
-                String sql = "CREATE INDEX idx_wine_rating ON Rating(wine_id);";
+                String sql = "CREATE INDEX idx_wine_rating ON Rating(wine_id, rating);";
 
                 try (PreparedStatement stmt = c.prepareStatement(sql)) {
                     stmt.executeUpdate();

@@ -373,7 +373,7 @@ public class Queries {
                 System.out.println(Instant.now() + " - Wine created");
             }
 
-            String createWineGrape = "CREATE TABLE 'Wine_Grape' ( 'wine_id'	INTEGER, 'Grape_id' 	INTEGER, 'id'	INTEGER, PRIMARY KEY('id' AUTOINCREMENT), FOREIGN KEY('wine_id') REFERENCES 'Wine'('id'))";
+            String createWineGrape = "CREATE TABLE 'Wine_Grape' ( 'wine_id'	INTEGER, 'Grape_id' 	INTEGER, 'id'	INTEGER, PRIMARY KEY('id' AUTOINCREMENT), FOREIGN KEY('wine_id') REFERENCES 'Wine'('id'), FOREIGN KEY('Grape_id') REFERENCES 'Grape'('id'))";
 
             try (PreparedStatement stmt = c.prepareStatement(createWineGrape)) {
                 stmt.executeUpdate();

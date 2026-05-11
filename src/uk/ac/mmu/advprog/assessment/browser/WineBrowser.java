@@ -145,6 +145,8 @@ public class WineBrowser extends JFrame {
             case 2 -> "wy.name";
             case 3 -> "r.country";
             case 4 -> "w.abv";
+            case 5 -> "rt.ratings";
+            case 6 -> "rt.ratingAverage";
             default -> "w.name";
         };
     }

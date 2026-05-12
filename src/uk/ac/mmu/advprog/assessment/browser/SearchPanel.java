@@ -38,6 +38,8 @@ public class SearchPanel extends JPanel {
 
     public JSlider abv = new JSlider(0, 50);
 
+    public JSlider minRating = new JSlider(0, 5);
+
     String[] aciditys = {"Any",
             "High",
             "Medium",
@@ -56,12 +58,6 @@ public class SearchPanel extends JPanel {
         setBackground(new Color(43, 43, 43));
         setPreferredSize(new Dimension(300, 600));
         setMaximumSize(new Dimension(300, 600));
-        JPanel titlePanel = new JPanel();
-        JLabel searchLabel = new JLabel("Search Wines");
-        titlePanel.setBackground(new Color(67, 67, 67));
-        searchLabel.setForeground(Color.WHITE);
-        titlePanel.add(searchLabel);
-        add(titlePanel);
 
         JPanel namePanel = getWineNamePanel();
         add(namePanel);
@@ -89,6 +85,9 @@ public class SearchPanel extends JPanel {
 
         JPanel bodyPanel = getBodyPanel();
         add(bodyPanel);
+
+        JPanel minRating = getMinRatingPanel();
+        add(minRating);
 
         JPanel buttonContainer = new JPanel(new FlowLayout());
 
@@ -240,6 +239,24 @@ public class SearchPanel extends JPanel {
         return panel;
     }
 
+    private JPanel getMinRatingPanel() {
+        JPanel panel = new JPanel();
+        JLabel label = new JLabel("Min average Rating");
+        panel.setOpaque(false);
+        label.setForeground(ColorUIResource.WHITE);
+        panel.setLayout(new GridLayout(2, 1));
+        panel.add(label);
+        minRating.setValue(0);
+        minRating.setForeground(Color.WHITE);
+        minRating.setMajorTickSpacing(1);
+        minRating.setPaintTicks(true);
+        minRating.setPaintLabels(true);
+        panel.setBorder(new EmptyBorder(10, 10, 10, 10));
+        panel.add(minRating);
+
+        return panel;
+    }
+
     private void resetSearch() {
         name.setText("");
         winery.setText("");
@@ -263,6 +280,7 @@ public class SearchPanel extends JPanel {
         queryBuilder.setBlend(blend.getSelectedItem().toString());
         queryBuilder.setAcidity(acidity.getSelectedItem().toString());
         queryBuilder.setBody(body.getSelectedItem().toString());
+        queryBuilder.setMinAverageRating(minRating.getValue());
 
         return queryBuilder;
     }

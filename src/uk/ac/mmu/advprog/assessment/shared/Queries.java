@@ -788,6 +788,10 @@ public class Queries {
             additionalQueries += " and " + queryBuilder.getBodyQueryString();
         }
 
+        if(queryBuilder.getMinAverageRatingQueryString() != null) {
+            additionalQueries += " and " + queryBuilder.getMinAverageRatingQueryString();
+        }
+
         return additionalQueries;
     }
 

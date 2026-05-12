@@ -12,6 +12,7 @@ public class QueryBuilder {
     private String body;
     private String sortColumn;
     private Boolean ascending;
+    private float minAverageRating;
 
     public String getName() {
         return name;
@@ -170,7 +171,21 @@ public class QueryBuilder {
         }
     }
 
+    public float getMinAverageRating() {
+        return minAverageRating;
+    }
 
+    public void setMinAverageRating(float minAverageRating) {
+        this.minAverageRating = minAverageRating;
+    }
+
+    public String getMinAverageRatingQueryString() {
+        if(this.minAverageRating == 0) {
+            return null;
+        } else {
+            return "rt.avg_ratings > " + this.minAverageRating;
+        }
+    }
 
     @Override
     public String toString() {

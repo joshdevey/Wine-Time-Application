@@ -33,6 +33,7 @@ public class WineDetail extends JPanel {
 
         // Content panel
         JPanel content = new JPanel(new GridLayout(5, 2));
+        content.setBorder(new EmptyBorder(15, 15, 15, 15));
         content.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
 
         JPanel typePanel = new JPanel();
@@ -70,6 +71,12 @@ public class WineDetail extends JPanel {
         bodyPanel.add(new JLabel("Body"));
         bodyPanel.add(body);
         content.add(bodyPanel);
+
+        content.add(new JLabel("Grapes"));
+        content.add(grapes);
+
+        content.add(new JLabel("Pairings"));
+        content.add(pairings);
 
         mainPanel.add(content, BorderLayout.CENTER);
 

@@ -7,15 +7,15 @@ import java.awt.*;
 
 public class WineDetail extends JPanel {
 
-    private JTextArea name = new JTextArea("");
-    private JTextArea winery = new JTextArea("");
-    private JTextArea type = new JTextArea("");
-    private JTextArea country = new JTextArea("");
-    private JTextArea blend = new JTextArea("");
+    private JLabel name = new JLabel("");
+    private JLabel winery = new JLabel("");
+    private JLabel type = new JLabel("");
+    private JLabel country = new JLabel("");
+    private JLabel blend = new JLabel("");
     private JPanel grapes = new JPanel();
-    private JTextArea abv = new JTextArea("");
-    private JTextArea acidity = new JTextArea("");
-    private JTextArea body = new JTextArea("");
+    private JLabel abv = new JLabel("");
+    private JLabel acidity = new JLabel("");
+    private JLabel body = new JLabel("");
     private JPanel pairings = new JPanel();
     private JPanel ratings = new JPanel();
 
@@ -24,65 +24,89 @@ public class WineDetail extends JPanel {
         setPreferredSize(new Dimension(400, 600));
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        JPanel nameType = new JPanel();
-        nameType.setLayout(new GridLayout(1, 2));
-        Border blackline = BorderFactory.createLineBorder(new Color(250, 108, 14));
-        nameType.setBorder(blackline);
+        JPanel mainPanel = new JPanel(new BorderLayout());
+        mainPanel.setBorder(new EmptyBorder(15, 15, 15, 15));
 
-        CustomJPanel namePanel = new CustomJPanel(new JLabel("Name"), name);
-        nameType.add(namePanel.panel);
+        // Title
+        name.setFont(new Font("SansSerif", Font.BOLD, 28));
+        mainPanel.add(name, BorderLayout.NORTH);
 
-        CustomJPanel typePanel = new CustomJPanel(new JLabel("Type"), type);
-        nameType.add(typePanel.panel);
+        // Content panel
+        JPanel content = new JPanel(new GridLayout(5, 2));
+        content.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
 
-        add(nameType);
+        JPanel typePanel = new JPanel();
+        typePanel.setLayout(new GridLayout(1, 2));
+        typePanel.add(new JLabel("Type"));
+        typePanel.add(type);
+        content.add(typePanel);
 
-        JPanel wineryCountry = new JPanel();
-        wineryCountry.setLayout(new GridLayout(1, 2));
+        JPanel wineryPanel = new JPanel();
+        wineryPanel.setLayout(new GridLayout(1, 2));
+        wineryPanel.add(new JLabel("Winery"));
+        wineryPanel.add(winery);
+        content.add(wineryPanel);
 
-        CustomJPanel wineryPanel = new CustomJPanel(new JLabel("Winery"), winery);
-        wineryCountry.add(wineryPanel.panel);
+        JPanel CountryPanel = new JPanel();
+        CountryPanel.setLayout(new GridLayout(1, 2));
+        CountryPanel.add(new JLabel("Country"));
+        CountryPanel.add(country);
+        content.add(CountryPanel);
 
-        CustomJPanel countryPanel = new CustomJPanel(new JLabel("Country"), country);
-        wineryCountry.add(countryPanel.panel);
+        JPanel abvPanel = new JPanel();
+        abvPanel.setLayout(new GridLayout(1, 2));
+        abvPanel.add(new JLabel("Abv"));
+        abvPanel.add(abv);
+        content.add(abvPanel);
 
-        add(wineryCountry);
+        JPanel Acidity = new JPanel();
+        Acidity.setLayout(new GridLayout(1, 2));
+        Acidity.add(new JLabel("Acidity"));
+        Acidity.add(acidity);
+        content.add(Acidity);
 
-        JPanel abvBlend = new JPanel();
-        abvBlend.setLayout(new GridLayout(1, 2));
+        JPanel bodyPanel = new JPanel();
+        bodyPanel.setLayout(new GridLayout(1, 2));
+        bodyPanel.add(new JLabel("Body"));
+        bodyPanel.add(body);
+        content.add(bodyPanel);
 
-        CustomJPanel abvPanel = new CustomJPanel(new JLabel("ABV"), abv);
-        abvBlend.add(abvPanel.panel);
+        mainPanel.add(content, BorderLayout.CENTER);
 
-        CustomJPanel blendPanel = new CustomJPanel(new JLabel("Blend"), blend);
-        abvBlend.add(blendPanel.panel);
+        JScrollPane scrollPane = new JScrollPane(ratings);
+        scrollPane.setPreferredSize(new Dimension(200, 300));
 
-        add(abvBlend);
+        mainPanel.add(scrollPane, BorderLayout.EAST);
 
-        JPanel acidityBody = new JPanel();
-        acidityBody.setLayout(new GridLayout(1, 2));
-
-        CustomJPanel acidityPanel = new CustomJPanel(new JLabel("Acidity"), acidity);
-        acidityBody.add(acidityPanel.panel);
-
-        add(acidityBody);
-
-        CustomJPanel bodyPanel = new CustomJPanel(new JLabel("Body"), body);
-        acidityBody.add(bodyPanel.panel);
-
-        CustomJPanel grapePanel = new CustomJPanel(new JLabel("Grape(s)"), grapes);
-        grapePanel.setPreferredSize(new Dimension(400, 200));
-        add(grapePanel.panel);
-
-        CustomJPanel pairingPanel = new CustomJPanel(new JLabel("Pairing(s)"), pairings);
-        pairingPanel.setPreferredSize(new Dimension(400, 200));
-        add(pairingPanel.panel);
-
-        CustomJPanel ratingsPanel = new CustomJPanel(new JLabel("Ratings"), ratings);
-        ratingsPanel.setPreferredSize(new Dimension(400, 200));
-        add(ratingsPanel.panel);
+        add(mainPanel);
 
     }
+
+    private static JPanel createRatingRow(int year, float stars, int ratings) {
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+
+        JLabel vintage = new JLabel(year + "  ");
+        vintage.setFont(new Font("SansSerif", Font.BOLD, 10));
+        panel.add(vintage);
+
+        for (int i = 0; i < 5; i++) {
+            JLabel star = new JLabel("*");
+            if(i < stars) {
+                star.setForeground(new Color(250, 108, 14));
+                star.setFont(new Font("SansSerif", Font.BOLD, 10));
+            }
+            panel.add(star);
+        }
+
+        JLabel numberOfRatings = new JLabel("(" + ratings + ")");
+        numberOfRatings.setFont(new Font("SansSerif", Font.BOLD, 10));
+
+        panel.add(numberOfRatings);
+
+        return panel;
+    }
+
+
 
     public void setData(SelectedWine selectedWine) {
         name.setText(selectedWine.name);
@@ -122,14 +146,10 @@ public class WineDetail extends JPanel {
 
         ratings.removeAll();
         JPanel ratingsPanel = new JPanel();
-        ratingsPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-        ratingsPanel.setPreferredSize(new Dimension(400, 200));
+        ratingsPanel.setLayout(new BoxLayout(ratingsPanel, BoxLayout.Y_AXIS));
+        ratingsPanel.add(new JLabel("Ratings"));
         for(Rating rating: selectedWine.ratings) {
-            JPanel labelContainer = new JPanel();
-            JLabel ratingLabel = new JLabel(String.valueOf(rating.getVintage()));
-            labelContainer.setBorder(new EmptyBorder(10, 10, 10, 10));
-            labelContainer.add(ratingLabel);
-            ratingsPanel.add(labelContainer);
+            ratingsPanel.add(createRatingRow(rating.getVintage(), rating.getRating(), rating.getRatingCount()));
         }
 
         ratings.add(ratingsPanel);

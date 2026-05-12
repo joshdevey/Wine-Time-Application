@@ -13,6 +13,7 @@ public class QueryBuilder {
     private String sortColumn;
     private Boolean ascending;
     private float minAverageRating;
+    private String minRatings;
 
     public String getName() {
         return name;
@@ -88,6 +89,22 @@ public class QueryBuilder {
 
     public String getSortColumn() {
         return sortColumn;
+    }
+
+    public float getMinAverageRating() {
+        return minAverageRating;
+    }
+
+    public void setMinAverageRating(float minAverageRating) {
+        this.minAverageRating = minAverageRating;
+    }
+
+    public String getMinRatings() {
+        return minRatings;
+    }
+
+    public void setMinRatings(String minRatings) {
+        this.minRatings = minRatings;
     }
 
     public void setSortColumn(String sortColumn) {
@@ -171,19 +188,19 @@ public class QueryBuilder {
         }
     }
 
-    public float getMinAverageRating() {
-        return minAverageRating;
-    }
-
-    public void setMinAverageRating(float minAverageRating) {
-        this.minAverageRating = minAverageRating;
-    }
-
     public String getMinAverageRatingQueryString() {
         if(this.minAverageRating == 0) {
             return null;
         } else {
             return "rt.avg_ratings > " + this.minAverageRating;
+        }
+    }
+
+    public String getMinRatingsQueryString() {
+        if (this.minRatings.isEmpty()) {
+            return null;
+        } else {
+            return "rt.ratings > " + this.minRatings;
         }
     }
 

@@ -40,6 +40,8 @@ public class SearchPanel extends JPanel {
 
     public JSlider minRating = new JSlider(0, 5);
 
+    public JFormattedTextField minNumberRatings = new JFormattedTextField(java.text.NumberFormat.getIntegerInstance());
+
     String[] aciditys = {"Any",
             "High",
             "Medium",
@@ -88,6 +90,9 @@ public class SearchPanel extends JPanel {
 
         JPanel minRating = getMinRatingPanel();
         add(minRating);
+
+        JPanel minNumberOfRatings = getMinRatingsPanel();
+        add(minNumberOfRatings);
 
         JPanel buttonContainer = new JPanel(new FlowLayout());
 
@@ -257,6 +262,21 @@ public class SearchPanel extends JPanel {
         return panel;
     }
 
+    private JPanel getMinRatingsPanel() {
+        JLabel label = new JLabel("Min number of ratings ");
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(2, 1));
+        panel.setOpaque(false);
+        minNumberRatings.setBackground(new Color(70, 72, 74));
+        label.setForeground(ColorUIResource.WHITE);
+        minNumberRatings.setForeground(ColorUIResource.WHITE);
+
+        panel.add(label);
+        panel.add(minNumberRatings);
+        panel.setBorder(new EmptyBorder(10, 10, 10, 10));
+        return panel;
+    }
+
     private void resetSearch() {
         name.setText("");
         winery.setText("");
@@ -281,6 +301,7 @@ public class SearchPanel extends JPanel {
         queryBuilder.setAcidity(acidity.getSelectedItem().toString());
         queryBuilder.setBody(body.getSelectedItem().toString());
         queryBuilder.setMinAverageRating(minRating.getValue());
+        queryBuilder.setMinRatings(minNumberRatings.getText());
 
         return queryBuilder;
     }

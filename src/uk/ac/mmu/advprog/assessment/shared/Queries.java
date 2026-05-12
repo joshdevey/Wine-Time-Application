@@ -792,6 +792,10 @@ public class Queries {
             additionalQueries += " and " + queryBuilder.getMinAverageRatingQueryString();
         }
 
+        if(queryBuilder.getMinRatingsQueryString() != null) {
+            additionalQueries += " and " + queryBuilder.getMinRatingsQueryString();
+        }
+        System.out.println(additionalQueries);
         return additionalQueries;
     }
 

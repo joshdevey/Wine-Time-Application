@@ -12,11 +12,11 @@ public class WineDetail extends JPanel {
     private JLabel type = new JLabel("");
     private JLabel country = new JLabel("");
     private JLabel blend = new JLabel("");
-    private JPanel grapes = new JPanel();
+    private JLabel grapes = new JLabel("");
     private JLabel abv = new JLabel("");
     private JLabel acidity = new JLabel("");
     private JLabel body = new JLabel("");
-    private JPanel pairings = new JPanel();
+    private JLabel pairings = new JLabel("");
     private JPanel ratings = new JPanel();
 
 
@@ -125,31 +125,18 @@ public class WineDetail extends JPanel {
         acidity.setText(selectedWine.acidity);
         body.setText(selectedWine.body);
 
-        grapes.removeAll();
-        JPanel grapePanel = new JPanel();
-
-        grapePanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        StringBuilder grapeString = new StringBuilder("|");
         for(String grape: selectedWine.grapes) {
-            JPanel labelContainer = new JPanel();
-            JLabel grapeLabel = new JLabel(grape);
-            labelContainer.setBorder(new EmptyBorder(5, 5, 5, 5));
-            labelContainer.add(grapeLabel);
-            grapePanel.add(labelContainer);
+            grapeString.append(grape).append(" | ");
         }
-        grapes.add(grapePanel);
+        grapes.setText(grapeString.toString());
 
-        pairings.removeAll();
-        JPanel pairingPanel = new JPanel();
+        StringBuilder pairingString = new StringBuilder("|");
 
-        pairingPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
         for(String pairing: selectedWine.pairings) {
-            JPanel labelContainer = new JPanel();
-            JLabel pairingLabel = new JLabel(pairing);
-            labelContainer.setBorder(new EmptyBorder(5, 5, 5, 5));
-            labelContainer.add(pairingLabel);
-            pairingPanel.add(labelContainer);
+           pairingString.append(pairing).append(" | ");
         }
-        pairings.add(pairingPanel);
+        pairings.setText(pairingString.toString());
 
         ratings.removeAll();
         JPanel ratingsPanel = new JPanel();
@@ -171,8 +158,8 @@ public class WineDetail extends JPanel {
         blend.setText("");
         acidity.setText("");
         body.setText("");
-        grapes.removeAll();
-        pairings.removeAll();
+        grapes.setText("");
+        pairings.setText("");
         ratings.removeAll();
     }
 

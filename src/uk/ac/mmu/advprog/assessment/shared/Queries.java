@@ -541,7 +541,9 @@ public class Queries {
                (select group_concat(p.food)
             	from Wine_Pairing as wp
             			 inner join Pairing p on p.id = wp.pairing_id
-            	where wp.wine_id = w.id) as pairings
+            	where wp.wine_id = w.id) as pairings,
+            	   r.name as region,
+                   wy.website
             from Wine as w 
             inner join Winery as wy on w.winery_id = wy.id
             inner join Region as r on r.id = wy.region_id
@@ -554,7 +556,7 @@ public class Queries {
                 ResultSet rs = stmt.executeQuery();
 
                 while (rs.next()) {
-                    SelectedWine wine = new SelectedWine(rs.getInt("id"), rs.getString("name"), rs.getString("type"), rs.getString("winery_name"), rs.getString("country"), rs.getString("abv"), rs.getString("blend_type"), rs.getString("body"), rs.getString("acidity"), rs.getString("grapes").split(","), rs.getString("pairings").split(","));
+                    SelectedWine wine = new SelectedWine(rs.getInt("id"), rs.getString("name"), rs.getString("type"), rs.getString("winery_name"), rs.getString("country"), rs.getString("abv"), rs.getString("blend_type"), rs.getString("body"), rs.getString("acidity"), rs.getString("grapes").split(","), rs.getString("website"), rs.getString("region"), rs.getString("pairings").split(","));
 
                     wineToAdd = wine;
 

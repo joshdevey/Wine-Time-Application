@@ -113,6 +113,13 @@ public class WineDetail extends JPanel {
 
     }
 
+    /**
+     *
+     * @param year
+     * @param stars
+     * @param ratings
+     * @return
+     */
     private static JPanel createRatingRow(int year, float stars, int ratings) {
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
@@ -137,8 +144,10 @@ public class WineDetail extends JPanel {
         return panel;
     }
 
-
-
+    /**
+     *
+     * @param selectedWine
+     */
     public void setData(SelectedWine selectedWine) {
         name.setText(selectedWine.name);
         winery.setText("Winery: " + selectedWine.winery);

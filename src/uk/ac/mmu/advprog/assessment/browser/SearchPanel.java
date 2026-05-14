@@ -78,6 +78,10 @@ public class SearchPanel extends JPanel {
         add(getClearButton());
     }
 
+    /**
+     *
+     * @return
+     */
     private JPanel getClearButton() {
         JPanel buttonContainer = new JPanel(new FlowLayout());
         JButton clearButton = new JButton("Clear");
@@ -101,9 +105,15 @@ public class SearchPanel extends JPanel {
         return buttonContainer;
     }
 
-    private JPanel getPanel(String labelValue, boolean higher) {
+    /**
+     *
+     * @param labelValue label for search field
+     * @param scroller allow for more height to fit JSlider
+     * @return
+     */
+    private JPanel getPanel(String labelValue, boolean scroller) {
         JPanel panel = new JPanel();
-        panel.setPreferredSize(new Dimension(290, higher ? 100 : 70));
+        panel.setPreferredSize(new Dimension(290, scroller ? 100 : 70));
         JLabel label = new JLabel(labelValue);
         label.setForeground(ColorUIResource.WHITE);
         panel.setLayout(new GridLayout(2, 1));
@@ -224,6 +234,10 @@ public class SearchPanel extends JPanel {
         body.setSelectedIndex(0);
     }
 
+    /**
+     *
+     * @return QueryBuilder - contains all search criteria
+     */
     public QueryBuilder getQuery() {
         QueryBuilder queryBuilder = new QueryBuilder();
         queryBuilder.setName(name.getText());
@@ -241,6 +255,10 @@ public class SearchPanel extends JPanel {
         return queryBuilder;
     }
 
+    /**
+     * checks is minimum search criteria is met
+     * @return boolean
+     */
     public boolean validateSearch() {
         if (name.getText().isEmpty() && winery.getText().isEmpty() && grape.getText().isEmpty() && type.getSelectedItem().toString().equals("Any") && country.getSelectedItem().toString().equals("Any") && blend.getSelectedItem().toString().equals("Any") && acidity.getSelectedItem().toString().equals("Any") && body.getSelectedItem().toString().equals("Any")) {
             return false;

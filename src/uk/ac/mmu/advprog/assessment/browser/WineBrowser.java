@@ -33,12 +33,11 @@ public class WineBrowser extends JFrame {
         this.searchResultPanel = new JScrollPane();
     }
 
-    //Main Frame
     public void displayWineBrowser() {
         setTitle("Wine Browser");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(800, 820);
-        setMinimumSize(new Dimension(800, 820));
+        setSize(800, 920);
+        setMinimumSize(new Dimension(800, 920));
         add(searchPanel, "West");
         add(searchResultPanel, "Center");
         renderSearchButtons();

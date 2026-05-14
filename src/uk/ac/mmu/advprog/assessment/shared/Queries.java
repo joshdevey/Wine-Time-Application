@@ -30,6 +30,12 @@ public class Queries {
         this.enhancedLogging = enhancedLogging;
     }
 
+    /**
+     * inserts pairings into database
+     *
+     * @param pairings ArrayList of pairings
+     * @throws SQLException
+     */
     private void insertPairingIntoDB(ArrayList<Pairing> pairings) throws SQLException {
         if (enhancedLogging) {
             System.out.println(Instant.now() + " - start insert pairings");
@@ -65,6 +71,12 @@ public class Queries {
         }
     }
 
+    /**
+     * Inserts uniqiue grapes into database
+     *
+     * @param grapes ArrayList of pairings
+     * @throws SQLException
+     */
     private void insertGrapeIntoDB(ArrayList<String> grapes) throws SQLException {
         if (enhancedLogging) {
             System.out.println(Instant.now() + " - start insert grapes");
@@ -99,6 +111,12 @@ public class Queries {
         }
     }
 
+    /**
+     * inserts regions into database
+     *
+     * @param regions ArrayList of regions
+     * @throws SQLException
+     */
     private void insertRegionIntoDB(ArrayList<Region> regions) throws SQLException {
 
         if (enhancedLogging) {
@@ -138,6 +156,12 @@ public class Queries {
         }
     }
 
+    /**
+     * Inserts Wineries into database
+     *
+     * @param wineries ArrayList of wineries
+     * @throws SQLException
+     */
     private void insertWineryIntoDB(ArrayList<Winery> wineries) throws SQLException {
 
         if (enhancedLogging) {
@@ -189,6 +213,13 @@ public class Queries {
         }
     }
 
+    /**
+     * Inserts Wines into database
+     * Also inserts links to grapes, vintages pairings associated with the wine
+     *
+     * @param wines ArrayList of wines
+     * @throws SQLException
+     */
     private void insertWineIntoDB(ArrayList<Wine> wines) throws SQLException {
 
         if (enhancedLogging) {
@@ -310,6 +341,11 @@ public class Queries {
         }
     }
 
+    /**
+     * Creates database structure
+     *
+     * @throws SQLException
+     */
     private void createDB() throws SQLException {
         if (enhancedLogging) {
             System.out.println(Instant.now() + " - CREATE DB");
@@ -452,6 +488,11 @@ public class Queries {
 
     }
 
+    /**
+     * Main entry point to create and populate database
+     *
+     * @param objects
+     */
     public void populateDB(ExtractIntoObjects objects) {
         try {
             createDB();
@@ -466,6 +507,9 @@ public class Queries {
         }
     }
 
+    /**
+     * Adds relevant indexes to database to help with queries
+     */
     private void addIndices() {
         try (Connection c = DriverManager.getConnection(this.connectionString)) {
             c.setAutoCommit(false);
@@ -519,6 +563,12 @@ public class Queries {
         }
     }
 
+    /**
+     * Returns wine based on wine id
+     *
+     * @param id value in Wine table
+     * @return SelectedWine wine for detail view
+     */
     public SelectedWine getWine(int id) {
         SelectedWine wineToAdd = null;
 
@@ -594,6 +644,13 @@ public class Queries {
         return wineToAdd;
     }
 
+    /**
+     * Returns wines base on search criteria
+     * Used if not grape parameter is selected, to help with
+     * query speed
+     * @param queryBuilder contains all search parameters
+     * @return BrowserWine wine object for results table
+     */
     public ArrayList<BrowserWine> getWinesFromSearch(QueryBuilder queryBuilder) {
         ArrayList<BrowserWine> wines = new ArrayList<>();
 
@@ -637,6 +694,14 @@ public class Queries {
         return wines;
     }
 
+
+    /**
+     * Returns wines base on search criteria
+     * Used if grape parameter is selected, to help with
+     * query speed
+     * @param queryBuilder contains all search parameters
+     * @return BrowserWine wine object for results table
+     */
     public ArrayList<BrowserWine> getWinesFromSearchWithGrape(QueryBuilder queryBuilder) {
         ArrayList<BrowserWine> wines = new ArrayList<>();
 
@@ -683,6 +748,10 @@ public class Queries {
         return wines;
     }
 
+    /**
+     * Gets all countries store in database
+     * @return ArrayList of countries
+     */
     public ArrayList<String> getCountries() {
         ArrayList<String> countries = new ArrayList<>();
         countries.add("Any");
@@ -702,6 +771,10 @@ public class Queries {
         return countries;
     }
 
+    /**
+     * Gets all blends store in database
+     * @return ArrayList of blends
+     */
     public ArrayList<String> getBlends() {
         ArrayList<String> blends = new ArrayList<>();
         blends.add("Any");
@@ -721,6 +794,10 @@ public class Queries {
         return blends;
     }
 
+    /**
+     * Gets all types store in database
+     * @return ArrayList of types
+     */
     public ArrayList<String> getTypes() {
         ArrayList<String> types = new ArrayList<>();
         types.add("Any");
@@ -740,6 +817,10 @@ public class Queries {
         return types;
     }
 
+    /**
+     * Gets all body store in database
+     * @return ArrayList of body
+     */
     public ArrayList<String> getBodys() {
         ArrayList<String> bodys = new ArrayList<>();
         bodys.add("Any");
@@ -759,6 +840,12 @@ public class Queries {
         return bodys;
     }
 
+    /**
+     * Builds where clause for queries base on search criteria
+     *
+     * @param queryBuilder
+     * @return String to be appended to search query
+     */
     private String buildAdditionQueryString(QueryBuilder queryBuilder) {
         String additionalQueries = "";
 
@@ -801,6 +888,12 @@ public class Queries {
         return additionalQueries;
     }
 
+    /**
+     * Builds order by for queries
+     *
+     * @param queryBuilder
+     * @return
+     */
     private String getOrderByString(QueryBuilder queryBuilder) {
         if (queryBuilder.getSortColumn() == null || queryBuilder.getSortColumn().equals("")) {
             return "";

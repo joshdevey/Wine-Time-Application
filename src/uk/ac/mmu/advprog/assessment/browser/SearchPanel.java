@@ -11,7 +11,6 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class SearchPanel extends JPanel {
-    //todo add a limit drop down?
     Queries queries = new Queries("jdbc:sqlite:data/winetime.db", false);
     JTextField name = new JTextField(12);
     public JTextField winery = new JTextField(12);

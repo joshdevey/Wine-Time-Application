@@ -16,6 +16,8 @@ public class WineDetail extends JPanel {
     private JLabel abv = new JLabel("");
     private JLabel acidity = new JLabel("");
     private JLabel body = new JLabel("");
+    private JTextArea website = new JTextArea("");
+    private JLabel region = new JLabel("");
     private JLabel pairings = new JLabel("");
     private JPanel ratings = new JPanel();
 
@@ -31,57 +33,78 @@ public class WineDetail extends JPanel {
         name.setFont(new Font("SansSerif", Font.BOLD, 28));
         mainPanel.add(name, BorderLayout.NORTH);
 
-        // Content panel
-        JPanel content = new JPanel(new GridLayout(5, 2));
+        JPanel content = new JPanel(new GridLayout(3, 1));
+        JPanel wineryWinePanel = new JPanel(new GridLayout(1, 2));
         content.setBorder(new EmptyBorder(15, 15, 15, 15));
         content.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
 
-        JPanel typePanel = new JPanel();
-        typePanel.setLayout(new GridLayout(1, 2));
-        typePanel.add(new JLabel("Type"));
-        typePanel.add(type);
-        content.add(typePanel);
+        JPanel wineryInfoPanel = new JPanel(new GridLayout(4, 2));
+        wineryInfoPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
 
         JPanel wineryPanel = new JPanel();
-        wineryPanel.setLayout(new GridLayout(1, 2));
-        wineryPanel.add(new JLabel("Winery"));
         wineryPanel.add(winery);
-        content.add(wineryPanel);
+        wineryInfoPanel.add(wineryPanel);
 
-        JPanel CountryPanel = new JPanel();
-        CountryPanel.setLayout(new GridLayout(1, 2));
-        CountryPanel.add(new JLabel("Country"));
-        CountryPanel.add(country);
-        content.add(CountryPanel);
+        JPanel regionPanel = new JPanel();
+        regionPanel.add(region);
+        wineryInfoPanel.add(regionPanel);
+
+        JPanel countryPanel = new JPanel();
+        countryPanel.add(country);
+        wineryInfoPanel.add(countryPanel);
+
+        JPanel websitePanel = new JPanel();
+        website.setEditable(false);
+        website.setOpaque(false);
+        website.setLineWrap(true);
+        website.setPreferredSize(new Dimension(200, 50));
+        website.setMinimumSize(new Dimension(200, 50));
+        websitePanel.add(website);
+        wineryInfoPanel.add(websitePanel);
+
+        JPanel wineInfoPanel = new JPanel(new GridLayout(4, 2));
+        wineInfoPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
+
+        JPanel typePanel = new JPanel();
+        typePanel.add(type);
+        wineInfoPanel.add(typePanel);
 
         JPanel abvPanel = new JPanel();
-        abvPanel.setLayout(new GridLayout(1, 2));
-        abvPanel.add(new JLabel("Abv"));
         abvPanel.add(abv);
-        content.add(abvPanel);
+        wineInfoPanel.add(abvPanel);
 
         JPanel Acidity = new JPanel();
-        Acidity.setLayout(new GridLayout(1, 2));
-        Acidity.add(new JLabel("Acidity"));
         Acidity.add(acidity);
-        content.add(Acidity);
+        wineInfoPanel.add(Acidity);
 
         JPanel bodyPanel = new JPanel();
-        bodyPanel.setLayout(new GridLayout(1, 2));
-        bodyPanel.add(new JLabel("Body"));
         bodyPanel.add(body);
-        content.add(bodyPanel);
+        wineInfoPanel.add(bodyPanel);
 
-        content.add(new JLabel("Grapes"));
-        content.add(grapes);
+        wineryWinePanel.add(wineryInfoPanel);
+        wineryWinePanel.add(wineInfoPanel);
 
-        content.add(new JLabel("Pairings"));
-        content.add(pairings);
+        content.add(wineryWinePanel);
+
+        JPanel grapesPanel = new JPanel(new GridLayout(2, 1));
+        grapesPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
+
+        grapesPanel.add(new JLabel("Grapes"));
+        grapesPanel.add(grapes);
+
+        content.add(grapesPanel);
+
+        JPanel pairingPanel = new JPanel(new GridLayout(2, 1));
+        pairingPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
+
+        pairingPanel.add(new JLabel("Pairings"));
+        pairingPanel.add(pairings);
+
+        content.add(pairingPanel);
 
         mainPanel.add(content, BorderLayout.CENTER);
 
         JScrollPane scrollPane = new JScrollPane(ratings);
-        scrollPane.setPreferredSize(new Dimension(200, 300));
 
         mainPanel.add(scrollPane, BorderLayout.EAST);
 
@@ -117,24 +140,26 @@ public class WineDetail extends JPanel {
 
     public void setData(SelectedWine selectedWine) {
         name.setText(selectedWine.name);
-        winery.setText(selectedWine.winery);
-        type.setText(selectedWine.type);
-        country.setText(selectedWine.country);
-        abv.setText(selectedWine.abv);
-        blend.setText(selectedWine.blend);
-        acidity.setText(selectedWine.acidity);
-        body.setText(selectedWine.body);
+        winery.setText("Winery: " + selectedWine.winery);
+        type.setText("Type: "+ selectedWine.type);
+        country.setText("Country: " + selectedWine.country);
+        abv.setText("ABV: " + selectedWine.abv + "%");
+        blend.setText("Blend: " + selectedWine.blend);
+        acidity.setText("Acidity: " + selectedWine.acidity);
+        body.setText("Body: " + selectedWine.body);
+        website.setText(selectedWine.website);
+        region.setText("Region: " + selectedWine.region);
 
-        StringBuilder grapeString = new StringBuilder("|");
+        StringBuilder grapeString = new StringBuilder();
         for(String grape: selectedWine.grapes) {
-            grapeString.append(grape).append(" | ");
+            grapeString.append(grape).append(", ");
         }
         grapes.setText(grapeString.toString());
 
-        StringBuilder pairingString = new StringBuilder("|");
+        StringBuilder pairingString = new StringBuilder();
 
         for(String pairing: selectedWine.pairings) {
-           pairingString.append(pairing).append(" | ");
+           pairingString.append(pairing).append(", ");
         }
         pairings.setText(pairingString.toString());
 
@@ -158,6 +183,8 @@ public class WineDetail extends JPanel {
         blend.setText("");
         acidity.setText("");
         body.setText("");
+        website.setText("");
+        region.setText("");
         grapes.setText("");
         pairings.setText("");
         ratings.removeAll();

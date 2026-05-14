@@ -23,7 +23,6 @@ public class WineDetail extends JPanel {
 
 
     public WineDetail() {
-        setPreferredSize(new Dimension(400, 600));
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         JPanel mainPanel = new JPanel(new BorderLayout());
@@ -33,7 +32,8 @@ public class WineDetail extends JPanel {
         name.setFont(new Font("SansSerif", Font.BOLD, 28));
         mainPanel.add(name, BorderLayout.NORTH);
 
-        JPanel content = new JPanel(new GridLayout(3, 1));
+        JPanel content = new JPanel();
+        content.setLayout(new BoxLayout(content, BoxLayout.Y_AXIS));
         JPanel wineryWinePanel = new JPanel(new GridLayout(1, 2));
         content.setBorder(new EmptyBorder(15, 15, 15, 15));
         content.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
@@ -105,7 +105,7 @@ public class WineDetail extends JPanel {
         mainPanel.add(content, BorderLayout.CENTER);
 
         JScrollPane scrollPane = new JScrollPane(ratings);
-        ratings.setPreferredSize(new Dimension(200, 400));
+        scrollPane.setPreferredSize(new Dimension(200, 400));
 
         mainPanel.add(scrollPane, BorderLayout.EAST);
 

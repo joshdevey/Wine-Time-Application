@@ -795,7 +795,7 @@ public class Queries {
         if(queryBuilder.getMinRatingsQueryString() != null) {
             additionalQueries += " and " + queryBuilder.getMinRatingsQueryString();
         }
-        System.out.println(additionalQueries);
+        
         return additionalQueries;
     }
 

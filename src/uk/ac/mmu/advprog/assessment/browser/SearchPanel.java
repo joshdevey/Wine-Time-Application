@@ -12,47 +12,43 @@ import java.util.ArrayList;
 
 public class SearchPanel extends JPanel {
     Queries queries = new Queries("jdbc:sqlite:data/winetime.db", false);
-    JTextField name = new JTextField(12);
-    public JTextField winery = new JTextField(12);
 
-    ArrayList<String> availableTypes = queries.getTypes();
-    String[] types = availableTypes.toArray(new String[availableTypes.size()]);
+    private final EmptyBorder border = new EmptyBorder(5, 5, 5, 5);
 
-    ArrayList<String> availableCountries = queries.getCountries();
-    String[] countries = availableCountries.toArray(new String[availableCountries.size()]);
+    private JTextField name = new JTextField(12);
 
-    ArrayList<String> availableBlends = queries.getBlends();
-    String[] blends = availableBlends.toArray(new String[availableBlends.size()]);
+    private JTextField winery = new JTextField(12);
 
-    ArrayList<String> availableBodys = queries.getBodys();
-    String[] bodys = availableBodys.toArray(new String[availableBodys.size()]);
+    private ArrayList<String> availableTypes = queries.getTypes();
+    private String[] types = availableTypes.toArray(new String[availableTypes.size()]);
+    private JComboBox<String> type = new JComboBox<>(types);
 
-    public JComboBox<String> type = new JComboBox<>(types);
+    private ArrayList<String> availableCountries = queries.getCountries();
+    private String[] countries = availableCountries.toArray(new String[availableCountries.size()]);
+    private JComboBox<String> country = new JComboBox<>(countries);
 
-    public JComboBox<String> country = new JComboBox<>(countries);
+    private ArrayList<String> availableBlends = queries.getBlends();
+    private String[] blends = availableBlends.toArray(new String[availableBlends.size()]);
+    private JComboBox<String> blend = new JComboBox<>(blends);
 
-    public JComboBox<String> blend = new JComboBox<>(blends);
+    private JTextField grape = new JTextField(12);
 
-    public JTextField grape = new JTextField(12);
+    private JSlider abv = new JSlider(0, 50);
 
-    public JSlider abv = new JSlider(0, 50);
+    private JSlider minRating = new JSlider(0, 5);
 
-    public JSlider minRating = new JSlider(0, 5);
-
-    public JFormattedTextField minNumberRatings = new JFormattedTextField(java.text.NumberFormat.getIntegerInstance());
-
-    String[] aciditys = {"Any",
+    private JFormattedTextField minNumberRatings = new JFormattedTextField(java.text.NumberFormat.getIntegerInstance());
+    String[] acidities = {"Any",
             "High",
             "Medium",
             "Low"
     };
+    private JComboBox<String> acidity = new JComboBox<>(acidities);
 
-    public JComboBox<String> acidity = new JComboBox<>(aciditys);
+    private ArrayList<String> availableBodys = queries.getBodys();
+    private String[] bodys = availableBodys.toArray(new String[availableBodys.size()]);
+    private JComboBox<String> body = new JComboBox<>(bodys);
 
-
-    public JComboBox<String> body = new JComboBox<>(bodys);
-
-    public JButton clearButton = new JButton("Clear");
 
     public SearchPanel() {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -60,41 +56,24 @@ public class SearchPanel extends JPanel {
         setPreferredSize(new Dimension(300, 600));
         setMaximumSize(new Dimension(300, 600));
 
-        JPanel namePanel = getWineNamePanel();
-        add(namePanel);
+        add(getWineNamePanel());
+        add(getWineryPanel());
+        add(getTypePanel());
+        add(getCountryPanel());
+        add(getBlendPanel());
+        add(getGrapePanel());
+        add(getAbvPanel());
+        add(getAcidityPanel());
+        add(getBodyPanel());
+        add(getMinRatingPanel());
+        add(getMinRatingsPanel());
 
-        JPanel wineryPanel = getWineryPanel();
-        add(wineryPanel);
+        add(getClearButton());
+    }
 
-        JPanel typePanel = getTypePanel();
-        add(typePanel);
-
-        JPanel countryPanel = getCountryPanel();
-        add(countryPanel);
-
-        JPanel blendPanel = getBlendPanel();
-        add(blendPanel);
-
-        JPanel grapePanel = getGrapePanel();
-        add(grapePanel);
-
-        JPanel abvPanel = getAbvPanel();
-        add(abvPanel);
-
-        JPanel acidityPanel = getAcidityPanel();
-        add(acidityPanel);
-
-        JPanel bodyPanel = getBodyPanel();
-        add(bodyPanel);
-
-        JPanel minRating = getMinRatingPanel();
-        add(minRating);
-
-        JPanel minNumberOfRatings = getMinRatingsPanel();
-        add(minNumberOfRatings);
-
+    private JPanel getClearButton() {
         JPanel buttonContainer = new JPanel(new FlowLayout());
-
+        JButton clearButton = new JButton("Clear");
         clearButton.setBackground(new Color(250, 108, 14));
         clearButton.setForeground(Color.WHITE);
         clearButton.setBorderPainted(false);
@@ -112,167 +91,116 @@ public class SearchPanel extends JPanel {
         buttonContainer.setOpaque(false);
         buttonContainer.add(clearButton);
 
-        add(buttonContainer);
+        return buttonContainer;
+    }
+
+    private JPanel getPanel(String labelValue) {
+        JPanel panel = new JPanel();
+        JLabel label = new JLabel(labelValue);
+        label.setForeground(ColorUIResource.WHITE);
+        panel.setLayout(new GridLayout(2, 1));
+        panel.setOpaque(false);
+        panel.setBorder(border);
+        panel.add(label);
+
+        return panel;
     }
 
     private JPanel getWineNamePanel() {
-        JLabel label = new JLabel("Name ");
-        JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(2, 1));
-        panel.setOpaque(false);
+        JPanel panel = getPanel("Name ");
         name.setBackground(new Color(70, 72, 74));
-        label.setForeground(ColorUIResource.WHITE);
         name.setForeground(ColorUIResource.WHITE);
-        panel.add(label);
         panel.add(name);
-        panel.setBorder(new EmptyBorder(10, 10, 10, 10));
         return panel;
     }
 
     private JPanel getWineryPanel() {
-        JPanel panel = new JPanel();
-        JLabel label = new JLabel("Winery Name");
-        panel.setOpaque(false);
+        JPanel panel = getPanel("Winery Name");
         winery.setBackground(new Color(70, 72, 74));
-        label.setForeground(ColorUIResource.WHITE);
         winery.setForeground(ColorUIResource.WHITE);
-        panel.setLayout(new GridLayout(2, 1));
-        panel.add(label);
         panel.add(winery);
-        panel.setBorder(new EmptyBorder(10, 10, 10, 10));
         return panel;
     }
 
     private JPanel getTypePanel() {
-        JPanel panel = new JPanel();
-        JLabel label = new JLabel("Type");
-        panel.setOpaque(false);
+        JPanel panel = getPanel("Type");
         type.setOpaque(false);
-        label.setForeground(ColorUIResource.WHITE);
-        panel.setLayout(new GridLayout(2, 1));
-        panel.add(label);
-        panel.setBorder(new EmptyBorder(10, 10, 10, 10));
         panel.add(type);
 
         return panel;
     }
 
     private JPanel getCountryPanel() {
-        JPanel panel = new JPanel();
-        JLabel label = new JLabel("Country of Origin");
-        panel.setOpaque(false);
-        label.setForeground(ColorUIResource.WHITE);
-        panel.setLayout(new GridLayout(2, 1));
-        panel.add(label);
-        panel.setBorder(new EmptyBorder(10, 10, 10, 10));
+        JPanel panel = getPanel("Country of Origin");
         panel.add(country);
 
         return panel;
     }
 
     private JPanel getBlendPanel() {
-        JPanel panel = new JPanel();
-        JLabel label = new JLabel("Blend");
-        panel.setOpaque(false);
-        label.setForeground(ColorUIResource.WHITE);
-        panel.setLayout(new GridLayout(2, 1));
-        panel.add(label);
-        panel.setBorder(new EmptyBorder(10, 10, 10, 10));
+        JPanel panel = getPanel("Blend");
         panel.add(blend);
 
         return panel;
     }
 
     private JPanel getGrapePanel() {
-        JPanel panel = new JPanel();
-        JLabel label = new JLabel("Grape");
-        panel.setOpaque(false);
+        JPanel panel = getPanel("Grape");
         grape.setBackground(new Color(70, 72, 74));
-        label.setForeground(ColorUIResource.WHITE);
         grape.setForeground(Color.WHITE);
-        panel.setLayout(new GridLayout(2, 1));
-        panel.add(label);
-        panel.setBorder(new EmptyBorder(10, 10, 10, 10));
         panel.add(grape);
 
         return panel;
     }
 
     private JPanel getAbvPanel() {
-        JPanel panel = new JPanel();
-        JLabel label = new JLabel("Min ABV");
-        panel.setOpaque(false);
-        label.setForeground(ColorUIResource.WHITE);
-        panel.setLayout(new GridLayout(2, 1));
-        panel.add(label);
+        JPanel panel = getPanel("Min ABV");
+
         abv.setValue(0);
         abv.setForeground(Color.WHITE);
         abv.setMajorTickSpacing(10);
         abv.setMinorTickSpacing(1);
         abv.setPaintTicks(true);
         abv.setPaintLabels(true);
-        panel.setBorder(new EmptyBorder(10, 10, 10, 10));
         panel.add(abv);
 
         return panel;
     }
 
     private JPanel getAcidityPanel() {
-        JPanel panel = new JPanel();
-        JLabel label = new JLabel("Acidity");
-        panel.setOpaque(false);
-        label.setForeground(ColorUIResource.WHITE);
-        panel.setLayout(new GridLayout(2, 1));
-        panel.add(label);
-        panel.setBorder(new EmptyBorder(10, 10, 10, 10));
+        JPanel panel = getPanel("Acidity");
         panel.add(acidity);
 
         return panel;
     }
 
     private JPanel getBodyPanel() {
-        JPanel panel = new JPanel();
-        JLabel label = new JLabel("Body");
-        panel.setOpaque(false);
-        label.setForeground(ColorUIResource.WHITE);
-        panel.setLayout(new GridLayout(2, 1));
-        panel.add(label);
-        panel.setBorder(new EmptyBorder(10, 10, 10, 10));
+        JPanel panel = getPanel("Body");
+
         panel.add(body);
 
         return panel;
     }
 
     private JPanel getMinRatingPanel() {
-        JPanel panel = new JPanel();
-        JLabel label = new JLabel("Min average Rating");
-        panel.setOpaque(false);
-        label.setForeground(ColorUIResource.WHITE);
-        panel.setLayout(new GridLayout(2, 1));
-        panel.add(label);
+        JPanel panel = getPanel("Min average Rating");
+
         minRating.setValue(0);
         minRating.setForeground(Color.WHITE);
         minRating.setMajorTickSpacing(1);
         minRating.setPaintTicks(true);
         minRating.setPaintLabels(true);
-        panel.setBorder(new EmptyBorder(10, 10, 10, 10));
         panel.add(minRating);
 
         return panel;
     }
 
     private JPanel getMinRatingsPanel() {
-        JLabel label = new JLabel("Min number of ratings ");
-        JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(2, 1));
-        panel.setOpaque(false);
+        JPanel panel = getPanel("Min number of ratings ");
         minNumberRatings.setBackground(new Color(70, 72, 74));
-        label.setForeground(ColorUIResource.WHITE);
         minNumberRatings.setForeground(ColorUIResource.WHITE);
-
-        panel.add(label);
         panel.add(minNumberRatings);
-        panel.setBorder(new EmptyBorder(10, 10, 10, 10));
+        
         return panel;
     }
 

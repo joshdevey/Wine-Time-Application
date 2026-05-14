@@ -105,6 +105,7 @@ public class WineDetail extends JPanel {
         mainPanel.add(content, BorderLayout.CENTER);
 
         JScrollPane scrollPane = new JScrollPane(ratings);
+        ratings.setPreferredSize(new Dimension(200, 400));
 
         mainPanel.add(scrollPane, BorderLayout.EAST);
 

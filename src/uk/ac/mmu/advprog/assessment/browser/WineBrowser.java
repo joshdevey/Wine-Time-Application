@@ -15,12 +15,13 @@ import java.util.ArrayList;
 
 public class WineBrowser extends JFrame {
 
+    private final Queries queries = new Queries("jdbc:sqlite:data/winetime.db", false);
+
     private final SearchPanel searchPanel;
     private JTable resultsTable;
     private final WineDetail detailPanel;
     private ArrayList<BrowserWine> searchResultsData;
     private JScrollPane searchResultPanel;
-    private final Queries queries = new Queries("jdbc:sqlite:data/winetime.db", false);
     private QueryBuilder queryBuilder;
     public JButton searchButton = new JButton("Search");
     public JButton returnButton = new JButton("Return to Search");
@@ -32,11 +33,12 @@ public class WineBrowser extends JFrame {
         this.searchResultPanel = new JScrollPane();
     }
 
+    //Main Frame
     public void displayWineBrowser() {
         setTitle("Wine Browser");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(500, 820);
-        setMinimumSize(new Dimension(800, 820));
+        setSize(500, 1020);
+        setMinimumSize(new Dimension(800, 1020));
         add(searchPanel, "West");
         add(searchResultPanel, "Center");
         renderSearchButtons();
@@ -176,6 +178,7 @@ public class WineBrowser extends JFrame {
         remove(detailPanel);
         revalidate();
         repaint();
+
         if(searchPanel.validateSearch()) {
             this.queryBuilder = searchPanel.getQuery();
             handleResultsTable();

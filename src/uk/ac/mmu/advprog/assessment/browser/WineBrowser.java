@@ -37,8 +37,8 @@ public class WineBrowser extends JFrame {
     public void displayWineBrowser() {
         setTitle("Wine Browser");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(500, 1020);
-        setMinimumSize(new Dimension(800, 1020));
+        setSize(800, 820);
+        setMinimumSize(new Dimension(800, 820));
         add(searchPanel, "West");
         add(searchResultPanel, "Center");
         renderSearchButtons();
@@ -87,9 +87,7 @@ public class WineBrowser extends JFrame {
         resultsTable.setSelectionBackground(new Color(250, 108, 14));
 
         resultsTable.getSelectionModel().addListSelectionListener(e -> {
-//            if (!e.getValueIsAdjusting()) {
                 updateFromSelection();
-//            }
         });
 
         resultsTable.getSelectedRow();

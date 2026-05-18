@@ -222,8 +222,7 @@ public class SearchPanel extends JPanel {
         queryBuilder.setAcidity(acidity.getSelectedItem().toString());
         queryBuilder.setBody(body.getSelectedItem().toString());
         queryBuilder.setMinAverageRating(minRating.getValue());
-        queryBuilder.setMinRatings(minNumberRatings.getText());
-
+        queryBuilder.setMinRatings(Integer.parseInt(minNumberRatings.getText().replace(",", "")));
         return queryBuilder;
     }
 

@@ -11,7 +11,7 @@ public class QueryBuilder {
     private String acidity;
     private String body;
     private float minAverageRating;
-    private String minRatings;
+    private double minRatings;
 
     public String getName() {
         return name;
@@ -93,11 +93,11 @@ public class QueryBuilder {
         this.minAverageRating = minAverageRating;
     }
 
-    public String getMinRatings() {
+    public double getMinRatings() {
         return minRatings;
     }
 
-    public void setMinRatings(String minRatings) {
+    public void setMinRatings(double minRatings) {
         this.minRatings = minRatings;
     }
 
@@ -174,7 +174,7 @@ public class QueryBuilder {
     }
 
     public String getMinRatingsQueryString() {
-        if (this.minRatings.isEmpty()) {
+        if (this.minRatings == 0) {
             return null;
         } else {
             return "rt.ratings > " + this.minRatings;

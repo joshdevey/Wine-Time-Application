@@ -7,6 +7,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 public class WineDetail extends JPanel {
 
@@ -183,15 +184,23 @@ public class WineDetail extends JPanel {
         region.setText("Region: " + selectedWine.region);
 
         StringBuilder grapeString = new StringBuilder();
-        for(String grape: selectedWine.grapes) {
-            grapeString.append(grape).append(", ");
+        for(int i = 0; i < selectedWine.grapes.length; i++) {
+            grapeString.append(selectedWine.grapes[i]);
+
+            if(i < selectedWine.grapes.length - 1) {
+                grapeString.append(", ");
+            }
         }
         grapes.setText(grapeString.toString());
 
         StringBuilder pairingString = new StringBuilder();
 
-        for(String pairing: selectedWine.pairings) {
-           pairingString.append(pairing).append(", ");
+        for(int i = 0; i < selectedWine.pairings.length; i++) {
+            pairingString.append(selectedWine.pairings[i]);
+
+            if(i < selectedWine.pairings.length - 1) {
+                pairingString.append(", ");
+            }
         }
         pairings.setText(pairingString.toString());
 

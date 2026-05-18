@@ -8,7 +8,9 @@ public class Main {
 
     public static void main(String[] args) {
         String databaseConnectionString = "jdbc:sqlite:data/winetime.db";
-        boolean enhancedLogging = true;
+        //update here for enhanced logging
+        boolean enhancedLogging = false;
+        //update here to include ratings
         boolean includeRatings = true;
 
         System.out.println(Instant.now() + " Import Start");

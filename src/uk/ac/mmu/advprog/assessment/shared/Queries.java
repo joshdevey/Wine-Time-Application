@@ -606,7 +606,7 @@ public class Queries {
                 ResultSet rs = stmt.executeQuery();
 
                 while (rs.next()) {
-                    SelectedWine wine = new SelectedWine(rs.getInt("id"), rs.getString("name"), rs.getString("type"), rs.getString("winery_name"), rs.getString("country"), rs.getString("abv"), rs.getString("blend_type"), rs.getString("body"), rs.getString("acidity"), rs.getString("grapes").split(","), rs.getString("website"), rs.getString("region"), rs.getString("pairings").split(","));
+                    SelectedWine wine = new SelectedWine(rs.getInt("id"), rs.getString("name"), rs.getString("type"), rs.getString("winery_name"), rs.getString("country"), rs.getFloat("abv"), rs.getString("blend_type"), rs.getString("body"), rs.getString("acidity"), rs.getString("grapes").split(","), rs.getString("website"), rs.getString("region"), rs.getString("pairings").split(","));
 
                     wineToAdd = wine;
 
@@ -706,7 +706,7 @@ public class Queries {
             ResultSet rs = c.createStatement().executeQuery(queryString);
 
             while (rs.next()) {
-                BrowserWine wine = new BrowserWine(rs.getInt("id"), rs.getString("name"), rs.getString("type"), rs.getString("winery_name"), rs.getString("country"), rs.getString("abv"), rs.getInt("ratings"), rs.getFloat("avg_ratings"));
+                BrowserWine wine = new BrowserWine(rs.getInt("id"), rs.getString("name"), rs.getString("type"), rs.getString("winery_name"), rs.getString("country"), rs.getFloat("abv"), rs.getInt("ratings"), rs.getFloat("avg_ratings"));
                 wines.add(wine);
             }
         } catch (SQLException se) {
@@ -760,7 +760,7 @@ public class Queries {
             ResultSet rs = c.createStatement().executeQuery(queryString);
 
             while (rs.next()) {
-                BrowserWine wine = new BrowserWine(rs.getInt("id"), rs.getString("name"), rs.getString("type"), rs.getString("winery_name"), rs.getString("country"), rs.getString("abv"), rs.getInt("ratings"), rs.getFloat("avg_ratings"));
+                BrowserWine wine = new BrowserWine(rs.getInt("id"), rs.getString("name"), rs.getString("type"), rs.getString("winery_name"), rs.getString("country"), rs.getFloat("abv"), rs.getInt("ratings"), rs.getFloat("avg_ratings"));
                 wines.add(wine);
             }
         } catch (SQLException se) {

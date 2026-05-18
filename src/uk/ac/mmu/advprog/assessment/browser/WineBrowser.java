@@ -6,10 +6,14 @@ import uk.ac.mmu.advprog.assessment.shared.Queries;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 
 public class WineBrowser extends JFrame {
@@ -49,8 +53,6 @@ public class WineBrowser extends JFrame {
     }
 
     private void handleResultsTable() {
-
-        resultsTable.setAutoCreateRowSorter(true);
 
         resultsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         resultsTable.setSelectionBackground(new Color(250, 108, 14));
@@ -230,6 +232,17 @@ public class WineBrowser extends JFrame {
                             public boolean isCellEditable(int row, int column) {
                                 return false;
                             }
+
+
+                            @Override
+                            public Class<?> getColumnClass(int columnIndex) {
+                                switch (columnIndex) {
+                                    case 4, 6: return Float.class;
+                                    case 5: return Integer.class;
+                                    default: return Object.class;
+                                }
+                            }
+
                         };
 
                         for (BrowserWine wine : result) {
@@ -237,6 +250,9 @@ public class WineBrowser extends JFrame {
 
                             tableModel.addRow(obj);
                         }
+
+                        resultsTable.setAutoCreateRowSorter(true);
+
 
                         searchResultsData = result;
                         resultsTable.setModel(tableModel);

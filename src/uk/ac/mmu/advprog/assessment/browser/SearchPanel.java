@@ -37,7 +37,7 @@ public class SearchPanel extends JPanel {
 
     private final JSlider minRating = new JSlider(0, 5);
 
-    private final JFormattedTextField minNumberRatings = new JFormattedTextField(java.text.NumberFormat.getIntegerInstance());
+    private final JFormattedTextField minNumberRatings = new JFormattedTextField("0");
     String[] acidities = {"Any",
             "High",
             "Medium",
@@ -204,6 +204,8 @@ public class SearchPanel extends JPanel {
         abv.setValue(0);
         acidity.setSelectedIndex(0);
         body.setSelectedIndex(0);
+        minRating.setValue(0);
+        minNumberRatings.setValue(0);
     }
 
     /**

@@ -6,14 +6,14 @@ public class Wine {
     public String type;
     public String winery;
     public String country;
-    public String abv;
+    public Float abv;
     public String blend;
     public String body;
     public String acidity;
     public String[] grapes;
     public String[] pairings;
 
-    public Wine(int id, String name, String type, String winery, String country, String ABV) {
+    public Wine(int id, String name, String type, String winery, String country, Float ABV) {
         this.id = id;
         this.name = name;
         this.type = type;
@@ -22,7 +22,7 @@ public class Wine {
         this.abv = ABV;
     }
 
-    public Wine(int id, String name, String type, String winery, String country, String abv, String blend, String body, String acidity, String[] grapes, String[] pairings) {
+    public Wine(int id, String name, String type, String winery, String country, Float abv, String blend, String body, String acidity, String[] grapes, String[] pairings) {
         this.id = id;
         this.name = name;
         this.type = type;

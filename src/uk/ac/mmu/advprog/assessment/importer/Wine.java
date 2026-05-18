@@ -109,17 +109,20 @@ public class Wine {
 
     @Override
     public String toString() {
-
-        return "Wine {" +
+        return "Wine{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", type='" + type + '\'' +
-                ", blend='" + elaborate + '\'' +
+                ", elaborate='" + elaborate + '\'' +
                 ", abv='" + abv + '\'' +
                 ", body='" + body + '\'' +
                 ", acidity='" + acidity + '\'' +
+                ", grapes=" + grapes +
+                ", pairings=" + pairings +
+                ", winery=" + winery +
+                ", vintages=" + vintages +
+                ", region=" + region +
                 '}';
-
     }
 
     /**

@@ -16,18 +16,18 @@ import java.time.Instant;
 import static uk.ac.mmu.advprog.assessment.importer.ExtractWines.splitString;
 
 public class ExtractRatings {
-    private final String ratingsCsvPath;
+    private final String csvPath;
     private final String connectionString;
 
-    public ExtractRatings(String ratingsCsvPath, String connectionString) {
-        this.ratingsCsvPath = ratingsCsvPath;
+    public ExtractRatings(String csvPath, String connectionString) {
+        this.csvPath = csvPath;
         this.connectionString = connectionString;
     }
 
     public void extractRatings(boolean enhancedLogging) {
 
         try {
-            if (this.ratingsCsvPath.isEmpty()) {
+            if (this.csvPath.isEmpty()) {
                 throw new EmptyCSVPath("Empty CSV Path");
             }
 
@@ -38,12 +38,12 @@ public class ExtractRatings {
             if (enhancedLogging) {
                 System.out.println(Instant.now() + " Import ratings - Start");
             }
-            if (ratingsCsvPath == null || ratingsCsvPath.isEmpty()) {
+            if (csvPath == null || csvPath.isEmpty()) {
                 System.out.println("Invalid import path");
                 return;
             }
 
-            Path readFile = Paths.get(ratingsCsvPath);
+            Path readFile = Paths.get(csvPath);
 
             InputStream is = Files.newInputStream(readFile);
             BufferedReader br = new BufferedReader(new InputStreamReader(is));

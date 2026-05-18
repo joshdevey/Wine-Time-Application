@@ -35,7 +35,7 @@ public class Wine {
     public Wine(String id, String name, String type, String elaborate, String abv, String body, String acidity) {
         super();
         this.id = id;
-        this.name = name;
+        this.name = cleanWineName(name);
         this.type = type;
         this.elaborate = elaborate;
         this.abv = abv;
@@ -120,6 +120,27 @@ public class Wine {
                 ", acidity='" + acidity + '\'' +
                 '}';
 
+    }
+
+    /**
+     * Private function to clean the name of the wine
+     *
+     * @param wineName
+     * @return String clean wineName
+     */
+    private String cleanWineName(String wineName) {
+
+        String cleanWineName = wineName;
+
+        if(cleanWineName.charAt(cleanWineName.length() - 1) == '"') {
+            cleanWineName = cleanWineName.substring(0, cleanWineName.length() - 1);
+        }
+
+        if(cleanWineName.charAt(0) == '"') {
+            cleanWineName = cleanWineName.substring(1, cleanWineName.length() - 1);
+        }
+
+        return cleanWineName;
     }
 
 }

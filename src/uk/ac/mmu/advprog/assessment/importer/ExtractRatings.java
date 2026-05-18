@@ -15,11 +15,11 @@ import java.time.Instant;
 
 import static uk.ac.mmu.advprog.assessment.importer.ExtractWines.splitString;
 
-public class RatingsExtraction {
+public class ExtractRatings {
     private final String ratingsCsvPath;
     private final String connectionString;
 
-    public RatingsExtraction(String ratingsCsvPath, String connectionString) {
+    public ExtractRatings(String ratingsCsvPath, String connectionString) {
         this.ratingsCsvPath = ratingsCsvPath;
         this.connectionString = connectionString;
     }

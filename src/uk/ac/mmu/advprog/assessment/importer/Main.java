@@ -29,9 +29,9 @@ public class Main {
                 System.out.println(Instant.now() + " Ratings");
             }
 
-            RatingsExtraction ratingsExtraction = new RatingsExtraction("./data/XWines_Full_21M_ratings.csv", databaseConnectionString);
+            ExtractRatings ratings = new ExtractRatings("./data/XWines_Full_21M_ratings.csv", databaseConnectionString);
 
-            ratingsExtraction.extractRatings(enhancedLogging);
+            ratings.extractRatings(enhancedLogging);
         }
 
         System.out.println(Instant.now() + " Import Finish");

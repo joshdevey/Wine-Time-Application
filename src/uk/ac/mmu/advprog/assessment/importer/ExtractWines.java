@@ -10,221 +10,229 @@ import java.nio.file.Paths;
 import java.time.Instant;
 import java.util.ArrayList;
 
+/**
+ * Class to extract wines from csv into pojos
+ * Constructor is required
+ */
 public class ExtractWines {
 
-	private final String csvPath;
-	private ArrayList<Wine> wines;
-	private ArrayList<String> grapes;
-	private ArrayList<Pairing> pairing;
-	private ArrayList<Region> regions;
-	private ArrayList<Winery> wineries;
-	private final boolean enhancedLogging;
+    private final String csvPath;
+    private ArrayList<Wine> wines;
+    private ArrayList<String> grapes;
+    private ArrayList<Pairing> pairing;
+    private ArrayList<Region> regions;
+    private ArrayList<Winery> wineries;
+    private final boolean enhancedLogging;
 
-	/**
-	 *
-	 * Constructor to set required properties
-	 *
-	 * @param csvPath location of csv
-	 * @param enhancedLogging boolean to enable enhanced logging
-	 */
-	public ExtractWines(String csvPath, boolean enhancedLogging) {
-		super();
+    /**
+     *
+     * Constructor to set required properties
+     *
+     * @param csvPath         location of csv
+     * @param enhancedLogging boolean to enable enhanced logging
+     */
+    public ExtractWines(String csvPath, boolean enhancedLogging) {
+        super();
 
-		this.wines = new ArrayList<>();
-		this.grapes = new ArrayList<>();
-		this.pairing = new ArrayList<>();
-		this.regions = new ArrayList<>();
-		this.wineries = new ArrayList<>();
-		this.csvPath = csvPath;
-		this.enhancedLogging = enhancedLogging;
-	}
+        this.wines = new ArrayList<>();
+        this.grapes = new ArrayList<>();
+        this.pairing = new ArrayList<>();
+        this.regions = new ArrayList<>();
+        this.wineries = new ArrayList<>();
+        this.csvPath = csvPath;
+        this.enhancedLogging = enhancedLogging;
+    }
 
-	/**
-	 * Populate Java Classes from csv in csvPath Param
-	 */
-	public void extractFromCSSV() {
-		int counter = 0;
+    /**
+     * Populate Java Classes from csv in csvPath Param
+     */
+    public void extractFromCSSV() {
+        try {
+            if (this.csvPath.isEmpty()) {
+                throw new EmptyCSVPath("Empty CSV Path");
+            }
 
-		ArrayList<Wine> wines = new ArrayList<>();
-		ArrayList<String> uniqueGrapes = new ArrayList<>();
-		ArrayList<Pairing> uniquePairing = new ArrayList<>();
-		ArrayList<String> pairingAsString = new ArrayList<>();
-		ArrayList<String> regionId = new ArrayList<>();
-		ArrayList<Region> uniqueRegions = new ArrayList<>();
-		ArrayList<Winery> uniqueWineries = new ArrayList<>();
-		ArrayList<Integer> uniqueWineryIds = new ArrayList<>();
+            int counter = 0;
 
-		if(enhancedLogging) {
-			System.out.println(Instant.now() + " - extract from CSV start");
-		}
+            ArrayList<Wine> wines = new ArrayList<>();
+            ArrayList<String> uniqueGrapes = new ArrayList<>();
+            ArrayList<Pairing> uniquePairing = new ArrayList<>();
+            ArrayList<String> pairingAsString = new ArrayList<>();
+            ArrayList<String> regionId = new ArrayList<>();
+            ArrayList<Region> uniqueRegions = new ArrayList<>();
+            ArrayList<Winery> uniqueWineries = new ArrayList<>();
+            ArrayList<Integer> uniqueWineryIds = new ArrayList<>();
 
-		try {
-			Path readFile = Paths.get(this.csvPath);
+            if (enhancedLogging) {
+                System.out.println(Instant.now() + " - extract from CSV start");
+            }
 
-			InputStream is = Files.newInputStream(readFile);
-			BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
-			String currentLine = "";
+            Path readFile = Paths.get(this.csvPath);
 
-			while((currentLine = br.readLine()) != null) {
+            InputStream is = Files.newInputStream(readFile);
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
-				if(counter != 0) {
-					String[] splitString = splitString(currentLine);
+            String currentLine = "";
 
-					Wine wine = new Wine(splitString[0], splitString[1], splitString[2], splitString[3], splitString[6], splitString[7], splitString[8]);
+            while ((currentLine = br.readLine()) != null) {
 
-					ArrayList<String> wineGrapes = new ArrayList<>();
+                if (counter != 0) {
+                    String[] splitString = splitString(currentLine);
 
-					//Extract Grapes
-					String grapesString = cleanUpArrayString(splitString[4]);
-					String[] grapes = splitString(grapesString);
+                    Wine wine = new Wine(splitString[0], splitString[1], splitString[2], splitString[3], splitString[6], splitString[7], splitString[8]);
 
-					for(String grape : grapes) {
-						if(!wineGrapes.contains(grape.trim())) {
-							wineGrapes.add(grape.trim());
-						}
-						if(!uniqueGrapes.contains(grape.trim())) {
-							uniqueGrapes.add(grape.trim());
-						}
-					}
+                    ArrayList<String> wineGrapes = new ArrayList<>();
 
-					wine.setGrapes(wineGrapes);
+                    //Extract Grapes
+                    String grapesString = cleanUpArrayString(splitString[4]);
+                    String[] grapes = splitString(grapesString);
 
-					//Extract Pairing
-					String paringString = cleanUpArrayString(splitString[5]);
-					String[] pairings = splitString(paringString);
+                    for (String grape : grapes) {
+                        if (!wineGrapes.contains(grape.trim())) {
+                            wineGrapes.add(grape.trim());
+                        }
+                        if (!uniqueGrapes.contains(grape.trim())) {
+                            uniqueGrapes.add(grape.trim());
+                        }
+                    }
 
-					ArrayList<Pairing> winePairings = new ArrayList<>();
+                    wine.setGrapes(wineGrapes);
 
-					for(String pairing : pairings) {
+                    //Extract Pairing
+                    String paringString = cleanUpArrayString(splitString[5]);
+                    String[] pairings = splitString(paringString);
 
-						Pairing pairingToAdd = new Pairing(pairing.trim());
+                    ArrayList<Pairing> winePairings = new ArrayList<>();
 
-						if(!pairingAsString.contains(pairingToAdd.getName())) {
-							pairingAsString.add(pairingToAdd.getName());
-							uniquePairing.add(pairingToAdd);
-						}
+                    for (String pairing : pairings) {
 
-						winePairings.add(pairingToAdd);
-					}
+                        Pairing pairingToAdd = new Pairing(pairing.trim());
 
-					wine.setPairings(winePairings);
+                        if (!pairingAsString.contains(pairingToAdd.getName())) {
+                            pairingAsString.add(pairingToAdd.getName());
+                            uniquePairing.add(pairingToAdd);
+                        }
 
-					Region region = new Region(Integer.parseInt(splitString[11]), splitString[12], splitString[10]);
+                        winePairings.add(pairingToAdd);
+                    }
 
-					//Extract Region
-					if(!regionId.contains(splitString[11])) {
-						uniqueRegions.add(region);
-						regionId.add(splitString[11]);
-					}
-					this.regions = uniqueRegions;
+                    wine.setPairings(winePairings);
 
-					//Extract Vintages
-					String vintagesString = cleanUpArrayString(splitString[16]);
+                    Region region = new Region(Integer.parseInt(splitString[11]), splitString[12], splitString[10]);
 
-					String[] vintages = splitString(vintagesString);
+                    //Extract Region
+                    if (!regionId.contains(splitString[11])) {
+                        uniqueRegions.add(region);
+                        regionId.add(splitString[11]);
+                    }
+                    this.regions = uniqueRegions;
 
-					ArrayList<Integer> wineVintages = new ArrayList<>();
+                    //Extract Vintages
+                    String vintagesString = cleanUpArrayString(splitString[16]);
 
-					for(String vintage : vintages) {
-						try {
+                    String[] vintages = splitString(vintagesString);
 
-							wineVintages.add(Integer.parseInt(vintage.trim()));
+                    ArrayList<Integer> wineVintages = new ArrayList<>();
 
-						} catch (NumberFormatException e) {
-							wineVintages.add(-1);
-						}
-					}
+                    for (String vintage : vintages) {
+                        try {
 
-					wine.setVintages(wineVintages);
+                            wineVintages.add(Integer.parseInt(vintage.trim()));
 
-					//Extract Wineries
-					Winery winery = new Winery(Integer.parseInt(splitString[13]), splitString[14], splitString[15], region);
+                        } catch (NumberFormatException e) {
+                            wineVintages.add(-1);
+                        }
+                    }
 
-					if(!uniqueWineryIds.contains(winery.getId())) {
-						uniqueWineryIds.add(winery.getId());
-						uniqueWineries.add(winery);
-					}
-					this.wineries = uniqueWineries;
+                    wine.setVintages(wineVintages);
 
-					wine.setWinery(winery);
+                    //Extract Wineries
+                    Winery winery = new Winery(Integer.parseInt(splitString[13]), splitString[14], splitString[15], region);
 
-					wines.add(wine);
+                    if (!uniqueWineryIds.contains(winery.getId())) {
+                        uniqueWineryIds.add(winery.getId());
+                        uniqueWineries.add(winery);
+                    }
+                    this.wineries = uniqueWineries;
 
-				}
-				counter++;
-			}
-			br.close();
+                    wine.setWinery(winery);
 
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+                    wines.add(wine);
 
-		this.wines = wines;
-		this.grapes = uniqueGrapes;
-		this.pairing = uniquePairing;
-		if(enhancedLogging) {
-			System.out.println(Instant.now() + " - extract from CSV end. Wines extracted: " + this.wines.size());
-		}
-	}
+                }
+                counter++;
+            }
+            br.close();
 
-	public ArrayList<Wine> getWines() {
-		return wines;
-	}
+            this.wines = wines;
+            this.grapes = uniqueGrapes;
+            this.pairing = uniquePairing;
 
-	public ArrayList<String> getGrapes() {
-		return grapes;
-	}
+            if (enhancedLogging) {
+                System.out.println(Instant.now() + " - extract from CSV end. Wines extracted: " + this.wines.size());
+            }
 
-	public ArrayList<Pairing> getPairing() {
-		return pairing;
-	}
+        } catch (IOException | EmptyCSVPath e) {
+            e.printStackTrace();
+        }
+    }
 
-	public ArrayList<Region> getRegions() {
-		return regions;
-	}
+    public ArrayList<Wine> getWines() {
+        return wines;
+    }
 
-	public ArrayList<Winery> getWineries() {
-		return wineries;
-	}
+    public ArrayList<String> getGrapes() {
+        return grapes;
+    }
 
-	/**
-	 *
-	 * @param dirtyString - String entry for array that could contain
-	 * 						undesirable characters
-	 *
-	 * @return cleanString - dirtyString minus the undesirables
-	 */
-	public static String cleanUpArrayString(String dirtyString) {
+    public ArrayList<Pairing> getPairing() {
+        return pairing;
+    }
 
-		String cleanString = dirtyString;
+    public ArrayList<Region> getRegions() {
+        return regions;
+    }
 
-		cleanString = cleanString.replaceAll("\"", "");
-		cleanString = cleanString.replace("[", "");
-		cleanString = cleanString.replace("]", "");
-		cleanString = cleanString.replace("'", "");
+    public ArrayList<Winery> getWineries() {
+        return wineries;
+    }
 
-		return cleanString;
-	}
+    /**
+     *
+     * @param dirtyString - String entry for array that could contain
+     *                    undesirable characters
+     * @return cleanString - dirtyString minus the undesirables
+     */
+    public static String cleanUpArrayString(String dirtyString) {
 
-	/**
-	 *
-	 * @param arrayString - line entry from csv as a string
-	 *
-	 * @return returnArray - Array of string
-	 */
-	public static String[] splitString(String arrayString) {
+        String cleanString = dirtyString;
 
-		String[] returnArray = {""};
+        cleanString = cleanString.replaceAll("\"", "");
+        cleanString = cleanString.replace("[", "");
+        cleanString = cleanString.replace("]", "");
+        cleanString = cleanString.replace("'", "");
 
-		try {
-			returnArray = arrayString.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+        return cleanString;
+    }
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+    /**
+     *
+     * @param arrayString - line entry from csv as a string
+     * @return returnArray - Array of string
+     */
+    public static String[] splitString(String arrayString) {
 
-		return returnArray;
-	}
+        String[] returnArray = {""};
+
+        try {
+            returnArray = arrayString.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return returnArray;
+    }
 
 }

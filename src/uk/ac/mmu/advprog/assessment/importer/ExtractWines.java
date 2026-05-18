@@ -138,6 +138,7 @@ public class ExtractWines {
 
 					wine.setVintages(wineVintages);
 
+					//Extract Wineries
 					Winery winery = new Winery(Integer.parseInt(splitString[13]), splitString[14], splitString[15], region);
 
 					if(!uniqueWineryIds.contains(winery.getId())) {

@@ -493,7 +493,7 @@ public class Queries {
      *
      * @param objects
      */
-    public void populateDB(ExtractIntoObjects objects) {
+    public void populateDB(ExtractWines objects) {
         try {
             createDB();
             insertGrapeIntoDB(objects.getGrapes());

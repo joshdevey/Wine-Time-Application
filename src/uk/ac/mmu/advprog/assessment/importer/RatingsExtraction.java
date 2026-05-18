@@ -13,7 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.Instant;
 
-import static uk.ac.mmu.advprog.assessment.importer.ExtractIntoObjects.splitString;
+import static uk.ac.mmu.advprog.assessment.importer.ExtractWines.splitString;
 
 public class RatingsExtraction {
     private final String ratingsCsvPath;

@@ -2,17 +2,7 @@ package uk.ac.mmu.advprog.assessment.importer;
 
 import uk.ac.mmu.advprog.assessment.shared.Queries;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.sql.SQLException;
 import java.time.Instant;
-
-import static uk.ac.mmu.advprog.assessment.importer.ExtractIntoObjects.splitString;
 
 public class Main {
 
@@ -24,7 +14,7 @@ public class Main {
         System.out.println(Instant.now() + " Import Start");
         Queries queries = new Queries(databaseConnectionString, enhancedLogging);
 
-        ExtractIntoObjects objects = new ExtractIntoObjects("./data/XWines_Full_100K_wines.csv", enhancedLogging);
+        ExtractWines objects = new ExtractWines("./data/XWines_Full_100K_wines.csv", enhancedLogging);
 
         objects.extractFromCSSV();
 

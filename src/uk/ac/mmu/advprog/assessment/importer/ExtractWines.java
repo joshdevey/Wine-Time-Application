@@ -9,9 +9,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.List;
 
-public class ExtractIntoObjects {
+public class ExtractWines {
 
 	private final String csvPath;
 	private ArrayList<Wine> wines;
@@ -28,7 +27,7 @@ public class ExtractIntoObjects {
 	 * @param csvPath location of csv
 	 * @param enhancedLogging boolean to enable enhanced logging
 	 */
-	public ExtractIntoObjects(String csvPath, boolean enhancedLogging) {
+	public ExtractWines(String csvPath, boolean enhancedLogging) {
 		super();
 
 		this.wines = new ArrayList<>();

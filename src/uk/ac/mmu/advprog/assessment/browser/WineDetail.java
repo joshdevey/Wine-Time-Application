@@ -44,50 +44,58 @@ public class WineDetail extends JPanel {
         JPanel wineryInfoPanel = new JPanel(new GridLayout(4, 2));
         wineryInfoPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
 
-        JPanel wineryPanel = new JPanel();
+        JLabel wineryLabel = new JLabel("Winery");
+        wineryLabel.setFont(new Font("SansSerif", Font.BOLD, 28));
+        wineryInfoPanel.add(wineryLabel);
+
+        JPanel wineryPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         wineryPanel.add(winery);
         wineryInfoPanel.add(wineryPanel);
 
-        JPanel regionPanel = new JPanel();
+        JPanel regionPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         regionPanel.add(region);
         wineryInfoPanel.add(regionPanel);
 
-        JPanel countryPanel = new JPanel();
+        JPanel countryPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         countryPanel.add(country);
         wineryInfoPanel.add(countryPanel);
 
-        JPanel websitePanel = new JPanel();
-        website.setEditable(false);
-        website.setOpaque(false);
-        website.setLineWrap(true);
-        website.setPreferredSize(new Dimension(200, 50));
-        website.setMinimumSize(new Dimension(200, 50));
-        websitePanel.add(website);
-        wineryInfoPanel.add(websitePanel);
-
-        JPanel wineInfoPanel = new JPanel(new GridLayout(4, 2));
+        JPanel wineInfoPanel = new JPanel(new GridLayout(5, 2));
         wineInfoPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
 
-        JPanel typePanel = new JPanel();
+        JLabel wineLabel = new JLabel("Wine");
+        wineLabel.setFont(new Font("SansSerif", Font.BOLD, 28));
+        wineInfoPanel.add(wineLabel);
+
+        JPanel typePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        type.setHorizontalTextPosition(SwingConstants.LEFT);
         typePanel.add(type);
         wineInfoPanel.add(typePanel);
 
-        JPanel abvPanel = new JPanel();
+        JPanel abvPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         abvPanel.add(abv);
         wineInfoPanel.add(abvPanel);
 
-        JPanel Acidity = new JPanel();
+        JPanel Acidity = new JPanel(new FlowLayout(FlowLayout.LEFT));
         Acidity.add(acidity);
         wineInfoPanel.add(Acidity);
 
-        JPanel bodyPanel = new JPanel();
+        JPanel bodyPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         bodyPanel.add(body);
         wineInfoPanel.add(bodyPanel);
 
-        wineryWinePanel.add(wineryInfoPanel);
         wineryWinePanel.add(wineInfoPanel);
+        wineryWinePanel.add(wineryInfoPanel);
 
         content.add(wineryWinePanel);
+
+        website.setFont(new Font("SansSerif", Font.BOLD, 20));
+        website.setEditable(false);
+        website.setBorder(null);
+        website.setOpaque(false);
+        website.setMaximumSize(new Dimension(500, 100));
+
+        content.add(website);
 
         JPanel grapesPanel = new JPanel(new GridLayout(2, 1));
         grapesPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
@@ -164,7 +172,7 @@ public class WineDetail extends JPanel {
      */
     public void setData(SelectedWine selectedWine) {
         name.setText(selectedWine.name);
-        winery.setText("Winery: " + selectedWine.winery);
+        winery.setText("Name: " + selectedWine.winery);
         type.setText("Type: "+ selectedWine.type);
         country.setText("Country: " + selectedWine.country);
         abv.setText("ABV: " + selectedWine.abv + "%");

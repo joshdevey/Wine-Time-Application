@@ -74,6 +74,7 @@ public class WineBrowser extends JFrame {
     }
 
     private void updateFromSelection() {
+
         if (resultsTable.getSelectedRow() == -1) {
             this.detailPanel.clearData();
             remove(detailPanel);
@@ -81,7 +82,9 @@ public class WineBrowser extends JFrame {
             return;
         }
 
-        SelectedWine wineToAdd = queries.getWine(this.searchResultsData.get(resultsTable.getSelectedRow()).id);
+        int selectedRow = resultsTable.getRowSorter().convertRowIndexToModel(resultsTable.getSelectedRow());
+
+        SelectedWine wineToAdd = queries.getWine(this.searchResultsData.get(selectedRow).id);
 
         if (wineToAdd != null) {
             detailPanel.setData(wineToAdd);
@@ -149,7 +152,7 @@ public class WineBrowser extends JFrame {
         add(buttonContainer, "South");
         add(this.searchResultPanel, "Center");
         add(this.searchPanel, "West");
-
+        resultsTable.clearSelection();
         revalidate();
         repaint();
     }

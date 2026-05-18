@@ -48,7 +48,7 @@ public class WineBrowser extends JFrame {
         setVisible(true);
     }
 
-    public void handleResultsTable() {
+    private void handleResultsTable() {
 
         resultsTable.setAutoCreateRowSorter(true);
 
@@ -73,7 +73,7 @@ public class WineBrowser extends JFrame {
         revalidate();
     }
 
-    public void updateFromSelection() {
+    private void updateFromSelection() {
         if (resultsTable.getSelectedRow() == -1) {
             this.detailPanel.clearData();
             remove(detailPanel);
@@ -114,7 +114,7 @@ public class WineBrowser extends JFrame {
         return clearButton;
     }
 
-    public JButton getSearchButton() {
+    private JButton getSearchButton() {
 
         searchButton.setBackground(new Color(250, 108, 14));
         searchButton.setForeground(Color.WHITE);
@@ -142,7 +142,7 @@ public class WineBrowser extends JFrame {
 
     }
 
-    public void returnToSearch() {
+    private void returnToSearch() {
         detailPanel.clearData();
         remove(detailPanel);
         remove(returnButton);
@@ -154,7 +154,7 @@ public class WineBrowser extends JFrame {
         repaint();
     }
 
-    public void renderReturnToSearch() {
+    private void renderReturnToSearch() {
         returnButton.setBackground(new Color(250, 108, 14));
         returnButton.setForeground(Color.WHITE);
         returnButton.setBorderPainted(false);
@@ -172,7 +172,7 @@ public class WineBrowser extends JFrame {
         add(returnButton, "South");
     }
 
-    public void fetchData() {
+    private void fetchData() {
         this.detailPanel.clearData();
         this.searchResultsData.clear();
         String[] columnNames = {""};

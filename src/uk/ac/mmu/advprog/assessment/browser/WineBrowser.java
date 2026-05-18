@@ -5,6 +5,9 @@ import uk.ac.mmu.advprog.assessment.shared.Queries;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -42,22 +45,14 @@ public class WineBrowser extends JFrame {
         add(searchPanel, "West");
         handleResultsTable();
         add(searchResultPanel, "Center");
-        renderSearchButtons();
+        renderSearchButton();
         setLocationRelativeTo(null);
         setVisible(true);
     }
 
     public void handleResultsTable() {
 
-        resultsTable.getTableHeader().addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                String sortString = getClickedColumn(resultsTable.columnAtPoint(e.getPoint()));
-                queryBuilder.setSortColumn(sortString);
-                fetchData(true);
-            }
-        });
+        resultsTable.setAutoCreateRowSorter(true);
 
         resultsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         resultsTable.setSelectionBackground(new Color(250, 108, 14));
@@ -65,6 +60,10 @@ public class WineBrowser extends JFrame {
         resultsTable.getSelectionModel().addListSelectionListener(e -> {
             updateFromSelection();
         });
+
+        JTableHeader header = resultsTable.getTableHeader();
+        header.setReorderingAllowed(true);
+        header.setResizingAllowed(true);
 
         resultsTable.getSelectedRow();
         remove(this.searchResultPanel);
@@ -98,7 +97,7 @@ public class WineBrowser extends JFrame {
         }
     }
 
-    public void renderSearchButtons() {
+    public void renderSearchButton() {
 
         searchButton.setBackground(new Color(250, 108, 14));
         searchButton.setForeground(Color.WHITE);
@@ -110,7 +109,7 @@ public class WineBrowser extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                fetchData(false);
+                fetchData();
             }
         });
 
@@ -147,7 +146,7 @@ public class WineBrowser extends JFrame {
         add(returnButton, "South");
     }
 
-    public void fetchData(boolean fromSort) {
+    public void fetchData() {
         this.detailPanel.clearData();
         this.searchResultsData.clear();
         String[] columnNames = {""};
@@ -168,19 +167,8 @@ public class WineBrowser extends JFrame {
 
 
         if (searchPanel.validateSearch()) {
-            String sortColumn = "";
-            Boolean ascending = false;
-
-            if(fromSort) {
-                sortColumn = queryBuilder.getSortColumn();
-                ascending = queryBuilder.getAscending();
-            }
 
             this.queryBuilder = searchPanel.getQuery();
-
-            queryBuilder.setSortColumn(sortColumn);
-            queryBuilder.setAscending(ascending);
-
 
             /*When ratings added, query times got wild... After
             * a bit of researching found SwingWorker got when queries

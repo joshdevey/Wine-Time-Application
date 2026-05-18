@@ -679,7 +679,7 @@ public class Queries {
                      		) rt ON rt.wine_id = w.id
                      where w.abv >= 
                     """;
-            queryString += queryBuilder.getAbv() + buildAdditionQueryString(queryBuilder) + getOrderByString(queryBuilder);
+            queryString += queryBuilder.getAbv() + buildAdditionQueryString(queryBuilder);
 
             ResultSet rs = c.createStatement().executeQuery(queryString);
 
@@ -733,7 +733,7 @@ public class Queries {
                     where w.abv >= 
                     """;
 
-            queryString += queryBuilder.getAbv() + " and  " + queryBuilder.getGrapeQueryString() + buildAdditionQueryString(queryBuilder) + getOrderByString(queryBuilder);
+            queryString += queryBuilder.getAbv() + " and  " + queryBuilder.getGrapeQueryString() + buildAdditionQueryString(queryBuilder);
 
             ResultSet rs = c.createStatement().executeQuery(queryString);
 
@@ -886,21 +886,6 @@ public class Queries {
         }
         
         return additionalQueries;
-    }
-
-    /**
-     * Builds order by for queries
-     *
-     * @param queryBuilder
-     * @return
-     */
-    private String getOrderByString(QueryBuilder queryBuilder) {
-        if (queryBuilder.getSortColumn() == null || queryBuilder.getSortColumn().equals("")) {
-            return "";
-        }
-
-        return " order by " + queryBuilder.getSortColumn() + " " + (queryBuilder.getAscending() ? "asc" : "desc");
-
     }
 
 }

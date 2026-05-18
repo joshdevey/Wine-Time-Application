@@ -92,7 +92,11 @@ public class WineDetail extends JPanel {
         JPanel grapesPanel = new JPanel(new GridLayout(2, 1));
         grapesPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
 
-        grapesPanel.add(new JLabel("Grapes"));
+        JLabel grapesLabel = new JLabel("Grapes");
+        grapesLabel.setFont(new Font("SansSerif", Font.BOLD, 28));
+
+        grapesPanel.add(grapesLabel);
+
         grapesPanel.add(grapes);
 
         content.add(grapesPanel);
@@ -100,7 +104,10 @@ public class WineDetail extends JPanel {
         JPanel pairingPanel = new JPanel(new GridLayout(2, 1));
         pairingPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
 
-        pairingPanel.add(new JLabel("Pairings"));
+        JLabel pairingLabel = new JLabel("Pairings");
+        pairingLabel.setFont(new Font("SansSerif", Font.BOLD, 28));
+
+        pairingPanel.add(pairingLabel);
         pairingPanel.add(pairings);
 
         content.add(pairingPanel);

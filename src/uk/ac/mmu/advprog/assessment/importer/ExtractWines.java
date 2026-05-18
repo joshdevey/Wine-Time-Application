@@ -174,7 +174,12 @@ public class ExtractWines {
             }
 
         } catch (IOException | EmptyCSVPath e) {
-            e.printStackTrace();
+            if (e instanceof IOException) {
+                System.out.println("Error reading CSV file: " + this.csvPath);
+            } else if (e instanceof EmptyCSVPath) {
+                System.out.println(((EmptyCSVPath) e).getMessage());
+            }
+
         }
     }
 

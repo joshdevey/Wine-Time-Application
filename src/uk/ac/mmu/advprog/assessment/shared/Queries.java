@@ -612,6 +612,28 @@ public class Queries {
 
                 }
 
+                List<Integer> vintages = new ArrayList<>();
+
+                String getVintageSql = "select year from Wine_Vintage where wine_id = ?";
+
+                try (PreparedStatement vintageStmt = c.prepareStatement(getVintageSql)) {
+                    vintageStmt.setInt(1, id);
+
+                    ResultSet vintagesResult = vintageStmt.executeQuery();
+
+                    while (vintagesResult.next()) {
+
+                        vintages.add(vintagesResult.getInt("year"));
+
+                    }
+
+                    wineToAdd.setVintages(vintages);
+
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+
+
                 List<Rating> ratings = new ArrayList<>();
 
                 String getVintageRatingSql = "select count(*) as ratings, avg(rating) as  avg_ratings, vintage from rating  where wine_id = ? and vintage != -1 group by vintage";
@@ -619,11 +641,11 @@ public class Queries {
                 try (PreparedStatement vintageStmt = c.prepareStatement(getVintageRatingSql)) {
                     vintageStmt.setInt(1, id);
 
-                    ResultSet vintages = vintageStmt.executeQuery();
+                    ResultSet ratingsResult = vintageStmt.executeQuery();
 
-                    while (vintages.next()) {
+                    while (ratingsResult.next()) {
 
-                        ratings.add(new Rating(vintages.getInt("vintage"), vintages.getInt("ratings"), vintages.getFloat("avg_ratings")));
+                        ratings.add(new Rating(ratingsResult.getInt("vintage"), ratingsResult.getInt("ratings"), ratingsResult.getFloat("avg_ratings")));
 
                     }
 

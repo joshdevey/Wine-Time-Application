@@ -73,7 +73,7 @@ public class ExtractRatings {
                         }
 
                         if (alertCounter == 100000) {
-                            System.out.println(Instant.now() + " - " + counter + " inserted");
+                            System.out.println(Instant.now() + " - " + counter + " Ratings inserted");
                             alertCounter = 0;
                         }
 

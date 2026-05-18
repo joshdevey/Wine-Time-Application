@@ -31,6 +31,7 @@ public class WineBrowser extends JFrame {
         this.detailPanel = new WineDetail();
         this.searchResultsData = new ArrayList<>();
         this.searchResultPanel = new JScrollPane();
+        this.resultsTable = new JTable();
     }
 
     public void displayWineBrowser() {
@@ -39,6 +40,7 @@ public class WineBrowser extends JFrame {
         setSize(800, 920);
         setMinimumSize(new Dimension(800, 920));
         add(searchPanel, "West");
+        handleResultsTable();
         add(searchResultPanel, "Center");
         renderSearchButtons();
         setLocationRelativeTo(null);
@@ -47,46 +49,21 @@ public class WineBrowser extends JFrame {
 
     public void handleResultsTable() {
 
-        String[] columnNames = {"Name", "Type", "Winery", "Country", "ABV", "Ratings", "Rating AVG"};
-        if(queryBuilder.getGrape().isEmpty()) {
-            this.searchResultsData = queries.getWinesFromSearch(queryBuilder);
-        } else {
-            this.searchResultsData = queries.getWinesFromSearchWithGrape(queryBuilder);
-        }
-
-        resultsTable = new JTable();
-
-        //make table read only
-        DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
-
         resultsTable.getTableHeader().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 String sortString = getClickedColumn(resultsTable.columnAtPoint(e.getPoint()));
                 queryBuilder.setSortColumn(sortString);
-                handleResultsTable();
+                fetchData(true);
             }
         });
-
-        for (BrowserWine wine : this.searchResultsData) {
-            Object[] obj = {wine.name, wine.type, wine.winery, wine.country, wine.abv, wine.ratings, wine.ratingAverage};
-
-            tableModel.addRow(obj);
-        }
-
-        resultsTable.setModel(tableModel);
 
         resultsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         resultsTable.setSelectionBackground(new Color(250, 108, 14));
 
         resultsTable.getSelectionModel().addListSelectionListener(e -> {
-                updateFromSelection();
+            updateFromSelection();
         });
 
         resultsTable.getSelectedRow();
@@ -133,7 +110,7 @@ public class WineBrowser extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                fetchData();
+                fetchData(false);
             }
         });
 
@@ -170,19 +147,95 @@ public class WineBrowser extends JFrame {
         add(returnButton, "South");
     }
 
-    public void fetchData() {
+    public void fetchData(boolean fromSort) {
         this.detailPanel.clearData();
-        remove(detailPanel);
-        revalidate();
-        repaint();
+        this.searchResultsData.clear();
+        String[] columnNames = {""};
 
-        if(searchPanel.validateSearch()) {
+        //make table read only
+        DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+
+        Object[] obj = {"Fetching Data..."};
+
+        tableModel.addRow(obj);
+
+        resultsTable.setModel(tableModel);
+
+
+        if (searchPanel.validateSearch()) {
+            String sortColumn = "";
+            Boolean ascending = false;
+
+            if(fromSort) {
+                sortColumn = queryBuilder.getSortColumn();
+                ascending = queryBuilder.getAscending();
+            }
+
             this.queryBuilder = searchPanel.getQuery();
-            handleResultsTable();
+
+            queryBuilder.setSortColumn(sortColumn);
+            queryBuilder.setAscending(ascending);
+
+
+            /*When ratings added, query times got wild... After
+            * a bit of researching found SwingWorker got when queries
+            * are on the large side.
+            *
+            * https://docs.oracle.com/javase/8/docs/api/javax/swing/SwingWorker.html
+            *
+            */
+            SwingWorker worker = new SwingWorker() {
+
+                @Override
+                protected ArrayList<BrowserWine> doInBackground() throws Exception {
+                    if (queryBuilder.getGrape().isEmpty()) {
+                        return queries.getWinesFromSearch(queryBuilder);
+                    } else {
+                        return queries.getWinesFromSearchWithGrape(queryBuilder);
+                    }
+                }
+
+                @Override
+                protected void done() {
+                    try {
+                        ArrayList<BrowserWine> result = (ArrayList<BrowserWine>) get();
+
+                        String[] columnNames = {"Name", "Type", "Winery", "Country", "ABV", "Ratings", "Rating AVG"};
+
+                        //make table read only
+                        DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0) {
+                            @Override
+                            public boolean isCellEditable(int row, int column) {
+                                return false;
+                            }
+                        };
+
+                        for (BrowserWine wine : result) {
+                            Object[] obj = {wine.name, wine.type, wine.winery, wine.country, wine.abv, wine.ratings, wine.ratingAverage};
+
+                            tableModel.addRow(obj);
+                        }
+
+                        searchResultsData = result;
+                        resultsTable.setModel(tableModel);
+
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            };
+            worker.execute();
         } else {
             JOptionPane.showMessageDialog(null, "At least one of the fields (Name, Winery, Type, Country of Origin, Blend, Grape, Acidity or Body) must be populated.", "WARNING", JOptionPane.WARNING_MESSAGE);
         }
+
     }
+
     private String getClickedColumn(int id) {
 
         return switch (id) {

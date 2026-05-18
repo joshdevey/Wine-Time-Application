@@ -57,7 +57,7 @@ public class SearchPanel extends JPanel {
         setMaximumSize(new Dimension(320, 600));
 
         JPanel searchPanel = new JPanel();
-        JScrollPane scrollPane = new JScrollPane(searchPanel);
+
         searchPanel.setLayout(new BoxLayout(searchPanel, BoxLayout.Y_AXIS));
         searchPanel.setBackground(new Color(43, 43, 43));
 
@@ -73,36 +73,8 @@ public class SearchPanel extends JPanel {
         searchPanel.add(getMinRatingPanel());
         searchPanel.add(getMinRatingsPanel());
 
-        add(scrollPane, BorderLayout.EAST);
+        add(searchPanel, BorderLayout.EAST);
 
-        add(getClearButton());
-    }
-
-    /**
-     *
-     * @return
-     */
-    private JPanel getClearButton() {
-        JPanel buttonContainer = new JPanel(new FlowLayout());
-        JButton clearButton = new JButton("Clear");
-        clearButton.setBackground(new Color(250, 108, 14));
-        clearButton.setForeground(Color.WHITE);
-        clearButton.setBorderPainted(false);
-        clearButton.setFocusPainted(false);
-        clearButton.setOpaque(true);
-
-        clearButton.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                resetSearch();
-            }
-        });
-
-        buttonContainer.setOpaque(false);
-        buttonContainer.add(clearButton);
-
-        return buttonContainer;
     }
 
     /**
@@ -222,7 +194,7 @@ public class SearchPanel extends JPanel {
         return panel;
     }
 
-    private void resetSearch() {
+    public void resetSearch() {
         name.setText("");
         winery.setText("");
         type.setSelectedIndex(0);

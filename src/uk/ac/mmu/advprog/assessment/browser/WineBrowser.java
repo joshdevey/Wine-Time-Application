@@ -6,13 +6,9 @@ import uk.ac.mmu.advprog.assessment.shared.Queries;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
-import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 
@@ -26,6 +22,7 @@ public class WineBrowser extends JFrame {
     private ArrayList<BrowserWine> searchResultsData;
     private JScrollPane searchResultPanel;
     private QueryBuilder queryBuilder;
+    private JPanel buttonContainer;
     public JButton searchButton = new JButton("Search");
     public JButton returnButton = new JButton("Return to Search");
 
@@ -35,6 +32,7 @@ public class WineBrowser extends JFrame {
         this.searchResultsData = new ArrayList<>();
         this.searchResultPanel = new JScrollPane();
         this.resultsTable = new JTable();
+        this.buttonContainer = new JPanel();
     }
 
     public void displayWineBrowser() {
@@ -45,7 +43,7 @@ public class WineBrowser extends JFrame {
         add(searchPanel, "West");
         handleResultsTable();
         add(searchResultPanel, "Center");
-        renderSearchButton();
+        renderButtons();
         setLocationRelativeTo(null);
         setVisible(true);
     }
@@ -88,7 +86,7 @@ public class WineBrowser extends JFrame {
         if (wineToAdd != null) {
             detailPanel.setData(wineToAdd);
             add(detailPanel, "Center");
-            remove(searchButton);
+            remove(buttonContainer);
             remove(this.searchResultPanel);
             remove(this.searchPanel);
             renderReturnToSearch();
@@ -97,7 +95,26 @@ public class WineBrowser extends JFrame {
         }
     }
 
-    public void renderSearchButton() {
+    private JButton getClearButton() {
+        JButton clearButton = new JButton("Clear");
+        clearButton.setBackground(new Color(250, 108, 14));
+        clearButton.setForeground(Color.WHITE);
+        clearButton.setBorderPainted(false);
+        clearButton.setFocusPainted(false);
+        clearButton.setOpaque(true);
+
+        clearButton.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                searchPanel.resetSearch();
+            }
+        });
+
+        return clearButton;
+    }
+
+    public JButton getSearchButton() {
 
         searchButton.setBackground(new Color(250, 108, 14));
         searchButton.setForeground(Color.WHITE);
@@ -113,14 +130,23 @@ public class WineBrowser extends JFrame {
             }
         });
 
-        add(searchButton, "South");
+        return searchButton;
+    }
+
+    private void renderButtons() {
+        buttonContainer.setBackground(new Color(43, 43, 43));
+        buttonContainer.add(getSearchButton());
+        buttonContainer.add(getClearButton());
+
+        add(buttonContainer, "South");
+
     }
 
     public void returnToSearch() {
         detailPanel.clearData();
         remove(detailPanel);
         remove(returnButton);
-        add(searchButton, "South");
+        add(buttonContainer, "South");
         add(this.searchResultPanel, "Center");
         add(this.searchPanel, "West");
 

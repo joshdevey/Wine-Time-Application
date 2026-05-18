@@ -224,17 +224,4 @@ public class WineBrowser extends JFrame {
 
     }
 
-    private String getClickedColumn(int id) {
-
-        return switch (id) {
-            case 1 -> "w.type";
-            case 2 -> "wy.name";
-            case 3 -> "r.country";
-            case 4 -> "w.abv";
-            case 5 -> "rt.ratings";
-            case 6 -> "rt.ratingAverage";
-            default -> "w.name";
-        };
-    }
-
 }

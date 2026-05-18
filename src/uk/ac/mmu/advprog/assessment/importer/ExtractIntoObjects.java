@@ -21,6 +21,13 @@ public class ExtractIntoObjects {
 	private ArrayList<Winery> wineries;
 	private final boolean enhancedLogging;
 
+	/**
+	 *
+	 * Constructor to set required properties
+	 *
+	 * @param csvPath location of csv
+	 * @param enhancedLogging boolean to enable enhanced logging
+	 */
 	public ExtractIntoObjects(String csvPath, boolean enhancedLogging) {
 		super();
 
@@ -33,6 +40,9 @@ public class ExtractIntoObjects {
 		this.enhancedLogging = enhancedLogging;
 	}
 
+	/**
+	 * Populate Java Classes from csv in csvPath Param
+	 */
 	public void extractFromCSSV() {
 		int counter = 0;
 
@@ -65,7 +75,8 @@ public class ExtractIntoObjects {
 					Wine wine = new Wine(splitString[0], splitString[1], splitString[2], splitString[3], splitString[6], splitString[7], splitString[8]);
 
 					ArrayList<String> wineGrapes = new ArrayList<>();
-					//grapes
+
+					//Extract Grapes
 					String grapesString = cleanUpArrayString(splitString[4]);
 					String[] grapes = splitString(grapesString);
 
@@ -80,7 +91,7 @@ public class ExtractIntoObjects {
 
 					wine.setGrapes(wineGrapes);
 
-					//pairing
+					//Extract Pairing
 					String paringString = cleanUpArrayString(splitString[5]);
 					String[] pairings = splitString(paringString);
 
@@ -102,14 +113,14 @@ public class ExtractIntoObjects {
 
 					Region region = new Region(Integer.parseInt(splitString[11]), splitString[12], splitString[10]);
 
-					//region
+					//Extract Region
 					if(!regionId.contains(splitString[11])) {
 						uniqueRegions.add(region);
 						regionId.add(splitString[11]);
 					}
 					this.regions = uniqueRegions;
 
-					//vintages
+					//Extract Vintages
 					String vintagesString = cleanUpArrayString(splitString[16]);
 
 					String[] vintages = splitString(vintagesString);
@@ -137,7 +148,6 @@ public class ExtractIntoObjects {
 					this.wineries = uniqueWinerys;
 
 					wine.setWinery(winery);
-
 
 					wines.add(wine);
 

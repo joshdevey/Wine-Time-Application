@@ -52,7 +52,7 @@ public class ExtractIntoObjects {
 		ArrayList<String> pairingAsString = new ArrayList<>();
 		ArrayList<String> regionId = new ArrayList<>();
 		ArrayList<Region> uniqueRegions = new ArrayList<>();
-		ArrayList<Winery> uniqueWinerys = new ArrayList<>();
+		ArrayList<Winery> uniqueWineries = new ArrayList<>();
 		ArrayList<Integer> uniqueWineryIds = new ArrayList<>();
 
 		if(enhancedLogging) {
@@ -143,9 +143,9 @@ public class ExtractIntoObjects {
 
 					if(!uniqueWineryIds.contains(winery.getId())) {
 						uniqueWineryIds.add(winery.getId());
-						uniqueWinerys.add(winery);
+						uniqueWineries.add(winery);
 					}
-					this.wineries = uniqueWinerys;
+					this.wineries = uniqueWineries;
 
 					wine.setWinery(winery);
 

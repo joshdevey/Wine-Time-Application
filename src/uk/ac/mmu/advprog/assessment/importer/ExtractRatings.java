@@ -25,19 +25,24 @@ public class ExtractRatings {
     }
 
     public void extractRatings(boolean enhancedLogging) {
-        Connection c = null;
-        int counter = 0;
-        int alertCounter = 0;
-
-        if (enhancedLogging) {
-            System.out.println(Instant.now() + " Import ratings - Start");
-        }
-        if (ratingsCsvPath == null || ratingsCsvPath.isEmpty()) {
-            System.out.println("Invalid import path");
-            return;
-        }
 
         try {
+            if (this.ratingsCsvPath.isEmpty()) {
+                throw new EmptyCSVPath("Empty CSV Path");
+            }
+
+            Connection c = null;
+            int counter = 0;
+            int alertCounter = 0;
+
+            if (enhancedLogging) {
+                System.out.println(Instant.now() + " Import ratings - Start");
+            }
+            if (ratingsCsvPath == null || ratingsCsvPath.isEmpty()) {
+                System.out.println("Invalid import path");
+                return;
+            }
+
             Path readFile = Paths.get(ratingsCsvPath);
 
             InputStream is = Files.newInputStream(readFile);
@@ -110,7 +115,7 @@ public class ExtractRatings {
             }
 
             br.close();
-        } catch (IOException | SQLException e) {
+        } catch (IOException | SQLException | EmptyCSVPath e) {
             e.printStackTrace();
         }
     }

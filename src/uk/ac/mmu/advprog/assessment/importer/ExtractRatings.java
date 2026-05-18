@@ -116,7 +116,13 @@ public class ExtractRatings {
 
             br.close();
         } catch (IOException | SQLException | EmptyCSVPath e) {
-            e.printStackTrace();
+            if (e instanceof IOException) {
+                System.out.println("Error reading CSV file: " + this.csvPath);
+            } else if (e instanceof EmptyCSVPath) {
+                System.out.println(((EmptyCSVPath) e).getMessage());
+            } else {
+                e.printStackTrace();
+            }
         }
     }
 }

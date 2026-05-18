@@ -179,7 +179,6 @@ public class ExtractWines {
             } else if (e instanceof EmptyCSVPath) {
                 System.out.println(((EmptyCSVPath) e).getMessage());
             }
-
         }
     }
 

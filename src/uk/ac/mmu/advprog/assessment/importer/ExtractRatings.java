@@ -63,12 +63,14 @@ public class ExtractRatings {
                         try {
                             rating_double = Double.parseDouble(splitString[4]);
                         } catch (NumberFormatException e) {
+                            System.out.println("Invalid rating, revert to 0.0");
                             rating_double = 0.0;
                         }
 
                         try {
                             rating_vintage = Integer.parseInt(splitString[3]);
                         } catch (NumberFormatException e) {
+                            System.out.println("Invalid vintage, revert to -1");
                             rating_vintage = -1;
                         }
 

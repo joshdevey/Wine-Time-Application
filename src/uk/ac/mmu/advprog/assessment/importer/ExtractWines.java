@@ -141,6 +141,7 @@ public class ExtractWines {
                             wineVintages.add(Integer.parseInt(vintage.trim()));
 
                         } catch (NumberFormatException e) {
+                            System.out.println("Invalid vintage, revert to -1");
                             wineVintages.add(-1);
                         }
                     }

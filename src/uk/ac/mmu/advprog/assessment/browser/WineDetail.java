@@ -4,6 +4,9 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.stream.IntStream;
 
 public class WineDetail extends JPanel {
 
@@ -124,7 +127,10 @@ public class WineDetail extends JPanel {
     private static JPanel createRatingRow(int year, float stars, int ratings) {
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
-        JLabel vintage = new JLabel(year + "  ");
+        String vintageYear = year != -1 ? String.valueOf(year) : "N/V";
+
+        JLabel vintage = new JLabel(vintageYear + "  ");
+        vintage.setHorizontalTextPosition(SwingConstants.RIGHT);
         vintage.setFont(new Font("SansSerif", Font.BOLD, 10));
         panel.add(vintage);
 
@@ -177,9 +183,28 @@ public class WineDetail extends JPanel {
         ratings.removeAll();
         JPanel ratingsPanel = new JPanel();
         ratingsPanel.setLayout(new BoxLayout(ratingsPanel, BoxLayout.Y_AXIS));
-        ratingsPanel.add(new JLabel("Ratings"));
-        for(Rating rating: selectedWine.ratings) {
-            ratingsPanel.add(createRatingRow(rating.getVintage(), rating.getRating(), rating.getRatingCount()));
+        ratingsPanel.add(new JLabel("Vintage Ratings"));
+
+        ArrayList<Rating> uniqueRatings = new ArrayList<>();
+
+        for(int vintage: selectedWine.vintages) {
+
+            Rating vintageRating = new Rating(vintage, 0, 0);
+
+            uniqueRatings.add(vintageRating);
+
+        }
+
+        for(Rating uniqueRating:  uniqueRatings) {
+            for(Rating rating: selectedWine.ratings) {
+                if(uniqueRating.getVintage() == rating.getVintage()) {
+                    uniqueRating.setRating(rating.getRating());
+                    uniqueRating.setRatingCount(rating.getRatingCount());
+                }
+            }
+
+            ratingsPanel.add(createRatingRow(uniqueRating.getVintage(), uniqueRating.getRating(), uniqueRating.getRatingCount()));
+
         }
 
         ratings.add(ratingsPanel);

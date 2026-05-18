@@ -22,4 +22,12 @@ public class Rating {
     public float getRating() {
         return rating;
     }
+
+    public void setRatingCount(int ratingCount) {
+        this.ratingCount = ratingCount;
+    }
+
+    public void setRating(float rating) {
+        this.rating = rating;
+    }
 }
